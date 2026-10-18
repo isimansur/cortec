@@ -77,7 +77,7 @@ ${systemSubmenuLinks}
   ).join('\n');
 
   const preloadTag = preloadImg
-    ? `  <link rel="preload" as="image" href="${prefix}assets/img/${preloadImg}.avif" imagesrcset="${prefix}assets/img/${preloadImg}-sm.avif 688w, ${prefix}assets/img/${preloadImg}.avif 1376w" imagesizes="100vw" type="image/avif" fetchpriority="high">`
+    ? `  <link rel="preload" as="image" href="${prefix}assets/img/${preloadImg}.avif" imagesrcset="${prefix}assets/img/${preloadImg}-sm.avif 688w, ${prefix}assets/img/${preloadImg}.avif 1376w" imagesizes="(max-width: 768px) 50vw, 100vw" type="image/avif" fetchpriority="high">`
     : '';
 
   const ogImageUrl = preloadImg

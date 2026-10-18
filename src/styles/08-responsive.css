@@ -885,7 +885,7 @@ input[type="tel"] {
   }
 }
 
-/* Mobile ProMotion 120Hz Crisp Scroll Reveal (No Safari GPU blur lag on text) */
+/* Mobile ProMotion 120Hz Crisp Scroll Reveal & Offscreen Content-Visibility (Zero Long Tasks) */
 @media (max-width: 768px) {
   .reveal,
   .reveal.is-visible {
@@ -897,5 +897,11 @@ input[type="tel"] {
   .hero-visual-stage img,
   .macro-stage-frame img {
     transform: none !important;
+  }
+  .macro-scroll-sequence,
+  .apex-gallery-section,
+  .site-footer {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 900px;
   }
 }

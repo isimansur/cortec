@@ -104,9 +104,14 @@ const cssHash = crypto.createHash('md5').update(combinedCss).digest('hex').slice
 let verifiedImages = 0;
 let missingImages = [];
 
+function optimizeResponsiveSizes(html) {
+  return html.replace(/sizes="100vw"/g, 'sizes="(max-width: 768px) 50vw, 100vw"');
+}
+
 function normalizePrefixInHtml(html, prefix) {
-  if (!prefix) return html;
-  return html.replace(/(src|href|srcset)="(assets\/[^"]+)"/g, `$1="${prefix}$2"`);
+  const sized = optimizeResponsiveSizes(html);
+  if (!prefix) return sized;
+  return sized.replace(/(src|href|srcset)="(assets\/[^"]+)"/g, `$1="${prefix}$2"`);
 }
 
 function validateHtmlAssets(html, fileLabel, baseDir) {
@@ -131,7 +136,7 @@ for (const slug of PAGE_SLUGS) {
   const pageMod = require(path.join(SRC, 'pages', `${slug}.js`));
 
   // A. Root flat HTML file (e.g. alutech.html, blog.html)
-  const mainRoot = pageMod.renderMain({ prefix: '' });
+  const mainRoot = normalizePrefixInHtml(pageMod.renderMain({ prefix: '' }), '');
   const htmlRoot = renderLayout({
     ...pageMod,
     canonicalPath: slug === 'index' ? '' : `${slug}.html`,
@@ -171,7 +176,7 @@ for (const post of BLOG_POSTS) {
   };
 
   // 1) /blog/{slug}.html (prefix is '../')
-  const mainBlogFlat = renderBlogArticle(post, { prefix: '../' });
+  const mainBlogFlat = optimizeResponsiveSizes(renderBlogArticle(post, { prefix: '../' }));
   const htmlBlogFlat = renderLayout({
     slug: `blog/${post.slug}`,
     canonicalPath: `blog/${post.slug}.html`,
@@ -196,7 +201,7 @@ for (const post of BLOG_POSTS) {
   // 2) /blog/{slug}/index.html (prefix is '../../')
   const subBlogDir = path.join(DIST, 'blog', post.slug);
   fs.mkdirSync(subBlogDir, { recursive: true });
-  const mainBlogSub = renderBlogArticle(post, { prefix: '../../' });
+  const mainBlogSub = optimizeResponsiveSizes(renderBlogArticle(post, { prefix: '../../' }));
   const htmlBlogSub = renderLayout({
     slug: `blog/${post.slug}`,
     canonicalPath: `blog/${post.slug}.html`,

@@ -79,7 +79,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 24px;
-  color: rgba(247, 248, 250, 0.34);
+  color: rgba(247, 248, 250, 0.56);
   font-family: var(--font-mono);
   font-size: 0.74rem;
   letter-spacing: 0.04em;
