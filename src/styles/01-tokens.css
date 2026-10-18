@@ -14,8 +14,8 @@
   /* --- Typography & Optical Hierarchy --- */
   --ds-text-primary: #F7F8FA;
   --ds-text-secondary: rgba(230, 234, 240, 0.68);
-  --ds-text-muted: rgba(214, 206, 198, 0.44);
-  --ds-text-micro: rgba(224, 214, 204, 0.38);
+  --ds-text-muted: rgba(214, 206, 198, 0.58);
+  --ds-text-micro: rgba(224, 214, 204, 0.52);
 
   /* --- Anodized Metal Accents --- */
   --ds-accent-sand: #C8A98E;
