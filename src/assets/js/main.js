@@ -64,9 +64,18 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add('is-loaded');
   }
 
-  // 2. Header scroll state & top optical progress beam
+  // 2. Header scroll state & architectural scroll progress bar (All Pages, Mobile + Desktop, Zero-Reflow)
   const header = document.querySelector('.site-header');
   let headerTicking = false;
+  let cachedMaxScroll = 1;
+
+  const recalcMaxScroll = () => {
+    cachedMaxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+  };
+  recalcMaxScroll();
+  window.addEventListener('resize', recalcMaxScroll, { passive: true });
+  window.addEventListener('load', recalcMaxScroll, { once: true, passive: true });
+
   const updateHeaderAndProgress = () => {
     headerTicking = false;
     const scrollY = window.scrollY;
@@ -77,11 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
         header.classList.remove('is-scrolled');
       }
     }
-    if (isDesktop.matches) {
-      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      const progress = Math.min(1, Math.max(0, scrollY / maxScroll));
-      document.documentElement.style.setProperty('--scroll-progress', progress.toFixed(4));
-    }
+    const progress = Math.min(1, Math.max(0, scrollY / cachedMaxScroll));
+    document.documentElement.style.setProperty('--scroll-progress', progress.toFixed(4));
   };
   window.addEventListener(
     'scroll',

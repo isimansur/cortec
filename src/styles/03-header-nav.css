@@ -16,16 +16,19 @@
   transition: padding 0.45s var(--ease-out-expo);
 }
 
-/* Frosted glass blur layer on ::before (so .site-header never creates a containing block that traps fixed mobile nav) */
+/* Frosted glass blur layer on ::before (extends -80px upward to cover iOS Dynamic Island / status bar overscroll gap) */
 .site-header::before {
   content: '';
   position: absolute;
-  inset: 0;
+  top: -80px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: -1;
-  background: rgba(14, 15, 18, 0.62);
+  background: rgba(14, 15, 18, 0.72);
   backdrop-filter: blur(20px) saturate(150%);
   -webkit-backdrop-filter: blur(20px) saturate(150%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   pointer-events: none;
   transition: background 0.45s var(--ease-out-expo), backdrop-filter 0.45s var(--ease-out-expo), border-color 0.45s var(--ease-out-expo), box-shadow 0.45s var(--ease-out-expo);
 }
@@ -35,27 +38,29 @@
 }
 
 .site-header.is-scrolled::before {
-  background: rgba(12, 13, 16, 0.88);
+  background: rgba(12, 13, 16, 0.90);
   backdrop-filter: blur(28px) saturate(170%);
   -webkit-backdrop-filter: blur(28px) saturate(170%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.09);
   box-shadow: 0 16px 42px rgba(0, 0, 0, 0.55);
 }
 
-/* Ultra-subtle optical progress beam at the top edge of viewport (moved to ::after so it never collides with ::before blur) */
+/* Architectural scroll-progress beam along the bottom edge of the header (under CORTEC logo & menu on all devices) */
 .site-header::after {
   content: '';
   position: absolute;
-  top: 0;
+  bottom: -1px;
   left: 0;
-  height: 1.5px;
+  height: 2px;
   width: 100%;
-  background: linear-gradient(90deg, rgba(200, 169, 142, 0.15) 0%, var(--accent-sand) 65%, #F7F8FA 100%);
+  background: linear-gradient(90deg, rgba(200, 169, 142, 0.35) 0%, var(--accent-sand) 65%, #F7F8FA 100%);
+  box-shadow: 0 0 12px rgba(200, 169, 142, 0.45);
   transform: scaleX(var(--scroll-progress, 0));
   transform-origin: left center;
-  opacity: 0.85;
+  opacity: 0.95;
   pointer-events: none;
-  transition: transform 0.12s linear;
+  z-index: 104;
+  transition: transform 0.08s linear;
 }
 
 .brand-logo {
