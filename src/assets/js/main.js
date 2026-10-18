@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const isDesktop = window.matchMedia('(min-width: 1025px)');
 
   if (isDesktop.matches) {
-    document.querySelectorAll('h1, h2').forEach(splitHeadingIntoWords);
+    document.querySelectorAll('h1, h2:not(.blog-card-title)').forEach(splitHeadingIntoWords);
     requestAnimationFrame(() => {
       document.body.classList.add('is-loaded');
     });

@@ -177,6 +177,7 @@ h3, .h3-editorial {
 body.is-loaded .hero-content .word-inner,
 body.is-loaded :not(.reveal) > h1 .word-inner,
 body.is-loaded :not(.reveal) > h2 .word-inner,
+body.is-loaded .blog-card .word-inner,
 .reveal.is-visible .word-inner {
   transform: translate3d(0, 0, 0);
   opacity: 1;
