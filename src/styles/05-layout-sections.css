@@ -197,95 +197,23 @@ body.is-loaded .hero-media-wrap img {
 }
 
 /* ==========================================================================
-   APEX STAGGERED RHYTHM EDITORIAL BLOCKS + SCROLL-DRAWN CAD BLUEPRINT AXES
+   APEX STAGGERED RHYTHM EDITORIAL BLOCKS + RADIATING DASHED TRAJECTORY RAYS
    ========================================================================== */
 
 .editorial-stagger {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: clamp(64px, 7.5vw, 108px);
-}
-
-/* Central vertical architectural datum axis running through staggered blocks */
-.editorial-stagger::before {
-  content: "";
-  position: absolute;
-  top: 8px;
-  bottom: 8px;
-  left: 50%;
-  width: 1px;
-  background: linear-gradient(
-    180deg,
-    rgba(200, 169, 142, 0) 0%,
-    rgba(200, 169, 142, 0.22) 12%,
-    rgba(255, 255, 255, 0.08) 50%,
-    rgba(200, 169, 142, 0.22) 88%,
-    rgba(200, 169, 142, 0) 100%
-  );
-  transform: translateX(-50%);
-  pointer-events: none;
+  gap: clamp(80px, 9vw, 132px);
 }
 
 .stagger-row {
   position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: clamp(32px, 4vw, 56px);
-  align-items: center;
-}
-
-/* Animated horizontal datum line and central node dot appearing on scroll */
-.editorial-stagger .stagger-row::before {
-  content: "";
-  position: absolute;
-  top: 22px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(200, 169, 142, 0) 0%,
-    rgba(200, 169, 142, 0.18) 25%,
-    rgba(200, 169, 142, 0.34) 50%,
-    rgba(200, 169, 142, 0.18) 75%,
-    rgba(200, 169, 142, 0) 100%
-  );
-  transform: scaleX(0.15);
-  opacity: 0;
-  transition:
-    transform 1.35s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.9s ease;
-  pointer-events: none;
-}
-
-.editorial-stagger .stagger-row::after {
-  content: "";
-  position: absolute;
-  top: 18px;
-  left: 50%;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: #111214;
-  border: 1.5px solid var(--accent-sand);
-  box-shadow: 0 0 0 5px rgba(200, 169, 142, 0.08);
-  transform: translate(-50%, 0) scale(0.4);
-  opacity: 0;
-  transition:
-    transform 0.95s cubic-bezier(0.22, 1, 0.36, 1) 0.18s,
-    opacity 0.75s ease 0.18s;
-  pointer-events: none;
-}
-
-.editorial-stagger .stagger-row.is-visible::before {
-  transform: scaleX(1);
-  opacity: 1;
-}
-
-.editorial-stagger .stagger-row.is-visible::after {
-  transform: translate(-50%, 0) scale(1);
-  opacity: 1;
+  align-items: start;
 }
 
 .stagger-left {
@@ -309,166 +237,98 @@ body.is-loaded .hero-media-wrap img {
   scroll-margin-top: 120px;
 }
 
-/* Scroll-Revealed Architectural CAD Blueprint Bridge in Empty Stagger Columns */
-.stagger-cad-bridge {
-  position: relative;
-  padding: 20px 24px;
-  border-radius: 18px;
-  background: radial-gradient(
-    circle at 50% 50%,
-    rgba(200, 169, 142, 0.055) 0%,
-    rgba(255, 255, 255, 0.014) 70%,
-    rgba(11, 12, 14, 0) 100%
-  );
-  border: 1px solid rgba(255, 255, 255, 0.06);
+/* Full-Bleed Radiating Dashed Rays & Luminous Nodes (Shipped-style Horizon Fan) */
+.stagger-rays-backdrop {
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  mask-image: radial-gradient(ellipse 85% 78% at 50% 50%, #000 45%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 78% at 50% 50%, #000 45%, transparent 100%);
+}
+
+.stagger-rays-backdrop.is-flipped .stagger-rays-svg {
+  transform: scaleX(-1);
+}
+
+.stagger-rays-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.stagger-ray-line {
+  stroke: rgba(244, 241, 234, 0.22);
+  stroke-width: 1.25;
+  stroke-dasharray: 7 9;
   opacity: 0;
   transform: translateY(18px);
   transition:
-    opacity 1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
-    transform 1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
-    border-color 0.45s ease;
+    opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: staggerRayDashDrift 36s linear infinite;
 }
 
-.stagger-row.is-visible .stagger-cad-bridge {
+.stagger-ray-line--accent {
+  stroke: rgba(200, 169, 142, 0.34);
+  stroke-width: 1.4;
+  stroke-dasharray: 8 8;
+}
+
+.editorial-stagger.is-visible .stagger-ray-line {
   opacity: 1;
   transform: translateY(0);
 }
 
-.stagger-row:hover .stagger-cad-bridge {
-  border-color: rgba(200, 169, 142, 0.28);
+@keyframes staggerRayDashDrift {
+  from {
+    stroke-dashoffset: 320;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
-.cad-bridge-inner {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.stagger-ray-nodes {
+  opacity: 0;
+  transition: opacity 1.6s ease 0.35s;
 }
 
-.cad-bridge-head,
-.cad-bridge-foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+.editorial-stagger.is-visible .stagger-ray-nodes {
+  opacity: 1;
 }
 
-.cad-bridge-code {
-  color: var(--accent-sand);
+.stagger-node-core {
+  fill: rgba(244, 241, 234, 0.78);
 }
 
-.cad-bridge-line {
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(200, 169, 142, 0.38), rgba(255, 255, 255, 0.06));
-  transform-origin: left center;
-  transform: scaleX(0);
-  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+.stagger-travellers {
+  opacity: 0;
+  transition: opacity 1.8s ease 0.5s;
 }
 
-.stagger-row.is-visible .cad-bridge-line {
-  transform: scaleX(1);
+.editorial-stagger.is-visible .stagger-travellers {
+  opacity: 1;
 }
 
-.cad-bridge-meta,
-.cad-bridge-coords {
-  color: var(--text-muted);
-  font-variant-numeric: tabular-nums;
+.stagger-traveller-dot {
+  fill: #F4F1EA;
+  filter: drop-shadow(0 0 8px rgba(244, 241, 234, 0.85));
 }
 
-.cad-bridge-label {
-  color: var(--text-secondary);
-}
-
-.cad-blueprint-svg {
-  width: 100%;
-  height: auto;
-  max-height: 175px;
-  display: block;
-}
-
-.cad-blueprint-svg .cad-axis {
-  stroke: rgba(255, 255, 255, 0.09);
-  stroke-width: 1;
-  stroke-dasharray: 4 6;
-}
-
-.cad-blueprint-svg .cad-ring {
-  stroke: rgba(200, 169, 142, 0.18);
-  stroke-width: 1;
-  stroke-dasharray: 3 5;
-  transform-origin: 230px 110px;
-  transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.stagger-row:hover .cad-blueprint-svg .cad-ring {
-  transform: rotate(18deg) scale(1.04);
-}
-
-.cad-blueprint-svg .cad-ring-inner {
-  stroke: rgba(255, 255, 255, 0.16);
-  stroke-width: 1;
-}
-
-.cad-blueprint-svg .cad-stroke {
-  stroke: rgba(244, 241, 234, 0.42);
-  stroke-width: 1.35;
-  stroke-dasharray: 600;
-  stroke-dashoffset: 600;
-  transition: stroke-dashoffset 1.65s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
-}
-
-.cad-blueprint-svg .cad-stroke-gold {
-  stroke: #C8A98E;
-  stroke-width: 1.6;
-  stroke-dasharray: 500;
-  stroke-dashoffset: 500;
-  transition: stroke-dashoffset 1.8s cubic-bezier(0.22, 1, 0.36, 1) 0.38s;
-}
-
-.stagger-row.is-visible .cad-blueprint-svg .cad-stroke,
-.stagger-row.is-visible .cad-blueprint-svg .cad-stroke-gold {
-  stroke-dashoffset: 0;
-}
-
-.cad-blueprint-svg .cad-node-fill {
-  fill: rgba(200, 169, 142, 0.08);
-  stroke: rgba(200, 169, 142, 0.34);
-  stroke-width: 1;
-}
-
-.cad-blueprint-svg .cad-dot {
+.stagger-traveller-dot--gold {
   fill: #C8A98E;
+  filter: drop-shadow(0 0 10px rgba(200, 169, 142, 0.95));
 }
 
-.cad-blueprint-svg .cad-dim {
-  stroke: rgba(200, 169, 142, 0.36);
-  stroke-width: 0.9;
-}
-
-.cad-blueprint-svg .cad-svg-txt {
-  fill: #D5BE9E;
-  font-family: var(--font-mono, monospace);
-  font-size: 9.5px;
-  letter-spacing: 0.1em;
-}
-
-.cad-blueprint-svg .cad-svg-txt-muted {
-  fill: rgba(255, 255, 255, 0.42);
-  font-family: var(--font-mono, monospace);
-  font-size: 9px;
-  letter-spacing: 0.08em;
-}
-
-@media (max-width: 1024px) {
-  .editorial-stagger::before,
-  .editorial-stagger .stagger-row::before,
-  .editorial-stagger .stagger-row::after,
-  .stagger-cad-bridge {
-    display: none;
+@media (max-width: 768px) {
+  .stagger-rays-backdrop {
+    opacity: 0.55;
   }
 }
 

@@ -126,102 +126,72 @@ document.body.style.overflow = '';
 });
 });
 }
-const cadSchematics = [
-{
-code: 'CAD-NODE // 01 · ALT-F50 / SG',
-meta: 'Ix = 294.6 cm⁴ · ΔT 68°C · EN 13830',
-label: 'STATIC MULLION-TRANSOM AXIS & THERMAL BREAK',
-svg: `<svg class="cad-blueprint-svg" viewBox="0 0 460 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-<line class="cad-axis" x1="20" y1="110" x2="440" y2="110" />
-<line class="cad-axis" x1="230" y1="14" x2="230" y2="206" />
-<circle class="cad-ring" cx="230" cy="110" r="78" />
-<circle class="cad-ring-inner" cx="230" cy="110" r="44" />
-<rect class="cad-stroke" x="186" y="42" width="88" height="136" rx="3" />
-<path class="cad-stroke-gold" d="M74 82 H186 M274 82 H386 M74 138 H186 M274 138 H386" />
-<path class="cad-stroke" d="M212 42 V178 M248 42 V178" />
-<rect class="cad-node-fill" x="216" y="96" width="28" height="28" />
-<circle class="cad-dot" cx="230" cy="110" r="3.5" />
-<circle class="cad-dot" cx="110" cy="82" r="2.5" />
-<circle class="cad-dot" cx="350" cy="138" r="2.5" />
-<path class="cad-dim" d="M74 60 V74 M386 60 V74 M74 67 H386" />
-<text x="230" y="61" text-anchor="middle" class="cad-svg-txt">50.0 mm VISIBLE SIGHTLINE</text>
-<text x="384" y="198" text-anchor="end" class="cad-svg-txt-muted">SCALE 1:2 · ISO 10077-2</text>
-</svg>`
-},
-{
-code: 'CAD-NODE // 02 · IGU-62 / AGC',
-meta: 'Ug = 0.52 W/(m²·K) · Rw = 44 dB',
-label: 'TRIPLE GLAZING & WARM-EDGE ISOTHERM VECTOR',
-svg: `<svg class="cad-blueprint-svg" viewBox="0 0 460 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-<line class="cad-axis" x1="20" y1="110" x2="440" y2="110" />
-<path class="cad-stroke" d="M115 28 V192 M131 28 V192 M222 28 V192 M234 28 V192 M325 28 V192 M341 28 V192" />
-<rect class="cad-node-fill" x="131" y="156" width="91" height="24" />
-<rect class="cad-node-fill" x="234" y="156" width="91" height="24" />
-<path class="cad-stroke-gold" d="M62 162 C135 162, 175 128, 228 96 C280 64, 325 48, 398 48" />
-<circle class="cad-dot" cx="123" cy="150" r="3" />
-<circle class="cad-dot" cx="228" cy="96" r="4" />
-<circle class="cad-dot" cx="333" cy="54" r="3" />
-<path class="cad-dim" d="M115 202 H341" />
-<text x="228" y="215" text-anchor="middle" class="cad-svg-txt">8 SG · 20 Ar · 6 · 20 Ar · 6.6.2 STRATOPHONE</text>
-<text x="64" y="150" class="cad-svg-txt-muted">-20°C EXT</text>
-<text x="356" y="42" class="cad-svg-txt">+22°C INT</text>
-</svg>`
-},
-{
-code: 'CAD-NODE // 03 · SL160 / ZERO',
-meta: 'm(max) = 400 kg · EN 12207 CLASS 4',
-label: 'HIDDEN KINEMATICS & ZERO-THRESHOLD DRAINAGE',
-svg: `<svg class="cad-blueprint-svg" viewBox="0 0 460 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-<line class="cad-axis" x1="20" y1="146" x2="440" y2="146" />
-<line class="cad-axis" x1="170" y1="18" x2="170" y2="204" />
-<rect class="cad-stroke" x="76" y="146" width="308" height="36" rx="2" />
-<rect class="cad-node-fill" x="142" y="38" width="56" height="108" />
-<path class="cad-stroke-gold" d="M170 92 H348 L334 82 M348 92 L334 102" />
-<path class="cad-stroke-gold" d="M198 164 H360 L376 184" />
-<circle class="cad-ring-inner" cx="170" cy="134" r="14" />
-<circle class="cad-dot" cx="170" cy="134" r="3.5" />
-<text x="275" y="80" text-anchor="middle" class="cad-svg-txt">KINEMATIC SLIDE VECTOR</text>
-<text x="76" y="138" class="cad-svg-txt-muted">0.00 FLUSH FLOOR LEVEL</text>
-</svg>`
-}
-];
-let cadIndex = 0;
-document.querySelectorAll('.editorial-stagger .stagger-row').forEach((row) => {
-if (row.children.length !== 1) return;
-const onlyCol = row.firstElementChild;
-if (!onlyCol) return;
-const isLeft = onlyCol.classList.contains('stagger-left');
-const isRight = onlyCol.classList.contains('stagger-right');
-if (!isLeft && !isRight) return;
-const spec = cadSchematics[cadIndex % cadSchematics.length];
-cadIndex++;
-const cadCol = document.createElement('div');
-cadCol.className = `${isLeft ? 'stagger-right' : 'stagger-left'} stagger-cad-bridge ${ isLeft ? 'stagger-cad-bridge--right' : 'stagger-cad-bridge--left' }`;
-cadCol.setAttribute('aria-hidden', 'true');
-cadCol.innerHTML = `
-<div class="cad-bridge-inner">
-<div class="cad-bridge-head">
-<span class="cad-bridge-code">${spec.code}</span>
-<span class="cad-bridge-line"></span>
-<span class="cad-bridge-meta">${spec.meta}</span>
-</div>
-<div class="cad-bridge-canvas">
-${spec.svg}
-</div>
-<div class="cad-bridge-foot">
-<span class="cad-bridge-label">${spec.label}</span>
-<span class="cad-bridge-coords">43.3208° N · 45.7145° E</span>
-</div>
-</div>
+document.querySelectorAll('.editorial-stagger').forEach((stagger, idx) => {
+if (stagger.querySelector('.stagger-rays-backdrop')) return;
+const flip = idx % 2 === 1;
+const backdrop = document.createElement('div');
+backdrop.className = `stagger-rays-backdrop${flip ? ' is-flipped' : ''}`;
+backdrop.setAttribute('aria-hidden', 'true');
+backdrop.innerHTML = `
+<svg class="stagger-rays-svg" viewBox="0 0 1440 900" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<radialGradient id="rayNodeGlow-${idx}" cx="50%" cy="50%" r="50%">
+<stop offset="0%" stop-color="#F4F1EA" stop-opacity="0.95" />
+<stop offset="35%" stop-color="#C8A98E" stop-opacity="0.55" />
+<stop offset="100%" stop-color="#C8A98E" stop-opacity="0" />
+</radialGradient>
+</defs>
+<!-- Ray 1: Steep upward trajectory -->
+<path id="stagger-ray-${idx}-1" class="stagger-ray-line" d="M -40 880 Q 180 430 430 -40" />
+<!-- Ray 2: High diagonal trajectory -->
+<path id="stagger-ray-${idx}-2" class="stagger-ray-line" d="M -40 880 Q 340 460 820 -40" />
+<!-- Ray 3: Central sweeping trajectory -->
+<path id="stagger-ray-${idx}-3" class="stagger-ray-line stagger-ray-line--accent" d="M -40 880 Q 520 490 1240 -20" />
+<!-- Ray 4: Wide cross-screen trajectory -->
+<path id="stagger-ray-${idx}-4" class="stagger-ray-line" d="M -40 880 Q 680 560 1480 190" />
+<!-- Ray 5: Low horizon trajectory -->
+<path id="stagger-ray-${idx}-5" class="stagger-ray-line" d="M -40 880 Q 760 690 1480 510" />
+<!-- Soft static anchor nodes along the rays -->
+<g class="stagger-ray-nodes">
+<circle cx="176" cy="462" r="10" fill="url(#rayNodeGlow-${idx})" />
+<circle cx="176" cy="462" r="3.2" class="stagger-node-core" />
+<circle cx="395" cy="402" r="11" fill="url(#rayNodeGlow-${idx})" />
+<circle cx="395" cy="402" r="3.5" class="stagger-node-core" />
+<circle cx="634" cy="212" r="10" fill="url(#rayNodeGlow-${idx})" />
+<circle cx="634" cy="212" r="3.2" class="stagger-node-core" />
+<circle cx="578" cy="442" r="12" fill="url(#rayNodeGlow-${idx})" />
+<circle cx="578" cy="442" r="3.8" class="stagger-node-core" />
+<circle cx="945" cy="184" r="11" fill="url(#rayNodeGlow-${idx})" />
+<circle cx="945" cy="184" r="3.4" class="stagger-node-core" />
+<circle cx="718" cy="542" r="11" fill="url(#rayNodeGlow-${idx})" />
+<circle cx="718" cy="542" r="3.5" class="stagger-node-core" />
+<circle cx="1142" cy="348" r="12" fill="url(#rayNodeGlow-${idx})" />
+<circle cx="1142" cy="348" r="3.6" class="stagger-node-core" />
+<circle cx="856" cy="662" r="10" fill="url(#rayNodeGlow-${idx})" />
+<circle cx="856" cy="662" r="3.2" class="stagger-node-core" />
+<circle cx="1296" cy="558" r="11" fill="url(#rayNodeGlow-${idx})" />
+<circle cx="1296" cy="558" r="3.4" class="stagger-node-core" />
+</g>
+<!-- Travelling luminous nodes gliding along the dashed rays -->
+<g class="stagger-travellers">
+<circle r="4" class="stagger-traveller-dot">
+<animateMotion dur="14s" repeatCount="indefinite" path="M -40 880 Q 340 460 820 -40" />
+</circle>
+<circle r="4.5" class="stagger-traveller-dot stagger-traveller-dot--gold">
+<animateMotion dur="18s" begin="-5s" repeatCount="indefinite" path="M -40 880 Q 520 490 1240 -20" />
+</circle>
+<circle r="4" class="stagger-traveller-dot">
+<animateMotion dur="16s" begin="-9s" repeatCount="indefinite" path="M -40 880 Q 680 560 1480 190" />
+</circle>
+<circle r="3.5" class="stagger-traveller-dot stagger-traveller-dot--gold">
+<animateMotion dur="21s" begin="-3s" repeatCount="indefinite" path="M -40 880 Q 760 690 1480 510" />
+</circle>
+</g>
+</svg>
 `;
-if (isLeft) {
-row.appendChild(cadCol);
-} else {
-row.insertBefore(cadCol, onlyCol);
-}
-row.classList.add('has-cad-bridge');
+stagger.insertBefore(backdrop, stagger.firstChild);
 });
-const revealItems = document.querySelectorAll('.reveal, .apex-five-strip');
+const revealItems = document.querySelectorAll('.reveal, .apex-five-strip, .editorial-stagger');
 if ('IntersectionObserver' in window && revealItems.length > 0) {
 const revealObserver = new IntersectionObserver(
 (entries) => {
