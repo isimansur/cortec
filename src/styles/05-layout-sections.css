@@ -31,7 +31,7 @@
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 150px 0 110px;
+  padding: 150px 0 130px;
   overflow: hidden;
   background-color: var(--bg-deep);
 }
@@ -41,6 +41,31 @@
   inset: 0;
   z-index: 1;
   overflow: hidden;
+  /* Sinusoidal bottom dissolution (larsenwork easing curve) so hero melts into the next section with zero seam */
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    #000 0%,
+    #000 58%,
+    rgba(0, 0, 0, 0.94) 66%,
+    rgba(0, 0, 0, 0.80) 73%,
+    rgba(0, 0, 0, 0.58) 80%,
+    rgba(0, 0, 0, 0.34) 86%,
+    rgba(0, 0, 0, 0.14) 92%,
+    rgba(0, 0, 0, 0.04) 96%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    #000 0%,
+    #000 58%,
+    rgba(0, 0, 0, 0.94) 66%,
+    rgba(0, 0, 0, 0.80) 73%,
+    rgba(0, 0, 0, 0.58) 80%,
+    rgba(0, 0, 0, 0.34) 86%,
+    rgba(0, 0, 0, 0.14) 92%,
+    rgba(0, 0, 0, 0.04) 96%,
+    transparent 100%
+  );
 }
 
 .hero-media-wrap img {
@@ -48,14 +73,35 @@
   height: 100%;
   object-fit: cover;
   object-position: 68% center;
-  transform: scale(1.08) translate3d(var(--hero-x, 0px), calc(var(--hero-y, 0px) + var(--stage-parallax-y, 0px)), 0);
+  transform: scale(1.18) translate3d(var(--hero-x, 0px), calc(var(--hero-y, 0px) + var(--stage-parallax-y, 0px)), 0);
   transition: transform 2.2s var(--ease-out-expo), filter 1.8s var(--ease-out-expo);
   filter: brightness(0.88) contrast(1.08);
   will-change: transform;
+  /* Soft horizontal edge feathering so inner photo margins never show */
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 6%,
+    rgba(0, 0, 0, 0.82) 14%,
+    #000 24%,
+    #000 84%,
+    rgba(0, 0, 0, 0.72) 94%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 6%,
+    rgba(0, 0, 0, 0.82) 14%,
+    #000 24%,
+    #000 84%,
+    rgba(0, 0, 0, 0.72) 94%,
+    transparent 100%
+  );
 }
 
 body.is-loaded .hero-media-wrap img {
-  transform: scale(1.02) translate3d(var(--hero-x, 0px), calc(var(--hero-y, 0px) + var(--stage-parallax-y, 0px)), 0);
+  transform: scale(1.12) translate3d(var(--hero-x, 0px), calc(var(--hero-y, 0px) + var(--stage-parallax-y, 0px)), 0);
   filter: brightness(0.96) contrast(1.06);
 }
 
@@ -65,8 +111,25 @@ body.is-loaded .hero-media-wrap img {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, #111214 0%, rgba(17, 18, 20, 0.90) 30%, rgba(17, 18, 20, 0.38) 56%, rgba(17, 18, 20, 0.06) 80%, rgba(17, 18, 20, 0.35) 100%),
-    linear-gradient(180deg, rgba(17, 18, 20, 0.68) 0%, rgba(17, 18, 20, 0) 24%, rgba(17, 18, 20, 0) 70%, #111214 100%);
+    linear-gradient(
+      90deg,
+      #111214 0%,
+      rgba(17, 18, 20, 0.94) 22%,
+      rgba(17, 18, 20, 0.76) 36%,
+      rgba(17, 18, 20, 0.42) 52%,
+      rgba(17, 18, 20, 0.14) 68%,
+      rgba(17, 18, 20, 0.06) 82%,
+      rgba(17, 18, 20, 0.45) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(17, 18, 20, 0.72) 0%,
+      rgba(17, 18, 20, 0.22) 14%,
+      rgba(17, 18, 20, 0) 28%,
+      rgba(17, 18, 20, 0) 64%,
+      rgba(17, 18, 20, 0.45) 82%,
+      #111214 100%
+    );
 }
 
 /* Variant when hero focal object is on the left (e.g. KBE profile or Glass edge) and text sits on the right */
@@ -76,8 +139,25 @@ body.is-loaded .hero-media-wrap img {
 
 .hero-viewport--right .hero-media-wrap::after {
   background:
-    linear-gradient(270deg, #111214 0%, rgba(17, 18, 20, 0.92) 32%, rgba(17, 18, 20, 0.40) 58%, rgba(17, 18, 20, 0.06) 82%, rgba(17, 18, 20, 0.35) 100%),
-    linear-gradient(180deg, rgba(17, 18, 20, 0.68) 0%, rgba(17, 18, 20, 0) 24%, rgba(17, 18, 20, 0) 70%, #111214 100%);
+    linear-gradient(
+      270deg,
+      #111214 0%,
+      rgba(17, 18, 20, 0.94) 24%,
+      rgba(17, 18, 20, 0.78) 38%,
+      rgba(17, 18, 20, 0.44) 54%,
+      rgba(17, 18, 20, 0.14) 70%,
+      rgba(17, 18, 20, 0.06) 84%,
+      rgba(17, 18, 20, 0.45) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(17, 18, 20, 0.72) 0%,
+      rgba(17, 18, 20, 0.22) 14%,
+      rgba(17, 18, 20, 0) 28%,
+      rgba(17, 18, 20, 0) 64%,
+      rgba(17, 18, 20, 0.45) 82%,
+      #111214 100%
+    );
 }
 
 .hero-content {
@@ -108,7 +188,7 @@ body.is-loaded .hero-media-wrap img {
 }
 
 /* ==========================================================================
-   CONTINUOUS FULL-BLEED MACRO SCROLL SEQUENCE (ORIGINAL FULLSCREEN DISSOLVE STYLE)
+   CONTINUOUS FULL-BLEED MACRO SCROLL SEQUENCE (SEAMLESS EASED ALPHA DISSOLVE)
    ========================================================================== */
 
 .macro-scroll-sequence {
@@ -118,13 +198,39 @@ body.is-loaded .hero-media-wrap img {
 
 .macro-stage {
   position: relative;
-  min-height: 100vh;
+  min-height: 104vh;
   width: 100%;
   display: flex;
   align-items: center;
-  padding: clamp(130px, 15vw, 200px) 0;
+  padding: clamp(140px, 16vw, 220px) 0;
   overflow: hidden;
-  background-color: var(--bg-deep);
+  /* Transparent background so adjacent overlapping stages cross-dissolve optically */
+  background-color: transparent;
+}
+
+@media (min-width: 1025px) {
+  .macro-stage + .macro-stage {
+    margin-top: -11vh;
+  }
+}
+
+/* Whisper-quiet architectural vertical light thread bridging consecutive macro stages */
+.macro-stage::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 18vh;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(200, 169, 142, 0.16) 50%,
+    transparent 100%
+  );
+  z-index: 3;
+  pointer-events: none;
 }
 
 .macro-stage-media {
@@ -133,6 +239,49 @@ body.is-loaded .hero-media-wrap img {
   z-index: 1;
   pointer-events: none;
   overflow: hidden;
+  /* 15-stop sinusoidal easing mask (Larsenwork / Codrops pattern) eliminating Mach bands at top & bottom */
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.03) 3%,
+    rgba(0, 0, 0, 0.10) 6.5%,
+    rgba(0, 0, 0, 0.22) 10.5%,
+    rgba(0, 0, 0, 0.39) 15%,
+    rgba(0, 0, 0, 0.59) 20%,
+    rgba(0, 0, 0, 0.78) 25%,
+    rgba(0, 0, 0, 0.92) 30%,
+    #000 36%,
+    #000 64%,
+    rgba(0, 0, 0, 0.92) 70%,
+    rgba(0, 0, 0, 0.78) 75%,
+    rgba(0, 0, 0, 0.59) 80%,
+    rgba(0, 0, 0, 0.39) 85%,
+    rgba(0, 0, 0, 0.22) 89.5%,
+    rgba(0, 0, 0, 0.10) 93.5%,
+    rgba(0, 0, 0, 0.03) 97%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.03) 3%,
+    rgba(0, 0, 0, 0.10) 6.5%,
+    rgba(0, 0, 0, 0.22) 10.5%,
+    rgba(0, 0, 0, 0.39) 15%,
+    rgba(0, 0, 0, 0.59) 20%,
+    rgba(0, 0, 0, 0.78) 25%,
+    rgba(0, 0, 0, 0.92) 30%,
+    #000 36%,
+    #000 64%,
+    rgba(0, 0, 0, 0.92) 70%,
+    rgba(0, 0, 0, 0.78) 75%,
+    rgba(0, 0, 0, 0.59) 80%,
+    rgba(0, 0, 0, 0.39) 85%,
+    rgba(0, 0, 0, 0.22) 89.5%,
+    rgba(0, 0, 0, 0.10) 93.5%,
+    rgba(0, 0, 0, 0.03) 97%,
+    transparent 100%
+  );
 }
 
 .macro-stage-media img {
@@ -140,35 +289,80 @@ body.is-loaded .hero-media-wrap img {
   height: 100%;
   object-fit: cover;
   object-position: center center;
-  opacity: 0.82;
-  filter: brightness(0.92) contrast(1.08);
-  transform: scale(1.08) translate3d(0, var(--stage-parallax-y, 0px), 0);
-  transition: transform 1.8s var(--ease-out-expo), opacity 1.6s var(--ease-out-expo), filter 1.6s var(--ease-out-expo);
+  opacity: 0.72;
+  filter: brightness(0.88) contrast(1.06);
+  /* 1.18 -> 1.12 scale guarantees >55px vertical bleed so ±42px parallax NEVER exposes raw image edges */
+  transform: scale(1.18) translate3d(0, var(--stage-parallax-y, 0px), 0);
+  transition:
+    transform 2s var(--ease-out-expo),
+    opacity 1.6s var(--ease-out-expo),
+    filter 1.6s var(--ease-out-expo);
   will-change: transform, opacity;
+  /* Horizontal feather mask so internal photo borders on left/right dissolve into #111214 */
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.18) 5%,
+    rgba(0, 0, 0, 0.55) 11%,
+    rgba(0, 0, 0, 0.88) 18%,
+    #000 26%,
+    #000 76%,
+    rgba(0, 0, 0, 0.86) 85%,
+    rgba(0, 0, 0, 0.45) 93%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.18) 5%,
+    rgba(0, 0, 0, 0.55) 11%,
+    rgba(0, 0, 0, 0.88) 18%,
+    #000 26%,
+    #000 76%,
+    rgba(0, 0, 0, 0.86) 85%,
+    rgba(0, 0, 0, 0.45) 93%,
+    transparent 100%
+  );
 }
 
 .macro-stage.is-inview .macro-stage-media img {
-  transform: scale(1.02) translate3d(0, var(--stage-parallax-y, 0px), 0);
-  opacity: 0.96;
-  filter: brightness(0.99) contrast(1.06);
+  transform: scale(1.12) translate3d(0, var(--stage-parallax-y, 0px), 0);
+  opacity: 0.94;
+  filter: brightness(0.98) contrast(1.06);
 }
 
 /* Directional atmospheric dissolve:
-   When text is on the LEFT (.macro-stage--text-left), left side melts into #111214 while right side shows the macro object in full volume.
+   When text is on the LEFT, left side melts into #111214 while right side shows the macro object in full volume.
    When text is on the RIGHT (.macro-stage--text-right), right side melts into #111214 while left side shows the macro object in full volume. */
 .macro-stage-media::after {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, #111214 0%, rgba(17, 18, 20, 0.14) 22%, rgba(17, 18, 20, 0.14) 78%, #111214 100%),
-    linear-gradient(90deg, #111214 0%, rgba(17, 18, 20, 0.88) 30%, rgba(17, 18, 20, 0.32) 54%, rgba(17, 18, 20, 0.04) 78%, rgba(17, 18, 20, 0.45) 100%);
+    radial-gradient(ellipse 90% 80% at 64% 50%, rgba(17, 18, 20, 0) 25%, rgba(17, 18, 20, 0.58) 78%, #111214 100%),
+    linear-gradient(
+      90deg,
+      #111214 0%,
+      rgba(17, 18, 20, 0.92) 22%,
+      rgba(17, 18, 20, 0.68) 36%,
+      rgba(17, 18, 20, 0.32) 52%,
+      rgba(17, 18, 20, 0.06) 72%,
+      rgba(17, 18, 20, 0.48) 100%
+    );
 }
 
 .macro-stage--text-right .macro-stage-media::after {
   background:
-    linear-gradient(180deg, #111214 0%, rgba(17, 18, 20, 0.14) 22%, rgba(17, 18, 20, 0.14) 78%, #111214 100%),
-    linear-gradient(270deg, #111214 0%, rgba(17, 18, 20, 0.90) 32%, rgba(17, 18, 20, 0.36) 56%, rgba(17, 18, 20, 0.04) 80%, rgba(17, 18, 20, 0.45) 100%);
+    radial-gradient(ellipse 90% 80% at 36% 50%, rgba(17, 18, 20, 0) 25%, rgba(17, 18, 20, 0.58) 78%, #111214 100%),
+    linear-gradient(
+      270deg,
+      #111214 0%,
+      rgba(17, 18, 20, 0.94) 24%,
+      rgba(17, 18, 20, 0.72) 38%,
+      rgba(17, 18, 20, 0.36) 54%,
+      rgba(17, 18, 20, 0.06) 74%,
+      rgba(17, 18, 20, 0.48) 100%
+    );
 }
 
 .macro-stage-content {
