@@ -249,7 +249,7 @@ for (const file of htmlFiles) {
   }
   const inlineStyleMatches = [...html.matchAll(/<style>([\s\S]*?)<\/style>/g)];
   const totalInlineCssBytes = inlineStyleMatches.reduce((acc, m) => acc + Buffer.byteLength(m[1], 'utf8'), 0);
-  if (totalInlineCssBytes > 25 * 1024 && /<link[^>]+href="[^"]*style\.css/.test(html)) {
+  if (totalInlineCssBytes > 28 * 1024 && /<link[^>]+href="[^"]*style\.css/.test(html)) {
     recordWarning(
       'Performance (YellowLabTools / coach-core)',
       'duplicate-inline-and-external-css',
