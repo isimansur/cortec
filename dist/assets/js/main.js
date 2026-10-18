@@ -338,12 +338,24 @@ stripCarousel.scrollTo({ left: scrollLeft, behavior: 'instant' });
 }
 const contactForm = document.querySelector('#cortec-contact-form');
 const feedbackEl = document.querySelector('#form-feedback');
+const objectTypeInput = document.querySelector('#object-type-input');
+const tactilePills = document.querySelectorAll('.tactile-pill[data-pill-group="object"]');
+if (tactilePills.length > 0 && objectTypeInput) {
+tactilePills.forEach((pill) => {
+pill.addEventListener('click', () => {
+tactilePills.forEach((p) => p.classList.remove('is-selected'));
+pill.classList.add('is-selected');
+objectTypeInput.value = pill.dataset.pillValue || '';
+});
+});
+}
 if (contactForm && feedbackEl) {
 contactForm.addEventListener('submit', (e) => {
 e.preventDefault();
 const formData = new FormData(contactForm);
 const name = (formData.get('name') || '').toString().trim();
 const contact = (formData.get('contact') || '').toString().trim();
+const objectType = (formData.get('objectType') || '').toString().trim();
 const system = (formData.get('system') || '').toString().trim();
 const message = (formData.get('message') || '').toString().trim();
 const domainHost = contactForm.dataset.domain || 'cortectech.pro';
@@ -352,6 +364,7 @@ const lines = [
 `Здравствуйте, CORTEC! Заявка с сайта ${domainHost}:`,
 name ? `• Имя: ${name}` : '',
 contact ? `• Контакт: ${contact}` : '',
+objectType ? `• Тип объекта: ${objectType}` : '',
 system ? `• Система: ${system}` : '',
 message ? `• Задача / объект: ${message}` : ''
 ].filter(Boolean);
@@ -360,6 +373,188 @@ window.open(waUrl, '_blank', 'noopener,noreferrer');
 feedbackEl.textContent = name
 ? `${name}, заявка сформирована и открыта в WhatsApp инженера CORTEC (+7 928 000-76-66).`
 : 'Заявка сформирована и открыта в WhatsApp инженера CORTEC (+7 928 000-76-66).';
+});
+}
+const skfoNodes = document.querySelectorAll('.skfo-node[data-region-id]');
+const skfoPassport = document.querySelector('#skfo-live-passport');
+if (skfoNodes.length > 0 && skfoPassport) {
+const badgeEl = document.querySelector('#skfo-passport-badge');
+const titleEl = document.querySelector('#skfo-passport-title');
+const descEl = document.querySelector('#skfo-passport-desc');
+const windEl = document.querySelector('#skfo-passport-wind');
+const sysEl = document.querySelector('#skfo-passport-sys');
+const linkEl = document.querySelector('#skfo-passport-link');
+const arcPaths = document.querySelectorAll('.skfo-arcs-group path[data-arc]');
+const regionChips = document.querySelectorAll('[data-region-trigger]');
+const REGION_PASSPORTS = {
+grozny: {
+badge: 'Приоритет №1 · Штаб-квартира и шоурум',
+title: 'г. Грозный (ул. Субры Кишиевой, 55)',
+desc: 'Проектный отдел КМ/КМД, полноразмерная экспозиция узлов ALUTECH, KBE, KÖMMERLING и стекла AGC. Выезд инженера-геодезиста с 3D-тахеометром по Грозному — в день обращения.',
+wind: 'III ветровой р-н · 8–9 баллов',
+sys: 'ALT F50 / W72 · Stopray · КМ/КМД',
+href: 'blog/panoramnoe-osteklenie-grozny.html'
+},
+gudermes: {
+badge: 'Приоритет №1 · Чеченская Республика (Восток)',
+title: 'Гудермес и Гудермесский район',
+desc: 'Оперативный выезд бригады геодезистов (40 минут из штаб-квартиры в Грозном). Остекление частных резиденций и коммерческих объектов с повышенной солнцезащитой.',
+wind: 'III–IV ветровой р-н · 8 баллов',
+sys: 'ALUTECH W72 · KBE 76 · AGC Stopray',
+href: 'blog/osteklenie-kottedzhey-gudermes-shali-argun.html'
+},
+argun: {
+badge: 'Приоритет №1 · Центральная агломерация ЧР',
+title: 'Аргун, Шали и Курчалой',
+desc: 'Прямая логистика спецтранспортом с пирамидами для джамбо-стеклопакетов (20–35 минут от Грозного). Монтаж порталов SL160 и витражей F50 по ГОСТ 30971.',
+wind: 'III ветровой р-н · 8–9 баллов',
+sys: 'ALT SL160 / F50 · KÖMMERLING 88',
+href: 'blog/osteklenie-kottedzhey-gudermes-shali-argun.html'
+},
+urus: {
+badge: 'Приоритет №1 · Юго-Западное направление ЧР',
+title: 'Урус-Мартан и Ачхой-Мартан',
+desc: 'Комплексное остекление загородных домов и коттеджей: немецкие системы KBE 76 / KÖMMERLING 88 и теплые алюминиевые входные группы ALUTECH W72 HD.',
+wind: 'III ветровой р-н · 8 баллов',
+sys: 'KBE 76 · KÖMMERLING 88 · ALT W72',
+href: 'blog/okna-kbe-grozny-chechnya.html'
+},
+vedeno: {
+badge: 'Приоритет №1 · Горный кластер (до 1900 м)',
+title: 'Ведено, Беной и озеро Кезеной-Ам',
+desc: 'Остекление высокогорных шале и туристических комплексов. Стеклопакеты с компенсацией барометрического давления и закаленным триплексом AGC.',
+wind: 'IV–V ветровой р-н · Высокогорье',
+sys: 'ALT F50 / W72 · Закаленный триплекс AGC',
+href: 'blog/osteklenie-v-gornyh-raionah-chechni-vedeno-itum-kali.html'
+},
+itumkali: {
+badge: 'Приоритет №1 · Аргунское ущелье (до 2200 м)',
+title: 'Шатой, Итум-Кали и Ведучи',
+desc: 'Инженерный расчет ветровых и снеговых нагрузок для горного рельефа. Усиленные стойки ALT F50, сейсмостойкие плавающие узлы примыкания к камню и бетону.',
+wind: 'V ветровой р-н · Сейсмика 9 баллов',
+sys: 'ALT F50 / SKL50 · Сейсмоузлы КМД',
+href: 'blog/osteklenie-v-gornyh-raionah-chechni-vedeno-itum-kali.html'
+},
+naurskaya: {
+badge: 'Приоритет №1 · Северные степные районы ЧР',
+title: 'Наурская, Шелковская и Надтеречный р-н',
+desc: 'Защита от экстремальной летней инсоляции (+42 °C) и пыльных ветров: магнетронное напыление AGC Stopray и двухконтурное EPDM-уплотнение притворов.',
+wind: 'IV ветровой р-н · Высокая инсоляция',
+sys: 'AGC Stopray · KBE 76 · ALT W62/W72',
+href: 'blog/stoechno-rigelnoe-osteklenie-grozny.html'
+},
+magas: {
+badge: 'Приоритет №2 · Республика Ингушетия',
+title: 'Магас, Назрань и Джейрахский район',
+desc: 'Выезд геодезиста с 3D-тахеометром из Грозного за 1 час. Панорамные фасады, окна со скрытой створкой и точные узлы примыкания к каменной облицовке.',
+wind: 'III–IV ветровой р-н · 8–9 баллов',
+sys: 'ALT F50 / W72 · KÖMMERLING AluClip',
+href: 'blog/panoramnoe-osteklenie-magas-nazran-ingushetiya.html'
+},
+makhachkala: {
+badge: 'Приоритет №2 · Республика Дагестан (Каспий)',
+title: 'Махачкала и Каспийск',
+desc: 'Проектирование с учетом штормовой ветровой нагрузки Каспия и морского аэрозоля: анодированный алюминий ALUTECH и нержавеющая фурнитура.',
+wind: 'IV–V ветровой р-н · Морской климат',
+sys: 'ALT F50 / SL160 · Анодирование · Stopray',
+href: 'blog/alyuminievye-fasady-i-okna-mahachkala-kaspiysk-dagestan.html'
+},
+derbent: {
+badge: 'Приоритет №2 · Южный Дагестан',
+title: 'Дербент и прибрежный кластер',
+desc: 'Остекление отелей, вилл и коммерческих пространств: селективное стекло AGC с низким солярным фактором и крупноформатные раздвижные порталы.',
+wind: 'IV ветровой р-н · Субтропическая инсоляция',
+sys: 'ALT SL160 · AGC Energy Light / Stopray',
+href: 'blog/alyuminievye-fasady-i-okna-mahachkala-kaspiysk-dagestan.html'
+},
+khasavyurt: {
+badge: 'Приоритет №2 · Западный Дагестан',
+title: 'Хасавюрт и Кизилюрт',
+desc: 'Быстрая логистика по федеральной трассе Р-217 «Кавказ» напрямую из Грозного (45 минут). Энергоэффективные окна KBE 76, KÖMMERLING 88 и витражи ALUTECH.',
+wind: 'III–IV ветровой р-н · 8–9 баллов',
+sys: 'KBE 76 · KÖMMERLING 88 · ALT W72',
+href: 'blog/okna-kbe-kommerling-hasavyurt-kizlyar.html'
+},
+kizlyar: {
+badge: 'Приоритет №2 · Северный Дагестан',
+title: 'Кизляр и Кизлярский район',
+desc: 'Инженерная защита от летнего перегрева (+42 °C) и ветровой нагрузки: мультифункциональные стеклопакеты AGC Stopray и немецкие системы KBE 76 / KÖMMERLING 88.',
+wind: 'IV ветровой р-н · Высокая инсоляция',
+sys: 'AGC Stopray · KBE 76 · KÖMMERLING 88',
+href: 'blog/okna-kbe-kommerling-hasavyurt-kizlyar.html'
+},
+vladikavkaz: {
+badge: 'Приоритет №2 · РСО-Алания',
+title: 'Владикавказ, Фиагдон и Цей',
+desc: 'Архитектурное остекление городских особняков и горных шале в Куртатинском ущелье: просветленное стекло AGC Clearvision и порталы PremiDoor 88 / SL160.',
+wind: 'III–V ветровой р-н · Горные долины',
+sys: 'ALT W72 / SL160 · AGC Clearvision',
+href: 'blog/arhitekturnoe-osteklenie-vladikavkaz-osetiya.html'
+},
+nalchik: {
+badge: 'Приоритет №2 · Кабардино-Балкария (КБР)',
+title: 'Нальчик и предгорные резиденции',
+desc: 'Крупноформатные панорамные окна, угловые витражи со структурным швом SG и подъемно-сдвижные террасные системы с безбарьерным порогом.',
+wind: 'III ветровой р-н · 8 баллов',
+sys: 'ALT SL160 · KÖMMERLING PremiDoor 88',
+href: 'blog/panoramnye-okna-i-portaly-nalchik-kbr.html'
+},
+elbrus: {
+badge: 'Приоритет №2 · Высокогорный кластер КБР',
+title: 'Приэльбрусье (Терскол, Поляна Азау)',
+desc: 'Спецпроекты остекления на высотах свыше 2000 м: расчет снеговой нагрузки на зенитные фонари ALT SKL50 и выравнивание давления в стеклопакетах.',
+wind: 'V–VI ветровой р-н · Высота 2000+ м',
+sys: 'ALT SKL50 / F50 · Триплекс AGC',
+href: 'blog/panoramnye-okna-i-portaly-nalchik-kbr.html'
+},
+kmv: {
+badge: 'Приоритет №2 · Кавказские Минеральные Воды',
+title: 'Пятигорск, Кисловодск и Ессентуки',
+desc: 'Остекление частных вилл, санаторных и гостиничных комплексов: акустический триплекс AGC Stratophone (до 44 дБ) и панорамные порталы.',
+wind: 'III–IV ветровой р-н · Курортная зона',
+sys: 'ALT W72 / SL160 · AGC Stratophone',
+href: 'blog/osteklenie-rezidenciy-pyatigorsk-kislovodsk-kmv.html'
+},
+kchr: {
+badge: 'Приоритет №2 · Карачаево-Черкесия (КЧР)',
+title: 'Черкесск, Архыз и Домбай',
+desc: 'Сейсмостойкие витражные фасады и панорамные окна для всесезонных горных курортов с двухкамерными энергосберегающими стеклопакетами (Ug до 0.6).',
+wind: 'IV–V ветровой р-н · Сейсмика 8–9 баллов',
+sys: 'ALT F50 / W72 · KÖMMERLING 88',
+href: 'blog/seysmostoykoe-osteklenie-severnyy-kavkaz.html'
+}
+};
+const activateRegion = (regionId) => {
+const data = REGION_PASSPORTS[regionId];
+if (!data) return;
+skfoNodes.forEach((node) => {
+node.classList.toggle('is-active', node.dataset.regionId === regionId);
+});
+arcPaths.forEach((path) => {
+path.classList.toggle('is-highlighted', path.dataset.arc === regionId);
+});
+regionChips.forEach((chip) => {
+chip.classList.toggle('is-active-chip', chip.dataset.regionTrigger === regionId);
+});
+if (badgeEl) badgeEl.textContent = data.badge;
+if (titleEl) titleEl.textContent = data.title;
+if (descEl) descEl.textContent = data.desc;
+if (windEl) windEl.textContent = data.wind;
+if (sysEl) sysEl.textContent = data.sys;
+if (linkEl) linkEl.setAttribute('href', data.href);
+};
+skfoNodes.forEach((node) => {
+node.addEventListener('click', () => activateRegion(node.dataset.regionId));
+node.addEventListener('keydown', (e) => {
+if (e.key === 'Enter' || e.key === ' ') {
+e.preventDefault();
+activateRegion(node.dataset.regionId);
+}
+});
+});
+regionChips.forEach((chip) => {
+chip.addEventListener('mouseenter', () => activateRegion(chip.dataset.regionTrigger));
+chip.addEventListener('focus', () => activateRegion(chip.dataset.regionTrigger));
 });
 }
 });

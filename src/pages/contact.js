@@ -114,6 +114,17 @@ module.exports = {
               </div>
 
               <div class="form-field">
+                <span class="form-label-text">Тип объекта и локация (в один клик)</span>
+                <input type="hidden" id="object-type-input" name="objectType" value="Частная резиденция">
+                <div class="tactile-pills-group" role="group" aria-label="Выбор типа объекта">
+                  <button type="button" class="tactile-pill is-selected" data-pill-group="object" data-pill-value="Частная резиденция">Частная резиденция</button>
+                  <button type="button" class="tactile-pill" data-pill-group="object" data-pill-value="Коммерческий фасад">Коммерческий фасад</button>
+                  <button type="button" class="tactile-pill" data-pill-group="object" data-pill-value="Высокогорное шале">Высокогорное шале</button>
+                  <button type="button" class="tactile-pill" data-pill-group="object" data-pill-value="Нужна 3D-геодезия проемов">3D-геодезия проемов</button>
+                </div>
+              </div>
+
+              <div class="form-field">
                 <label for="system-interest">Направление остекления</label>
                 <select id="system-interest" name="system">
                   <option value="Архитектурный алюминий ALUTECH (фасады ALT F50, окна W72, порталы SL160)">Архитектурный алюминий ALUTECH (фасады, окна, порталы)</option>
@@ -127,7 +138,7 @@ module.exports = {
 
               <div class="form-field">
                 <label for="message">Кратко о проекте или задаче</label>
-                <textarea id="message" name="message" placeholder="Укажите тип объекта (частная резиденция, коммерческий фасад), населенный пункт и ориентировочные габариты проемов"></textarea>
+                <textarea id="message" name="message" placeholder="Укажите населенный пункт, стадию готовности проемов и ориентировочные габариты"></textarea>
               </div>
 
               <div>
@@ -143,7 +154,7 @@ module.exports = {
       </div>
     </section>
 
-    <!-- BLOCK 2: STYLIZED SKFO SERVICE AREAS MAP & REGIONAL MATRIX -->
+    <!-- BLOCK 2: STYLIZED SKFO SERVICE AREAS MAP & INTERACTIVE REGIONAL PASSPORT -->
     <section class="section-space" id="skfo-service-map" aria-labelledby="skfo-map-heading">
       <div class="container">
         <div class="skfo-map-header reveal">
@@ -151,15 +162,15 @@ module.exports = {
             <span class="eyebrow">География проектирования КМ/КМД, геодезии и шеф-монтажа</span>
             <h2 id="skfo-map-heading">
               Карта районов обслуживания.<br>
-              <span class="halftone">Чеченская Республика и республики Северного Кавказа (СКФО).</span>
+              <span class="halftone">Выберите город на карте или в списке ниже, чтобы открыть инженерный регламент зоны.</span>
             </h2>
           </div>
           <p class="body-paragraph skfo-map-intro">
-            Центральное конструкторское бюро, шоурум узлов и инженерный склад расположены в <strong>г. Грозный (${site.contact.streetAddress})</strong>. Выездные бригады геодезистов и шеф-инженеров CORTEC выполняют лазерную 3D-тахеометрию проемов, доставку спецтранспортом (пирамидами) и монтаж по ГОСТ 30971 во всех районах Чеченской Республики и субъектах СКФО.
+            Центральное конструкторское бюро и шоурум узлов расположены в <strong>г. Грозный (${site.contact.streetAddress})</strong>. Выездные бригады геодезистов и шеф-инженеров CORTEC выполняют 3D-тахеометрию проемов, доставку спецтранспортом и монтаж по ГОСТ 30971 во всех районах Чеченской Республики и субъектах СКФО.
           </p>
         </div>
 
-        <div class="skfo-map-canvas reveal" role="region" aria-label="Стилизованная инженерная карта районов обслуживания CORTEC в СКФО">
+        <div class="skfo-map-canvas reveal" role="region" aria-label="Интерактивная инженерная карта районов обслуживания CORTEC в СКФО">
           <img
             src="${prefix}assets/img/skfo-topographic-map-bg.avif"
             srcset="${prefix}assets/img/skfo-topographic-map-bg-sm.avif 688w, ${prefix}assets/img/skfo-topographic-map-bg.avif 1376w"
@@ -173,251 +184,238 @@ module.exports = {
           >
           <div class="skfo-map-overlay">
             <div class="skfo-map-top-bar">
-              <span class="skfo-coord-badge">HQ CAD/CAM HUB · 43.3208° N, 45.7145° E · ГРОЗНЫЙ</span>
+              <span class="skfo-coord-badge">CORTEC HQ · 43.3208° N, 45.7145° E · ГРОЗНЫЙ</span>
               <div class="skfo-legend">
-                <span class="skfo-legend-item"><i class="skfo-dot skfo-dot--hq"></i>Штаб-квартира и шоурум (Грозный)</span>
-                <span class="skfo-legend-item"><i class="skfo-dot skfo-dot--p1"></i>Приоритет №1: районы ЧР</span>
-                <span class="skfo-legend-item"><i class="skfo-dot skfo-dot--p2"></i>Приоритет №2: города СКФО</span>
+                <span class="skfo-legend-item"><i class="skfo-dot skfo-dot--hq"></i>Центр CORTEC (Грозный)</span>
+                <span class="skfo-legend-item"><i class="skfo-dot skfo-dot--p1"></i>Районы ЧР (Приоритет №1)</span>
+                <span class="skfo-legend-item"><i class="skfo-dot skfo-dot--p2"></i>Субъекты СКФО (Приоритет №2)</span>
               </div>
             </div>
 
-            <svg class="skfo-vector-svg" viewBox="0 0 1200 620" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Схема инженерной логистики CORTEC из Грозного по городам Чеченской Республики и Северного Кавказа">
-              <defs>
-                <radialGradient id="hqGlow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stop-color="#C8A98E" stop-opacity="0.52" />
-                  <stop offset="55%" stop-color="#C8A98E" stop-opacity="0.14" />
-                  <stop offset="100%" stop-color="#C8A98E" stop-opacity="0" />
-                </radialGradient>
-                <linearGradient id="vectorLineGold" x1="650" y1="310" x2="180" y2="160" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#C8A98E" stop-opacity="0.9" />
-                  <stop offset="100%" stop-color="#C8A98E" stop-opacity="0.22" />
-                </linearGradient>
-                <linearGradient id="vectorLineEast" x1="650" y1="310" x2="1040" y2="510" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#C8A98E" stop-opacity="0.9" />
-                  <stop offset="100%" stop-color="#C8A98E" stop-opacity="0.25" />
-                </linearGradient>
-              </defs>
+            <div class="skfo-svg-scroll-wrap">
+              <svg class="skfo-vector-svg" viewBox="0 0 1200 540" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Интерактивная схема инженерной логистики CORTEC из Грозного по городам Чеченской Республики и Северного Кавказа">
+                <defs>
+                  <radialGradient id="hqGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#C8A98E" stop-opacity="0.38" />
+                    <stop offset="55%" stop-color="#C8A98E" stop-opacity="0.08" />
+                    <stop offset="100%" stop-color="#C8A98E" stop-opacity="0" />
+                  </radialGradient>
+                </defs>
 
-              <!-- Cartographic Grid & Radar Rings centered on Grozny (650, 310) -->
-              <g stroke="rgba(255,255,255,0.06)" stroke-width="1">
-                <line x1="0" y1="120" x2="1200" y2="120" />
-                <line x1="0" y1="240" x2="1200" y2="240" />
-                <line x1="0" y1="310" x2="1200" y2="310" stroke="rgba(200,169,142,0.14)" stroke-dasharray="4 6" />
-                <line x1="0" y1="440" x2="1200" y2="440" />
-                <line x1="220" y1="0" x2="220" y2="620" />
-                <line x1="440" y1="0" x2="440" y2="620" />
-                <line x1="650" y1="0" x2="650" y2="620" stroke="rgba(200,169,142,0.14)" stroke-dasharray="4 6" />
-                <line x1="880" y1="0" x2="880" y2="620" />
-              </g>
+                <!-- Subtle Hairline Coordinate Horizon -->
+                <g stroke="rgba(255,255,255,0.045)" stroke-width="1">
+                  <line x1="60" y1="265" x2="1140" y2="265" stroke="rgba(200,169,142,0.14)" stroke-dasharray="3 9" />
+                  <line x1="670" y1="40" x2="670" y2="500" stroke="rgba(200,169,142,0.14)" stroke-dasharray="3 9" />
+                </g>
 
-              <!-- Service Radius Rings from Grozny Hub -->
-              <circle cx="650" cy="310" r="95" stroke="rgba(200,169,142,0.34)" stroke-width="1.2" stroke-dasharray="3 5" />
-              <circle cx="650" cy="310" r="215" stroke="rgba(200,169,142,0.18)" stroke-width="1" stroke-dasharray="6 8" />
-              <circle cx="650" cy="310" r="380" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="8 10" />
-              <circle cx="650" cy="310" r="145" fill="url(#hqGlow)" />
+                <!-- Delicate Concentric Coverage Arcs around Grozny (670, 265) -->
+                <circle cx="670" cy="265" r="125" stroke="rgba(200,169,142,0.22)" stroke-width="0.85" stroke-dasharray="3 7" />
+                <circle cx="670" cy="265" r="265" stroke="rgba(255,255,255,0.08)" stroke-width="0.75" stroke-dasharray="4 10" />
+                <circle cx="670" cy="265" r="440" stroke="rgba(255,255,255,0.05)" stroke-width="0.75" stroke-dasharray="4 12" />
+                <circle cx="670" cy="265" r="150" fill="url(#hqGlow)" />
 
-              <!-- Highlighted Polygon Contour of Chechen Republic (Priority #1 Core Zone) -->
-              <path
-                d="M555 245 L625 205 L735 215 L775 275 L765 365 L705 425 L615 430 L565 375 Z"
-                fill="rgba(200,169,142,0.09)"
-                stroke="rgba(200,169,142,0.52)"
-                stroke-width="1.5"
-              />
+                <!-- Soft Contour of Chechen Republic (Priority #1 Core Zone) -->
+                <path
+                  d="M575 190 L655 150 L765 165 L800 245 L780 355 L700 415 L600 405 L565 320 Z"
+                  fill="rgba(200,169,142,0.055)"
+                  stroke="rgba(200,169,142,0.32)"
+                  stroke-width="1"
+                />
 
-              <!-- Priority #2 Logistics Vectors (from Grozny 650,310 to SKFO cities) -->
-              <g stroke="url(#vectorLineGold)" stroke-width="1.4" stroke-dasharray="5 5">
-                <!-- Grozny -> Magas / Nazran -->
-                <path d="M650 310 Q590 322 530 336" />
-                <!-- Grozny -> Vladikavkaz -->
-                <path d="M650 310 Q565 348 485 378" />
-                <!-- Grozny -> Nalchik / Elbrus -->
-                <path d="M650 310 Q500 325 365 335" />
-                <path d="M365 335 Q305 375 255 410" />
-                <!-- Grozny -> Pyatigorsk / Kislovodsk (KMV) -->
-                <path d="M650 310 Q460 230 285 210" />
-                <path d="M285 210 L215 245" />
-                <!-- Grozny -> Cherkessk / Arkhyz -->
-                <path d="M285 210 Q200 235 135 265" />
-              </g>
+                <!-- Trajectory Arcs from Grozny (670, 265) to All Nodes -->
+                <g class="skfo-arcs-group" stroke="rgba(200,169,142,0.26)" stroke-width="1" stroke-dasharray="4 7">
+                  <!-- West SKFO -->
+                  <path data-arc="kmv" d="M670 265 Q460 155 245 145" />
+                  <path data-arc="kchr" d="M245 145 Q175 195 125 255" />
+                  <path data-arc="nalchik" d="M670 265 Q495 270 330 295" />
+                  <path data-arc="elbrus" d="M330 295 Q265 355 215 415" />
+                  <path data-arc="vladikavkaz" d="M670 265 Q560 345 455 390" />
+                  <path data-arc="magas" d="M670 265 Q595 280 515 295" />
+                  <!-- East SKFO (Dagestan) -->
+                  <path data-arc="kizlyar" d="M670 265 Q765 175 865 135" />
+                  <path data-arc="khasavyurt" d="M670 265 Q760 250 845 245" />
+                  <path data-arc="makhachkala" d="M670 265 Q835 295 995 320" />
+                  <path data-arc="derbent" d="M995 320 Q1035 395 1065 460" />
+                </g>
 
-              <g stroke="url(#vectorLineEast)" stroke-width="1.4" stroke-dasharray="5 5">
-                <!-- Grozny -> Khasavyurt -->
-                <path d="M650 310 L795 305" />
-                <!-- Grozny -> Kizlyar -->
-                <path d="M650 310 Q745 235 825 190" />
-                <!-- Grozny -> Makhachkala & Kaspiysk -->
-                <path d="M650 310 Q805 335 925 355" />
-                <path d="M925 355 L955 385" />
-                <!-- Makhachkala -> Derbent -->
-                <path d="M955 385 Q995 450 1030 505" />
-              </g>
+                <!-- Internal Priority #1 Solid Hairlines (Chechnya) -->
+                <g stroke="rgba(200,169,142,0.45)" stroke-width="1">
+                  <line x1="670" y1="265" x2="660" y2="172" />
+                  <line x1="670" y1="265" x2="758" y2="218" />
+                  <line x1="670" y1="265" x2="736" y2="296" />
+                  <line x1="670" y1="265" x2="604" y2="322" />
+                  <line x1="670" y1="265" x2="752" y2="368" />
+                  <line x1="670" y1="265" x2="646" y2="392" />
+                </g>
 
-              <!-- Priority #1 Internal Vectors (Chechnya Districts) -->
-              <g stroke="rgba(200,169,142,0.65)" stroke-width="1.5">
-                <line x1="650" y1="310" x2="682" y2="316" />
-                <line x1="650" y1="310" x2="726" y2="288" />
-                <line x1="650" y1="310" x2="676" y2="352" />
-                <line x1="650" y1="310" x2="612" y2="344" />
-                <line x1="650" y1="310" x2="712" y2="334" />
-                <line x1="650" y1="310" x2="718" y2="382" />
-                <line x1="650" y1="310" x2="635" y2="405" />
-                <line x1="650" y1="310" x2="635" y2="232" />
-              </g>
+                <!-- INTERACTIVE NODES (WELL-SPACED, ZERO OVERLAP) -->
 
-              <!-- PRIORITY #2 NODES (SKFO REPUBLICS) -->
-              <!-- Cherkessk / Arkhyz -->
-              <g transform="translate(135, 265)">
-                <circle r="4.5" fill="#111214" stroke="#C8A98E" stroke-width="2" />
-                <text x="0" y="-12" text-anchor="middle" fill="#EAE6DF" font-size="12" font-weight="500">Черкесск · Архыз</text>
-                <text x="0" y="18" text-anchor="middle" fill="#9E9B95" font-size="10">КЧР · горные шале</text>
-              </g>
+                <!-- 1. Cherkessk & Arkhyz -->
+                <g class="skfo-node" tabindex="0" role="button" data-region-id="kchr" transform="translate(125, 255)">
+                  <circle class="skfo-hit" r="24" fill="transparent" />
+                  <circle class="skfo-ring" r="9" />
+                  <circle class="skfo-core skfo-core--p2" r="4" />
+                  <text x="0" y="-15" text-anchor="middle" class="skfo-lbl">Черкесск · Архыз</text>
+                </g>
 
-              <!-- Kislovodsk -->
-              <g transform="translate(215, 245)">
-                <circle r="4.5" fill="#111214" stroke="#C8A98E" stroke-width="2" />
-                <text x="-10" y="4" text-anchor="end" fill="#EAE6DF" font-size="12" font-weight="500">Кисловодск</text>
-              </g>
+                <!-- 2. Pyatigorsk & Kislovodsk (KMV) -->
+                <g class="skfo-node" tabindex="0" role="button" data-region-id="kmv" transform="translate(245, 145)">
+                  <circle class="skfo-hit" r="24" fill="transparent" />
+                  <circle class="skfo-ring" r="10" />
+                  <circle class="skfo-core skfo-core--p2" r="4.5" />
+                  <text x="0" y="-16" text-anchor="middle" class="skfo-lbl">Пятигорск · Кисловодск</text>
+                </g>
 
-              <!-- Pyatigorsk / KMV -->
-              <g transform="translate(285, 210)">
-                <circle r="5.5" fill="#111214" stroke="#C8A98E" stroke-width="2.2" />
-                <text x="0" y="-14" text-anchor="middle" fill="#EAE6DF" font-size="13" font-weight="500">Пятигорск · КМВ</text>
-                <text x="0" y="-28" text-anchor="middle" fill="#C8A98E" font-size="10">Ессентуки · Мин. Воды</text>
-              </g>
+                <!-- 3. Prielbrusye -->
+                <g class="skfo-node" tabindex="0" role="button" data-region-id="elbrus" transform="translate(215, 415)">
+                  <circle class="skfo-hit" r="24" fill="transparent" />
+                  <circle class="skfo-ring" r="9" />
+                  <circle class="skfo-core skfo-core--p2" r="4" />
+                  <text x="0" y="22" text-anchor="middle" class="skfo-lbl">Приэльбрусье</text>
+                </g>
 
-              <!-- Prielbrusye -->
-              <g transform="translate(255, 410)">
-                <circle r="4.5" fill="#111214" stroke="#C8A98E" stroke-width="2" />
-                <text x="0" y="19" text-anchor="middle" fill="#EAE6DF" font-size="11.5">Приэльбрусье (2100+ м)</text>
-              </g>
+                <!-- 4. Nalchik (KBR) -->
+                <g class="skfo-node" tabindex="0" role="button" data-region-id="nalchik" transform="translate(330, 295)">
+                  <circle class="skfo-hit" r="24" fill="transparent" />
+                  <circle class="skfo-ring" r="10" />
+                  <circle class="skfo-core skfo-core--p2" r="4.5" />
+                  <text x="0" y="-15" text-anchor="middle" class="skfo-lbl">Нальчик</text>
+                </g>
 
-              <!-- Nalchik (KBR) -->
-              <g transform="translate(365, 335)">
-                <circle r="5.5" fill="#111214" stroke="#C8A98E" stroke-width="2.2" />
-                <text x="0" y="-13" text-anchor="middle" fill="#EAE6DF" font-size="13" font-weight="500">Нальчик</text>
-                <text x="0" y="18" text-anchor="middle" fill="#9E9B95" font-size="10">КБР · Баксан</text>
-              </g>
+                <!-- 5. Vladikavkaz & Fiagdon -->
+                <g class="skfo-node" tabindex="0" role="button" data-region-id="vladikavkaz" transform="translate(455, 390)">
+                  <circle class="skfo-hit" r="24" fill="transparent" />
+                  <circle class="skfo-ring" r="10" />
+                  <circle class="skfo-core skfo-core--p2" r="4.5" />
+                  <text x="0" y="22" text-anchor="middle" class="skfo-lbl">Владикавказ · Фиагдон</text>
+                </g>
 
-              <!-- Vladikavkaz (RSO-Alania) -->
-              <g transform="translate(485, 378)">
-                <circle r="5.5" fill="#111214" stroke="#C8A98E" stroke-width="2.2" />
-                <text x="0" y="20" text-anchor="middle" fill="#EAE6DF" font-size="13" font-weight="500">Владикавказ</text>
-                <text x="0" y="34" text-anchor="middle" fill="#9E9B95" font-size="10">РСО-Алания · Фиагдон</text>
-              </g>
+                <!-- 6. Magas & Nazran -->
+                <g class="skfo-node" tabindex="0" role="button" data-region-id="magas" transform="translate(515, 295)">
+                  <circle class="skfo-hit" r="24" fill="transparent" />
+                  <circle class="skfo-ring" r="10" />
+                  <circle class="skfo-core skfo-core--p2" r="4.5" />
+                  <text x="-12" y="4" text-anchor="end" class="skfo-lbl">Магас · Назрань</text>
+                </g>
 
-              <!-- Magas / Nazran (Ingushetia) -->
-              <g transform="translate(530, 336)">
-                <circle r="5.5" fill="#111214" stroke="#C8A98E" stroke-width="2.2" />
-                <text x="-10" y="-8" text-anchor="end" fill="#EAE6DF" font-size="13" font-weight="500">Магас · Назрань</text>
-                <text x="-10" y="6" text-anchor="end" fill="#9E9B95" font-size="10">Ингушетия · Джейрах</text>
-              </g>
+                <!-- 7. Naurskaya & Shelkovskaya (Chechnya North) -->
+                <g class="skfo-node" tabindex="0" role="button" data-region-id="naurskaya" transform="translate(660, 172)">
+                  <circle class="skfo-hit" r="22" fill="transparent" />
+                  <circle class="skfo-ring" r="9" />
+                  <circle class="skfo-core skfo-core--p1" r="4" />
+                  <text x="0" y="-14" text-anchor="middle" class="skfo-lbl skfo-lbl--gold">Наурская · Шелковская</text>
+                </g>
 
-              <!-- Khasavyurt -->
-              <g transform="translate(795, 305)">
-                <circle r="5" fill="#111214" stroke="#C8A98E" stroke-width="2" />
-                <text x="0" y="-12" text-anchor="middle" fill="#EAE6DF" font-size="12.5" font-weight="500">Хасавюрт</text>
-              </g>
+                <!-- 8. Gudermes (Chechnya East) -->
+                <g class="skfo-node" tabindex="0" role="button" data-region-id="gudermes" transform="translate(758, 218)">
+                  <circle class="skfo-hit" r="22" fill="transparent" />
+                  <circle class="skfo-ring" r="9" />
+                  <circle class="skfo-core skfo-core--p1" r="4" />
+                  <text x="0" y="-14" text-anchor="middle" class="skfo-lbl skfo-lbl--gold">Гудермес</text>
+                </g>
 
-              <!-- Kizlyar -->
-              <g transform="translate(825, 190)">
-                <circle r="4.5" fill="#111214" stroke="#C8A98E" stroke-width="2" />
-                <text x="0" y="-12" text-anchor="middle" fill="#EAE6DF" font-size="12" font-weight="500">Кизляр</text>
-              </g>
+                <!-- 9. Argun & Shali (Chechnya Central-East) -->
+                <g class="skfo-node" tabindex="0" role="button" data-region-id="argun" transform="translate(736, 296)">
+                  <circle class="skfo-hit" r="22" fill="transparent" />
+                  <circle class="skfo-ring" r="9" />
+                  <circle class="skfo-core skfo-core--p1" r="4" />
+                  <text x="12" y="4" text-anchor="start" class="skfo-lbl skfo-lbl--gold">Аргун · Шали</text>
+                </g>
 
-              <!-- Makhachkala -->
-              <g transform="translate(925, 355)">
-                <circle r="6" fill="#111214" stroke="#C8A98E" stroke-width="2.4" />
-                <text x="12" y="-6" text-anchor="start" fill="#EAE6DF" font-size="13.5" font-weight="500">Махачкала</text>
-                <text x="12" y="9" text-anchor="start" fill="#C8A98E" font-size="10.5">Дагестан · ветровой р-н IV</text>
-              </g>
+                <!-- 10. Urus-Martan (Chechnya Southwest) -->
+                <g class="skfo-node" tabindex="0" role="button" data-region-id="urus" transform="translate(604, 322)">
+                  <circle class="skfo-hit" r="22" fill="transparent" />
+                  <circle class="skfo-ring" r="9" />
+                  <circle class="skfo-core skfo-core--p1" r="4" />
+                  <text x="-10" y="16" text-anchor="end" class="skfo-lbl skfo-lbl--gold">Урус-Мартан</text>
+                </g>
 
-              <!-- Kaspiysk -->
-              <g transform="translate(955, 385)">
-                <circle r="4.5" fill="#111214" stroke="#C8A98E" stroke-width="2" />
-                <text x="12" y="4" text-anchor="start" fill="#EAE6DF" font-size="12">Каспийск · Избербаш</text>
-              </g>
+                <!-- 11. Vedeno & Kezenoy-Am (Chechnya Southeast Mountains) -->
+                <g class="skfo-node" tabindex="0" role="button" data-region-id="vedeno" transform="translate(752, 368)">
+                  <circle class="skfo-hit" r="22" fill="transparent" />
+                  <circle class="skfo-ring" r="9" />
+                  <circle class="skfo-core skfo-core--p1" r="4" />
+                  <text x="12" y="5" text-anchor="start" class="skfo-lbl skfo-lbl--gold">Ведено · Кезеной-Ам</text>
+                </g>
 
-              <!-- Derbent -->
-              <g transform="translate(1030, 505)">
-                <circle r="5" fill="#111214" stroke="#C8A98E" stroke-width="2.2" />
-                <text x="0" y="-12" text-anchor="middle" fill="#EAE6DF" font-size="12.5" font-weight="500">Дербент</text>
-                <text x="0" y="18" text-anchor="middle" fill="#9E9B95" font-size="10">морской климат Qualanod</text>
-              </g>
+                <!-- 12. Shatoy & Itum-Kali (Chechnya High Gorge) -->
+                <g class="skfo-node" tabindex="0" role="button" data-region-id="itumkali" transform="translate(646, 392)">
+                  <circle class="skfo-hit" r="22" fill="transparent" />
+                  <circle class="skfo-ring" r="9" />
+                  <circle class="skfo-core skfo-core--p1" r="4" />
+                  <text x="0" y="21" text-anchor="middle" class="skfo-lbl skfo-lbl--gold">Шатой · Итум-Кали</text>
+                </g>
 
-              <!-- PRIORITY #1 NODES (CHECHEN REPUBLIC DISTRICTS) -->
-              <!-- Naurskaya / Shelkovskaya -->
-              <g transform="translate(635, 232)">
-                <circle r="4" fill="#C8A98E" />
-                <text x="0" y="-10" text-anchor="middle" fill="#E5D6B8" font-size="11">Наурская · Шелковская</text>
-              </g>
+                <!-- 13. Kizlyar -->
+                <g class="skfo-node" tabindex="0" role="button" data-region-id="kizlyar" transform="translate(865, 135)">
+                  <circle class="skfo-hit" r="24" fill="transparent" />
+                  <circle class="skfo-ring" r="9" />
+                  <circle class="skfo-core skfo-core--p2" r="4" />
+                  <text x="0" y="-15" text-anchor="middle" class="skfo-lbl">Кизляр</text>
+                </g>
 
-              <!-- Gudermes -->
-              <g transform="translate(726, 288)">
-                <circle r="4.5" fill="#C8A98E" />
-                <text x="8" y="-6" text-anchor="start" fill="#E5D6B8" font-size="11.5" font-weight="500">Гудермес</text>
-              </g>
+                <!-- 14. Khasavyurt -->
+                <g class="skfo-node" tabindex="0" role="button" data-region-id="khasavyurt" transform="translate(845, 245)">
+                  <circle class="skfo-hit" r="24" fill="transparent" />
+                  <circle class="skfo-ring" r="9.5" />
+                  <circle class="skfo-core skfo-core--p2" r="4.2" />
+                  <text x="12" y="4" text-anchor="start" class="skfo-lbl">Хасавюрт</text>
+                </g>
 
-              <!-- Argun & Kurchaloy -->
-              <g transform="translate(712, 334)">
-                <circle r="4.5" fill="#C8A98E" />
-                <text x="10" y="4" text-anchor="start" fill="#E5D6B8" font-size="11.5">Аргун · Курчалой</text>
-              </g>
+                <!-- 15. Makhachkala & Kaspiysk -->
+                <g class="skfo-node" tabindex="0" role="button" data-region-id="makhachkala" transform="translate(995, 320)">
+                  <circle class="skfo-hit" r="26" fill="transparent" />
+                  <circle class="skfo-ring" r="11" />
+                  <circle class="skfo-core skfo-core--p2" r="5" />
+                  <text x="14" y="4" text-anchor="start" class="skfo-lbl">Махачкала · Каспийск</text>
+                </g>
 
-              <!-- Shali -->
-              <g transform="translate(676, 352)">
-                <circle r="4" fill="#C8A98E" />
-                <text x="0" y="16" text-anchor="middle" fill="#E5D6B8" font-size="11">Шали</text>
-              </g>
+                <!-- 16. Derbent -->
+                <g class="skfo-node" tabindex="0" role="button" data-region-id="derbent" transform="translate(1065, 460)">
+                  <circle class="skfo-hit" r="24" fill="transparent" />
+                  <circle class="skfo-ring" r="9.5" />
+                  <circle class="skfo-core skfo-core--p2" r="4.2" />
+                  <text x="0" y="22" text-anchor="middle" class="skfo-lbl">Дербент</text>
+                </g>
 
-              <!-- Urus-Martan / Achkhoy-Martan -->
-              <g transform="translate(612, 344)">
-                <circle r="4" fill="#C8A98E" />
-                <text x="-8" y="15" text-anchor="end" fill="#E5D6B8" font-size="11">Урус-Мартан · Ачхой-Мартан</text>
-              </g>
+                <!-- 0. GROZNY CENTRAL HUB MARKER -->
+                <g class="skfo-node is-active" tabindex="0" role="button" data-region-id="grozny" transform="translate(670, 265)">
+                  <circle class="skfo-hit" r="28" fill="transparent" />
+                  <circle class="skfo-ring" r="16" />
+                  <circle r="7" fill="#C8A98E" stroke="#111214" stroke-width="2" />
+                  <rect x="-56" y="-38" width="112" height="24" rx="12" fill="#111214" stroke="#C8A98E" stroke-width="1.2" />
+                  <text x="0" y="-22" text-anchor="middle" fill="#F4F1EA" font-size="11.5" font-weight="600" letter-spacing="0.08em">ГРОЗНЫЙ</text>
+                </g>
+              </svg>
+            </div>
 
-              <!-- Vedeno / Benoy / Kezenoy-Am -->
-              <g transform="translate(718, 382)">
-                <circle r="4.5" fill="#C8A98E" />
-                <text x="10" y="12" text-anchor="start" fill="#E5D6B8" font-size="11">Ведено · Беной · Кезеной-Ам</text>
-              </g>
-
-              <!-- Itum-Kali / Shatoy -->
-              <g transform="translate(635, 405)">
-                <circle r="4.5" fill="#C8A98E" />
-                <text x="0" y="18" text-anchor="middle" fill="#E5D6B8" font-size="11">Шатой · Итум-Кали</text>
-              </g>
-
-              <!-- GROZNY CENTRAL HUB MARKER -->
-              <g transform="translate(650, 310)">
-                <circle r="18" fill="rgba(200,169,142,0.2)" stroke="#C8A98E" stroke-width="1.2" />
-                <circle r="8" fill="#C8A98E" stroke="#111214" stroke-width="2.5" />
-                <rect x="-105" y="-54" width="210" height="34" rx="17" fill="#111214" stroke="#C8A98E" stroke-width="1.5" />
-                <text x="0" y="-33" text-anchor="middle" fill="#F4F1EA" font-size="12.5" font-weight="600" letter-spacing="0.06em">ГРОЗНЫЙ · ЦЕНТР CORTEC</text>
-              </g>
-            </svg>
-
-            <div class="skfo-map-bottom-bar">
-              <div class="skfo-metric">
-                <span class="skfo-metric-val">15 районов ЧР</span>
-                <span class="skfo-metric-lbl">Выезд геодезиста за 24 часа</span>
+            <!-- LIVE INTERACTIVE REGIONAL PASSPORT BAR (UPDATES ON TAP / CLICK) -->
+            <div class="skfo-live-passport" id="skfo-live-passport" aria-live="polite">
+              <div class="skfo-passport-main">
+                <span class="skfo-passport-badge" id="skfo-passport-badge">Приоритет №1 · Штаб-квартира и шоурум</span>
+                <h3 class="skfo-passport-title" id="skfo-passport-title">г. Грозный (ул. Субры Кишиевой, 55)</h3>
+                <p class="skfo-passport-desc" id="skfo-passport-desc">
+                  Проектный отдел КМ/КМД, полноразмерная экспозиция узлов ALUTECH, KBE, KÖMMERLING и стекла AGC. Выезд инженера-геодезиста с 3D-тахеометром по Грозному — в день обращения.
+                </p>
               </div>
-              <div class="skfo-metric">
-                <span class="skfo-metric-val">7 субъектов СКФО</span>
-                <span class="skfo-metric-lbl">Шеф-монтаж и доставка спецтранспортом</span>
-              </div>
-              <div class="skfo-metric">
-                <span class="skfo-metric-val">8–9 баллов</span>
-                <span class="skfo-metric-lbl">Сейсмостойкие узлы КМ/КМД (СП 14.13330)</span>
-              </div>
-              <div class="skfo-metric">
-                <span class="skfo-metric-val">До 2500 м</span>
-                <span class="skfo-metric-lbl">Высокогорные стеклопакеты с клапанами</span>
+              <div class="skfo-passport-specs">
+                <div class="skfo-passport-spec">
+                  <span class="skfo-spec-lbl">Климатика и статика</span>
+                  <strong class="skfo-spec-val" id="skfo-passport-wind">III ветровой р-н · 8–9 баллов</strong>
+                </div>
+                <div class="skfo-passport-spec">
+                  <span class="skfo-spec-lbl">Рекомендуемый узел</span>
+                  <strong class="skfo-spec-val" id="skfo-passport-sys">ALT F50 / W72 · Stopray · КМ/КМД</strong>
+                </div>
+                <div class="skfo-passport-actions">
+                  <a href="${prefix}blog/panoramnoe-osteklenie-grozny.html" id="skfo-passport-link" class="btn-oval">Инженерный разбор зоны →</a>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- REGIONAL PRIORITY CARDS (CHECHNYA + SKFO) -->
+        <!-- REGIONAL PRIORITY CARDS (TACTILE SELECTOR + SEO LINKS) -->
         <div class="regional-priority-grid reveal" style="margin-top: 32px;">
           <article class="regional-priority-card regional-priority-card--primary">
             <div class="regional-priority-head">
@@ -425,20 +423,17 @@ module.exports = {
               <h3>Чеченская Республика — проектный офис и шоурум в Грозном</h3>
             </div>
             <p>
-              Прямое инженерное сопровождение объектов в Грозном (${site.contact.streetAddress}), оперативный выезд инженера-геодезиста с 3D-тахеометром на строящиеся резиденции и коммерческие здания во всех городах и горных районах республики:
+              Нажмите на любой город или район ниже, чтобы подсветить его на карте и посмотреть параметры остекления, или перейдите к подробному техническому обзору:
             </p>
             <div class="regional-cities-chips">
-              <a href="${prefix}blog/panoramnoe-osteklenie-grozny.html">Грозный</a>
-              <a href="${prefix}blog/osteklenie-kottedzhey-gudermes-shali-argun.html">Гудермес</a>
-              <a href="${prefix}blog/osteklenie-kottedzhey-gudermes-shali-argun.html">Аргун</a>
-              <a href="${prefix}blog/osteklenie-kottedzhey-gudermes-shali-argun.html">Шали</a>
-              <a href="${prefix}blog/okna-kbe-grozny-chechnya.html">Урус-Мартан</a>
-              <a href="${prefix}blog/alyuminievye-okna-alutech-grozny.html">Курчалой</a>
-              <a href="${prefix}blog/okna-kbe-grozny-chechnya.html">Ачхой-Мартан</a>
-              <a href="${prefix}blog/osteklenie-v-gornyh-raionah-chechni-vedeno-itum-kali.html">Ведено и Беной</a>
-              <a href="${prefix}blog/osteklenie-v-gornyh-raionah-chechni-vedeno-itum-kali.html">Итум-Кали и Шатой</a>
-              <a href="${prefix}blog/osteklenie-v-gornyh-raionah-chechni-vedeno-itum-kali.html">Кезеной-Ам</a>
-              <a href="${prefix}blog/stoechno-rigelnoe-osteklenie-grozny.html">Наурская и Шелковская</a>
+              <a href="${prefix}blog/panoramnoe-osteklenie-grozny.html" data-region-trigger="grozny">Грозный</a>
+              <a href="${prefix}blog/osteklenie-kottedzhey-gudermes-shali-argun.html" data-region-trigger="gudermes">Гудермес</a>
+              <a href="${prefix}blog/osteklenie-kottedzhey-gudermes-shali-argun.html" data-region-trigger="argun">Аргун и Шали</a>
+              <a href="${prefix}blog/okna-kbe-grozny-chechnya.html" data-region-trigger="urus">Урус-Мартан и Ачхой-Мартан</a>
+              <a href="${prefix}blog/alyuminievye-okna-alutech-grozny.html" data-region-trigger="argun">Курчалой</a>
+              <a href="${prefix}blog/osteklenie-v-gornyh-raionah-chechni-vedeno-itum-kali.html" data-region-trigger="vedeno">Ведено, Беной и Кезеной-Ам</a>
+              <a href="${prefix}blog/osteklenie-v-gornyh-raionah-chechni-vedeno-itum-kali.html" data-region-trigger="itumkali">Шатой и Итум-Кали</a>
+              <a href="${prefix}blog/stoechno-rigelnoe-osteklenie-grozny.html" data-region-trigger="naurskaya">Наурская и Шелковская</a>
             </div>
           </article>
 
@@ -448,16 +443,18 @@ module.exports = {
               <h3>Республики Северного Кавказа и Кавказские Минеральные Воды</h3>
             </div>
             <p>
-              Удаленное проектирование разделов КМ/КМД по чертежам DWG/BIM, выездная геодезия, поставка крупноформатных конструкций ALUTECH, KBE, KÖMMERLING со стеклом AGC и шеф-монтаж по всему Северо-Кавказскому федеральному округу:
+              Удаленное проектирование разделов КМ/КМД по чертежам DWG/BIM, выездная геодезия, поставка крупноформатных конструкций ALUTECH, KBE, KÖMMERLING со стеклом AGC и шеф-монтаж по всему СКФО:
             </p>
             <div class="regional-cities-chips">
-              <a href="${prefix}blog/panoramnoe-osteklenie-magas-nazran-ingushetiya.html">Магас и Назрань (Ингушетия)</a>
-              <a href="${prefix}blog/alyuminievye-fasady-i-okna-mahachkala-kaspiysk-dagestan.html">Махачкала, Каспийск, Дербент (Дагестан)</a>
-              <a href="${prefix}blog/okna-kbe-kommerling-hasavyurt-kizlyar.html">Хасавюрт и Кизляр</a>
-              <a href="${prefix}blog/arhitekturnoe-osteklenie-vladikavkaz-osetiya.html">Владикавказ и Фиагдон (РСО-Алания)</a>
-              <a href="${prefix}blog/panoramnye-okna-i-portaly-nalchik-kbr.html">Нальчик и Приэльбрусье (КБР)</a>
-              <a href="${prefix}blog/osteklenie-rezidenciy-pyatigorsk-kislovodsk-kmv.html">Пятигорск, Кисловодск, Ессентуки (КМВ)</a>
-              <a href="${prefix}blog/seysmostoykoe-osteklenie-severnyy-kavkaz.html">Черкесск, Архыз, Домбай (КЧР)</a>
+              <a href="${prefix}blog/panoramnoe-osteklenie-magas-nazran-ingushetiya.html" data-region-trigger="magas">Магас и Назрань (Ингушетия)</a>
+              <a href="${prefix}blog/alyuminievye-fasady-i-okna-mahachkala-kaspiysk-dagestan.html" data-region-trigger="makhachkala">Махачкала и Каспийск (Дагестан)</a>
+              <a href="${prefix}blog/alyuminievye-fasady-i-okna-mahachkala-kaspiysk-dagestan.html" data-region-trigger="derbent">Дербент</a>
+              <a href="${prefix}blog/okna-kbe-kommerling-hasavyurt-kizlyar.html" data-region-trigger="khasavyurt">Хасавюрт и Кизляр</a>
+              <a href="${prefix}blog/arhitekturnoe-osteklenie-vladikavkaz-osetiya.html" data-region-trigger="vladikavkaz">Владикавказ и Фиагдон (РСО-Алания)</a>
+              <a href="${prefix}blog/panoramnye-okna-i-portaly-nalchik-kbr.html" data-region-trigger="nalchik">Нальчик (КБР)</a>
+              <a href="${prefix}blog/panoramnye-okna-i-portaly-nalchik-kbr.html" data-region-trigger="elbrus">Приэльбрусье</a>
+              <a href="${prefix}blog/osteklenie-rezidenciy-pyatigorsk-kislovodsk-kmv.html" data-region-trigger="kmv">Пятигорск и Кисловодск (КМВ)</a>
+              <a href="${prefix}blog/seysmostoykoe-osteklenie-severnyy-kavkaz.html" data-region-trigger="kchr">Черкесск, Архыз, Домбай (КЧР)</a>
             </div>
           </article>
         </div>

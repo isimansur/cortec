@@ -678,6 +678,53 @@
   margin: 0;
 }
 
+/* Tactile One-Tap Object Type Pills in Contact Form */
+.form-label-text {
+  display: block;
+  font-size: max(0.75rem, 12px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.tactile-pills-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tactile-pill {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: max(0.82rem, 13px);
+  line-height: 1.25;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+}
+
+.tactile-pill:hover {
+  color: var(--text-primary);
+  border-color: rgba(200, 169, 142, 0.45);
+  background: rgba(200, 169, 142, 0.08);
+}
+
+.tactile-pill.is-selected {
+  color: #0D0E10;
+  background: var(--accent-sand);
+  border-color: var(--accent-sand);
+  font-weight: 500;
+}
+
 /* Stylized SKFO Service Areas Map on Contact Page */
 .skfo-map-header {
   display: grid;
@@ -697,7 +744,7 @@
   border-radius: 24px;
   overflow: hidden;
   background: #0A0B0D;
-  border: 1px solid rgba(197, 179, 148, 0.28);
+  border: 1px solid rgba(197, 179, 148, 0.26);
   box-shadow: 0 28px 80px rgba(0, 0, 0, 0.55);
 }
 
@@ -707,19 +754,19 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.42;
-  filter: contrast(1.08) brightness(0.85);
+  opacity: 0.36;
+  filter: contrast(1.08) brightness(0.82);
   pointer-events: none;
 }
 
 .skfo-map-overlay {
   position: relative;
   z-index: 2;
-  background: radial-gradient(circle at 54% 50%, rgba(17, 18, 20, 0.35) 0%, rgba(10, 11, 13, 0.86) 100%);
+  background: radial-gradient(circle at 56% 48%, rgba(17, 18, 20, 0.32) 0%, rgba(10, 11, 13, 0.88) 100%);
   padding: clamp(20px, 3vw, 34px);
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
 }
 
 .skfo-map-top-bar {
@@ -779,43 +826,167 @@
   border: 2px solid var(--accent-sand);
 }
 
+.skfo-svg-scroll-wrap {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(200, 169, 142, 0.3) transparent;
+}
+
 .skfo-vector-svg {
   width: 100%;
+  min-width: 760px;
   height: auto;
   display: block;
-  min-height: 300px;
   font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
+  user-select: none;
 }
 
-.skfo-map-bottom-bar {
+.skfo-arcs-group path {
+  transition: stroke 0.35s ease, stroke-width 0.35s ease;
+}
+
+.skfo-arcs-group path.is-highlighted {
+  stroke: #C8A98E;
+  stroke-width: 1.75;
+  stroke-dasharray: none;
+}
+
+.skfo-node {
+  cursor: pointer;
+  outline: none;
+}
+
+.skfo-ring {
+  fill: rgba(200, 169, 142, 0.08);
+  stroke: rgba(200, 169, 142, 0.28);
+  stroke-width: 1;
+  transition: fill 0.3s ease, stroke 0.3s ease, r 0.3s ease;
+}
+
+.skfo-core--p1 {
+  fill: #C8A98E;
+  transition: transform 0.25s ease, fill 0.25s ease;
+}
+
+.skfo-core--p2 {
+  fill: #111214;
+  stroke: #C8A98E;
+  stroke-width: 1.8;
+  transition: transform 0.25s ease, fill 0.25s ease;
+}
+
+.skfo-lbl {
+  fill: rgba(244, 241, 234, 0.78);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  transition: fill 0.25s ease, font-weight 0.25s ease;
+  paint-order: stroke;
+  stroke: rgba(10, 11, 13, 0.85);
+  stroke-width: 3.5px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.skfo-lbl--gold {
+  fill: #E5D6B8;
+}
+
+.skfo-node:hover .skfo-ring,
+.skfo-node:focus-visible .skfo-ring,
+.skfo-node.is-active .skfo-ring {
+  fill: rgba(200, 169, 142, 0.26);
+  stroke: #C8A98E;
+  stroke-width: 1.5;
+}
+
+.skfo-node:hover .skfo-core--p2,
+.skfo-node.is-active .skfo-core--p2 {
+  fill: #C8A98E;
+}
+
+.skfo-node:hover .skfo-lbl,
+.skfo-node:focus-visible .skfo-lbl,
+.skfo-node.is-active .skfo-lbl {
+  fill: #FFFFFF;
+  font-weight: 600;
+}
+
+/* Live Interactive Regional Passport Bar */
+.skfo-live-passport {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+  align-items: center;
+  padding: 22px 26px;
+  border-radius: 18px;
+  background: rgba(17, 18, 20, 0.82);
+  border: 1px solid rgba(200, 169, 142, 0.28);
+  backdrop-filter: blur(12px);
+  transition: border-color 0.3s ease;
 }
 
-.skfo-metric {
+.skfo-passport-badge {
+  display: inline-block;
+  font-size: max(0.72rem, 11.5px);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent-sand);
+  margin-bottom: 6px;
+}
+
+.skfo-passport-title {
+  font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: 0 0 8px 0;
+}
+
+.skfo-passport-desc {
+  font-size: max(0.86rem, 13.5px);
+  line-height: 1.55;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.skfo-passport-specs {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 12px 16px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  gap: 12px;
+  padding-left: 24px;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.skfo-metric-val {
-  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
-  font-weight: 500;
-  color: var(--accent-sand);
-  font-variant-numeric: tabular-nums;
+.skfo-passport-spec {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.skfo-metric-lbl {
-  font-size: max(0.76rem, 12px);
+.skfo-spec-lbl {
+  font-size: max(0.72rem, 11.5px);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--text-secondary);
-  line-height: 1.4;
+}
+
+.skfo-spec-val {
+  font-size: max(0.9rem, 14px);
+  font-weight: 500;
+  color: #E5D6B8;
+}
+
+.skfo-passport-actions {
+  margin-top: 4px;
+}
+
+.regional-cities-chips a.is-active-chip {
+  border-color: var(--accent-sand);
+  background: rgba(200, 169, 142, 0.16);
+  color: var(--text-primary);
 }
 
 /* Mobile Responsive (Apple HIG 390px) */
@@ -827,11 +998,15 @@
   .regional-priority-grid,
   .blog-eeat-card,
   .blog-faq-grid,
-  .skfo-map-header {
+  .skfo-map-header,
+  .skfo-live-passport {
     grid-template-columns: 1fr;
   }
-  .skfo-map-bottom-bar {
-    grid-template-columns: repeat(2, 1fr);
+  .skfo-passport-specs {
+    padding-left: 0;
+    padding-top: 16px;
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
   .blog-prev-next {
     grid-template-columns: 1fr;
@@ -843,8 +1018,7 @@
 
 @media (max-width: 768px) {
   .blog-grid,
-  .sitelinks-grid,
-  .skfo-map-bottom-bar {
+  .sitelinks-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
@@ -862,5 +1036,9 @@
     width: 100%;
     justify-content: flex-start;
   }
+  .skfo-live-passport {
+    padding: 18px 16px;
+  }
 }
+
 
