@@ -11,7 +11,7 @@ module.exports = {
   ogTitle: `Контакты в Грозном — Офис и проектный отдел CORTEC (${site.contact.streetAddress})`,
   ogDescription: "Обсудите архитектурный проект, подбор профильных систем ALUTECH, KBE и KÖMMERLING, формулу стеклопакетов AGC и узлы примыкания в офисе CORTEC в Грозном.",
   twitterDescription: `Прямая связь с инженером-конструктором CORTEC (телефон и WhatsApp): ${site.contact.phonePrimary.display}.`,
-  preloadImg: 'minimalist-window-handle',
+  preloadImg: 'contact-skfo-glass-map-hero',
   schemaJson: buildContactPageSchema(),
   renderMain({ prefix = '' } = {}) {
     const secondaryPhonesHtml = site.contact.phonesSecondary
@@ -20,9 +20,9 @@ module.exports = {
 
     return `
     <!-- SCREEN 1: HERO FOR CONTACT -->
-    <section class="hero-viewport" aria-label="Контакты проектного отдела CORTEC в Грозном">
+    <section class="hero-viewport" aria-label="Контакты проектного отдела CORTEC в Грозном и карта обслуживания СКФО">
       <div class="hero-media-wrap">
-        <img src="assets/img/minimalist-window-handle.avif" srcset="assets/img/minimalist-window-handle-sm.avif 688w, assets/img/minimalist-window-handle.avif 1376w" sizes="100vw" width="1344" height="768" alt="Тактильная минималистичная ручка на фоне темного архитектурного профиля CORTEC" title="Офис и проектный отдел CORTEC в Грозном" fetchpriority="high" decoding="async">
+        <img src="${prefix}assets/img/contact-skfo-glass-map-hero.avif" srcset="${prefix}assets/img/contact-skfo-glass-map-hero-sm.avif 688w, ${prefix}assets/img/contact-skfo-glass-map-hero.avif 1376w" sizes="100vw" width="1344" height="768" alt="Архитектурный 3D-макет рельефной карты Северного Кавказа (СКФО) из многослойного просветленного стекла AGC и анодированных алюминиевых профилей ALUTECH с центральным узлом в Грозном" title="Офис CORTEC в Грозном и география проектирования по Чеченской Республике и СКФО" fetchpriority="high" decoding="async">
       </div>
       <div class="hero-content">
         <div class="hero-content-inner reveal">
