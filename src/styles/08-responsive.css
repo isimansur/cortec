@@ -1,0 +1,898 @@
+/* ==========================================================================
+   TABLET & MOBILE: FULL-BLEED DISSOLVING IMAGES + ZERO TEXT COLLISION
+   ========================================================================== */
+
+@media (max-width: 1120px) {
+  .footer-brand {
+    grid-column: 1 / span 12;
+  }
+
+  .footer-nav-col {
+    grid-column: 1 / span 4;
+  }
+
+  .footer-systems-col {
+    grid-column: 5 / span 4;
+  }
+
+  .footer-contact-col {
+    grid-column: 9 / span 4;
+  }
+}
+
+@media (max-width: 1024px) {
+  .stagger-left,
+  .stagger-right,
+  .stagger-center-wide,
+  .stagger-offset-mid,
+  .hero-content-inner,
+  .hero-viewport--right .hero-content-inner,
+  .macro-stage-text-left,
+  .macro-stage-text-right {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  /* Full-bleed edge-to-edge dissolving scenes on Tablet & Mobile:
+     The macro image spans 100% width in the upper part of the stage and dissolves into #111214 at top & bottom,
+     while the text sits cleanly below the focal object so they never overlap! */
+  .hero-viewport,
+  .macro-stage {
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 0 72px;
+  }
+
+  .hero-media-wrap,
+  .macro-stage-media {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: clamp(320px, 52vh, 520px);
+    overflow: hidden;
+  }
+
+  .hero-media-wrap img,
+  .hero-viewport--right .hero-media-wrap img,
+  .macro-stage-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    opacity: 0.96;
+    filter: brightness(1) contrast(1.06);
+  }
+
+  .hero-media-wrap::after,
+  .hero-viewport--right .hero-media-wrap::after,
+  .macro-stage-media::after,
+  .macro-stage--text-right .macro-stage-media::after {
+    background:
+      linear-gradient(180deg, #111214 0%, rgba(17, 18, 20, 0.1) 20%, rgba(17, 18, 20, 0.12) 60%, rgba(17, 18, 20, 0.88) 86%, #111214 100%),
+      radial-gradient(ellipse at center, transparent 48%, rgba(17, 18, 20, 0.55) 100%);
+  }
+
+  .hero-content,
+  .macro-stage-content {
+    margin-top: -56px;
+    padding: 0 5vw;
+    transform: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-header {
+    padding: 20px 5vw;
+  }
+
+  .main-nav {
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 18, 20, 0.98);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 88px 6vw 40px;
+    overflow-y: auto;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s var(--ease-out-expo);
+    z-index: 101;
+  }
+
+  .main-nav.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .main-nav .nav-top-link,
+  .nav-dropdown-trigger {
+    font-family: var(--font-display);
+    font-size: 1.38rem;
+    font-weight: 260;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-white);
+  }
+
+  .nav-dropdown {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .nav-dropdown::after {
+    display: none;
+  }
+
+  .nav-dropdown-menu {
+    position: static;
+    min-width: 0;
+    width: 100%;
+    max-width: 320px;
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+    display: none;
+  }
+
+  .nav-dropdown.is-open .nav-dropdown-menu,
+  .nav-dropdown.is-active .nav-dropdown-menu {
+    display: flex;
+  }
+
+  .nav-dropdown-link {
+    align-items: center;
+    text-align: center;
+    padding: 9px 10px;
+  }
+
+  .nav-dropdown-title {
+    font-size: 0.86rem;
+  }
+
+  .nav-dropdown-sub {
+    display: none;
+  }
+
+  .header-cta {
+    display: none;
+  }
+
+  .mobile-menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-media-wrap,
+  .macro-stage-media {
+    height: clamp(290px, 46vh, 420px);
+  }
+
+  .hero-content,
+  .macro-stage-content {
+    margin-top: -44px;
+    padding: 0 5vw;
+  }
+
+  h1, .h1-display {
+    font-size: clamp(1.68rem, 6.4vw, 2.35rem);
+    line-height: 1.12;
+  }
+
+  h2, .h2-display {
+    font-size: clamp(1.38rem, 5.2vw, 1.95rem);
+    line-height: 1.16;
+  }
+
+  .hero-content .lead-paragraph {
+    margin-top: 20px;
+    font-size: 0.96rem;
+    line-height: 1.72;
+  }
+
+  .macro-stage-content p {
+    margin-top: 18px;
+    font-size: 0.95rem;
+    line-height: 1.72;
+  }
+
+  .btn-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    margin-top: 32px;
+  }
+
+  .btn-sand,
+  .btn-oval {
+    width: 100%;
+    height: 52px;
+    padding: 0 24px;
+  }
+
+  .quiet-anchor-rail {
+    gap: 10px 18px;
+    margin-top: 28px;
+  }
+
+  /* APEX 5-STRIP GALLERY ON MOBILE: Smooth Horizontal Strip Gallery with Center Frame Larger */
+  .apex-five-strip {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    padding: 12px 6vw 32px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .apex-five-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .apex-strip-item,
+  .apex-strip-item:nth-child(1),
+  .apex-strip-item:nth-child(2),
+  .apex-strip-item:nth-child(4),
+  .apex-strip-item:nth-child(5) {
+    display: block;
+    flex: 0 0 68vw;
+    max-width: 280px;
+    aspect-ratio: 2 / 3.0;
+    scroll-snap-align: center;
+  }
+
+  .apex-strip-item:nth-child(3) {
+    display: block;
+    flex: 0 0 74vw;
+    max-width: 310px;
+    aspect-ratio: 2 / 3.25;
+    scroll-snap-align: center;
+  }
+
+  .brand-logos-showcase {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .brand-logo-card {
+    padding: 36px 28px;
+  }
+
+  .section-space,
+  .section-space-lg,
+  .apex-gallery-section {
+    padding: 76px 0;
+  }
+
+  .editorial-stagger {
+    gap: 56px;
+  }
+
+  .footer-grid {
+    gap: 36px;
+  }
+
+  .footer-nav-col,
+  .footer-systems-col,
+  .footer-contact-col {
+    grid-column: 1 / -1;
+  }
+
+  .site-footer {
+    padding: 80px 0 56px;
+  }
+
+  .footer-bottom {
+    margin-top: 56px;
+  }
+}
+
+
+/* ==========================================================================
+   22. MOBILE FIXED VIEWPORT LOCK, 1-COLUMN BRAND CARDS, MENU & ANIMATIONS
+   ========================================================================== */
+html,
+body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+  -webkit-text-size-adjust: 100%;
+}
+
+main,
+section,
+.macro-scroll-sequence,
+.site-footer {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: clip;
+}
+
+/* Move header blur to ::before so .site-header never traps position:fixed .main-nav! */
+.site-header,
+.site-header.is-scrolled {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: none;
+  opacity: 1;
+  z-index: -1;
+  background: rgba(14, 15, 18, 0.65);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background 0.4s var(--ease-out-expo), backdrop-filter 0.4s var(--ease-out-expo), border-color 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo);
+  pointer-events: none;
+}
+
+.site-header.is-scrolled::before {
+  background: rgba(12, 13, 16, 0.90);
+  backdrop-filter: blur(28px) saturate(175%);
+  -webkit-backdrop-filter: blur(28px) saturate(175%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.55);
+}
+
+/* Staggered entrance + scroll-focus illumination for Brand Cards */
+.brand-logos-showcase .brand-logo-card {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0) scale(0.98);
+  transition:
+    opacity 0.9s var(--ease-out-expo),
+    transform 0.9s var(--ease-out-expo),
+    box-shadow 0.65s var(--ease-out-expo),
+    background 0.65s var(--ease-out-expo);
+}
+
+.brand-logos-showcase.is-visible .brand-logo-card:nth-child(1) {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition-delay: 0ms;
+}
+.brand-logos-showcase.is-visible .brand-logo-card:nth-child(2) {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition-delay: 90ms;
+}
+.brand-logos-showcase.is-visible .brand-logo-card:nth-child(3) {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition-delay: 180ms;
+}
+.brand-logos-showcase.is-visible .brand-logo-card:nth-child(4) {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition-delay: 270ms;
+}
+
+.brand-logos-showcase.is-visible .brand-logo-card:hover,
+.brand-logos-showcase.is-visible .brand-logo-card.is-mobile-focus {
+  transform: translate3d(0, -6px, 0) scale(1.01);
+  box-shadow:
+    inset 0 1px 0 rgba(200, 169, 142, 0.42),
+    0 36px 76px -14px rgba(0, 0, 0, 0.95),
+    0 0 38px rgba(200, 169, 142, 0.10);
+  transition-delay: 0ms;
+}
+
+.brand-logo-card.is-mobile-focus::before {
+  opacity: 1;
+}
+
+.brand-logo-card.is-mobile-focus .brand-type-wrap {
+  transform: translateX(4px);
+}
+
+.brand-logo-card.is-mobile-focus .brand-type-name {
+  color: #FFFFFF;
+  text-shadow: 0 8px 28px rgba(200, 169, 142, 0.28);
+}
+
+.brand-logo-card.is-mobile-focus .brand-type-sub,
+.brand-logo-card.is-mobile-focus .brand-history-cta {
+  color: var(--accent-sand-light);
+}
+
+@media (max-width: 1024px) {
+  .hero-media-wrap img,
+  .hero-viewport--right .hero-media-wrap img,
+  .macro-stage-media img {
+    transform: scale(1.10) translate3d(0, var(--stage-parallax-y, 0px), 0);
+    opacity: 0.78;
+    filter: brightness(0.90) contrast(1.08);
+    transition:
+      transform 1.4s var(--ease-out-expo),
+      opacity 1.2s var(--ease-out-expo),
+      filter 1.2s var(--ease-out-expo);
+  }
+
+  body.is-loaded .hero-media-wrap img,
+  .macro-stage.is-inview .macro-stage-media img {
+    transform: scale(1.03) translate3d(0, var(--stage-parallax-y, 0px), 0);
+    opacity: 0.98;
+    filter: brightness(1.02) contrast(1.06);
+  }
+
+  .hero-content,
+  .macro-stage-content {
+    transform: translate3d(0, var(--text-parallax-y, 0px), 0);
+  }
+}
+
+@media (max-width: 768px) {
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 16px 5vw;
+  }
+
+  .site-header::before {
+    background: rgba(17, 18, 20, 0.86);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .brand-logo,
+  .mobile-menu-toggle {
+    position: relative;
+    z-index: 110;
+  }
+
+  /* Full-viewport mobile navigation overlay (never trapped inside header height!) */
+  .main-nav {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    padding: 96px 7vw 48px !important;
+    background: rgba(14, 15, 18, 0.98) !important;
+    backdrop-filter: blur(28px) !important;
+    -webkit-backdrop-filter: blur(28px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 18px !important;
+    overflow-y: auto !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.4s var(--ease-out-expo), visibility 0.4s;
+    z-index: 105 !important;
+  }
+
+  .main-nav.is-open {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  .main-nav a {
+    font-family: var(--font-display) !important;
+    font-size: clamp(1.12rem, 4.6vw, 1.35rem) !important;
+    font-weight: 300 !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    color: rgba(247, 248, 250, 0.78) !important;
+    padding: 6px 12px !important;
+    transform: translate3d(0, 14px, 0);
+    opacity: 0;
+    transition: transform 0.5s var(--ease-out-expo), opacity 0.45s var(--ease-out-expo), color 0.3s ease;
+  }
+
+  .main-nav.is-open a {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+
+  .main-nav.is-open a:nth-child(1) { transition-delay: 40ms; }
+  .main-nav.is-open a:nth-child(2) { transition-delay: 75ms; }
+  .main-nav.is-open a:nth-child(3) { transition-delay: 110ms; }
+  .main-nav.is-open a:nth-child(4) { transition-delay: 145ms; }
+  .main-nav.is-open a:nth-child(5) { transition-delay: 180ms; }
+  .main-nav.is-open a:nth-child(6) { transition-delay: 215ms; }
+  .main-nav.is-open a:nth-child(7) { transition-delay: 250ms; }
+  .main-nav.is-open a:nth-child(8) { transition-delay: 285ms; }
+
+  .main-nav a.is-active,
+  .main-nav a:hover {
+    color: var(--accent-sand-light) !important;
+  }
+
+  /* 1-column full-width Brand Cards on mobile (no skyscraper columns!) */
+  .brand-logos-showcase {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  .brand-logo-card {
+    padding: 28px 24px !important;
+    border-radius: 14px !important;
+  }
+
+  .brand-type-wrap {
+    margin: 20px 0 16px !important;
+  }
+
+  .brand-type-name {
+    font-size: 1.5rem !important;
+  }
+
+  .brand-summary {
+    font-size: 0.92rem !important;
+    line-height: 1.65 !important;
+    margin-bottom: 20px !important;
+  }
+}
+
+
+@media (max-width: 1024px) {
+  .container,
+  .hero-content,
+  .macro-stage-content,
+  .stagger-row,
+  .footer-grid,
+  .editorial-stagger,
+  .brand-logos-showcase {
+    grid-template-columns: 1fr !important;
+    column-gap: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .stagger-left,
+  .stagger-right,
+  .stagger-center-wide,
+  .stagger-offset-mid,
+  .hero-content-inner,
+  .hero-viewport--right .hero-content-inner,
+  .macro-stage-text-left,
+  .macro-stage-text-right,
+  .footer-brand,
+  .footer-nav-col,
+  .footer-systems-col,
+  .footer-contact-col {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+}
+
+
+
+/* ==========================================================================
+   23. APPLE HIG & DESIGN ENGINEERING MOBILE PERFECTION LAYER
+   Grounded in Apple Human Interface Guidelines (layout.md, typography.md,
+   accessibility.md, dark-mode.md, motion.md) & Emil Kowalski UI Polish Rules
+   ========================================================================== */
+
+/* A. Global Typography & Optical Polish (Desktop + Mobile) */
+h1, .h1-display,
+h2, .h2-display,
+h3, .h3-editorial {
+  text-wrap: balance;
+}
+
+p, .lead-paragraph, .body-paragraph, li, dd {
+  text-wrap: pretty;
+}
+
+/* Prevent inline <a> tags with .h3-editorial from sitting next to .eyebrow */
+a.h3-editorial,
+.h3-editorial {
+  display: block;
+}
+
+.eyebrow {
+  display: flex;
+  width: fit-content;
+}
+
+/* Tabular numerals for engineering specs, phone numbers, and metrics */
+.spec-table,
+.footer-contact-col,
+.brand-origin,
+.ds-swatch-value,
+.ds-type-meta,
+input[type="tel"] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Clip scaled hero/macro background images so bounding boxes never exceed 100vw */
+.hero-scene,
+.hero-bg-wrap,
+.macro-scroll-section,
+.macro-scroll-item,
+.macro-visual-stage,
+.editorial-image-wrap,
+.apex-five-strip,
+.apex-strip-item {
+  overflow: hidden;
+  max-width: 100%;
+}
+
+/* B. Tactile Press Feedback (Emil Kowalski Rule: scale(0.97) on :active) */
+.btn-sand,
+.btn-oval,
+.header-cta,
+.mobile-menu-toggle,
+.brand-logo-card,
+.quiet-anchor-rail a,
+.ds-nav-pill,
+.ds-swatch-card {
+  transition:
+    transform 160ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 300ms var(--ease-out-expo),
+    border-color 300ms var(--ease-out-expo),
+    box-shadow 300ms var(--ease-out-expo),
+    opacity 300ms var(--ease-out-expo);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-sand:active,
+.btn-oval:active,
+.header-cta:active,
+.mobile-menu-toggle:active,
+.brand-logo-card:active,
+.quiet-anchor-rail a:active,
+.ds-nav-pill:active,
+.ds-swatch-card:active {
+  transform: scale(0.97) !important;
+}
+
+/* C. Apple HIG Minimum Font Floor (>= 11.5px) & Contrast (>= 4.5:1) */
+.brand-origin,
+.brand-type-sub,
+.eyebrow,
+.footer-col-title,
+.ds-swatch-value,
+.ds-type-meta {
+  font-size: max(0.72rem, 11.5px) !important;
+  font-weight: 400;
+}
+
+.brand-type-sub {
+  color: rgba(230, 234, 240, 0.65);
+}
+
+/* D. Apple HIG Mobile Viewport Rules (<= 768px) */
+@media (max-width: 768px) {
+  /* 1. Safe-Area & 20px Horizontal Margins (Apple iOS Standard Margin) */
+  .container {
+    padding-left: max(20px, env(safe-area-inset-left)) !important;
+    padding-right: max(20px, env(safe-area-inset-right)) !important;
+  }
+
+  .site-header {
+    min-height: 68px !important;
+    padding: 12px max(20px, env(safe-area-inset-right)) 12px max(20px, env(safe-area-inset-left)) !important;
+  }
+
+  /* 2. Apple HIG 44x44pt Minimum Touch Targets for All Controls */
+  .brand-logo {
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+
+  .mobile-menu-toggle {
+    min-height: 44px !important;
+    min-width: 86px !important;
+    padding: 0 20px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 11.5px !important;
+    letter-spacing: 0.16em !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+  }
+
+  .btn-sand,
+  .btn-oval {
+    min-height: 52px !important;
+    width: 100% !important;
+    justify-content: center !important;
+    font-size: 12px !important;
+    padding: 0 24px !important;
+  }
+
+  /* 3. Quiet Anchor Rail -> Tactile 44px Apple Pill Chips on Mobile */
+  .quiet-anchor-rail {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    margin-top: 28px !important;
+  }
+
+  .quiet-anchor-rail a {
+    min-height: 44px !important;
+    padding: 10px 16px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.09) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+    font-size: 11.5px !important;
+    letter-spacing: 0.1em !important;
+    color: rgba(247, 248, 250, 0.88) !important;
+  }
+
+  /* 4. Design System Navigation Pills -> 44px Touch Height */
+  .ds-nav-pill {
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 10px 18px !important;
+    font-size: 11.5px !important;
+  }
+
+  /* 5. Footer Navigation Links -> 44px Touch Target Rows */
+  .footer-nav-col,
+  .footer-systems-col,
+  .footer-contact-col {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+  }
+
+  .footer-nav-col a,
+  .footer-systems-col a,
+  .footer-contact-col a {
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 6px 0 !important;
+    font-size: 14px !important;
+  }
+
+  /* 6. Contact Page Links & Form Inputs -> 44px+ Touch Target & No iOS Auto-Zoom */
+  a.h3-editorial {
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    margin-top: 2px !important;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px !important; /* Prevents iOS Safari zoom-on-focus */
+    min-height: 52px !important;
+    border-radius: 14px !important;
+  }
+
+  select {
+    padding-right: 38px !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* 7. Apex 5-Strip Gallery -> Clean 1-Column Architectural Stack on Mobile (Zero Overflow!) */
+  .apex-five-strip {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 28px 0 !important;
+    overflow: hidden !important;
+  }
+
+  .apex-strip-item,
+  .apex-strip-item:nth-child(1),
+  .apex-strip-item:nth-child(2),
+  .apex-strip-item:nth-child(3),
+  .apex-strip-item:nth-child(4),
+  .apex-strip-item:nth-child(5) {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 240px !important;
+    flex: none !important;
+    margin: 0 !important;
+    border-radius: 18px !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.09) !important;
+    box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.75) !important;
+  }
+
+  .apex-strip-item img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    transform: none !important;
+  }
+
+  /* 8. Brand Cards Elevated Apple Dark Mode Surface */
+  .brand-logo-card {
+    border-radius: 20px !important;
+    padding: 26px 22px !important;
+    background: linear-gradient(180deg, rgba(26, 29, 35, 0.92) 0%, rgba(18, 20, 24, 0.96) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 18px 40px -14px rgba(0, 0, 0, 0.8) !important;
+  }
+
+  .brand-logo-card.is-mobile-inview {
+    border-color: rgba(200, 169, 142, 0.35) !important;
+  }
+}
+
+/* E. Apple HIG Accessibility: Reduced Motion & Reduced Transparency */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .word-inner,
+  .reveal {
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .site-header.is-scrolled::after,
+  .main-nav {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: #111214 !important;
+  }
+}
+
+/* Mobile ProMotion 120Hz Crisp Scroll Reveal (No Safari GPU blur lag on text) */
+@media (max-width: 768px) {
+  .reveal,
+  .reveal.is-visible {
+    filter: none !important;
+    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+  .hero-media img,
+  .macro-bg img,
+  .hero-visual-stage img,
+  .macro-stage-frame img {
+    transform: none !important;
+  }
+}

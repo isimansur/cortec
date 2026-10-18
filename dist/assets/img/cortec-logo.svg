@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 322 80" fill="none">
+  <!-- 1. Letter 'c' -->
+  <path fill="currentColor" d="M50.50 23.27 A31.50 31.00 0 1 0 50.50 72.73 V54.37 A19.40 19.20 0 1 1 50.50 41.63 Z" />
+
+  <!-- 2. Letter 'o' -->
+  <path fill="currentColor" fill-rule="evenodd" d="M87.50 17.00 A31.50 31.00 0 1 0 87.50 79.00 A31.50 31.00 0 1 0 87.50 17.00 Z M87.50 28.80 A18.70 19.20 0 1 1 87.50 67.20 A18.70 19.20 0 1 1 87.50 28.80 Z" />
+
+  <!-- 3. Letter 'r' -->
+  <path fill="currentColor" d="M126.00 18.00 H163.00 V30.00 H139.50 V78.00 H126.00 Z" />
+
+  <!-- 4. Letter 't' -->
+  <path fill="currentColor" d="M169.00 2.00 H182.50 V18.00 H202.00 V30.00 H182.50 V78.00 H169.00 Z" />
+
+  <!-- 5. Letter 'e' -->
+  <path fill="currentColor" fill-rule="evenodd" d="M263.61 53.00 A30.00 31.00 0 1 0 254.00 71.11 V56.08 A22.00 19.40 0 0 1 234.00 67.40 A17.60 19.40 0 0 1 216.99 53.00 Z M217.12 42.50 H250.88 A17.60 19.40 0 0 0 217.12 42.50 Z" />
+
+  <!-- 6. Letter 'c' -->
+  <path fill="currentColor" d="M320.50 23.27 A31.50 31.00 0 1 0 320.50 72.73 V54.37 A19.40 19.20 0 1 1 320.50 41.63 Z" />
+</svg>

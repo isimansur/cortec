@@ -1,0 +1,126 @@
+import type { UnlighthouseRouteReport } from '../src/types'
+import * as fsp from 'node:fs/promises'
+import ApiClient from '@lhci/utils/src/api-client.js'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { generateReportPayload } from '../src/reporters'
+import _lighthouseReport from './__fixtures__/lighthouseReport.mjs'
+
+const lighthouseReport = _lighthouseReport as any as UnlighthouseRouteReport[]
+
+vi.mock('node:fs/promises', () => {
+  return {
+    readFile: vi.fn(() => new Promise(resolve => resolve('{}'))),
+  }
+})
+
+const setBuildToken = vi.fn()
+const findProjectByToken = vi.fn(
+  () => new Promise(resolve => resolve({ id: 1 })),
+)
+const createBuild = vi.fn(
+  () => new Promise(resolve => resolve({ id: 1, projectId: 1 })),
+)
+const createRun = vi.fn(() => new Promise(resolve => resolve({})))
+const sealBuild = vi.fn(() => new Promise(resolve => resolve({})))
+
+vi.mock('@lhci/utils/src/api-client.js', () => {
+  // eslint-disable-next-line prefer-arrow-callback
+  const ApiClient = vi.fn(function ApiClient() {
+    return {
+      setBuildToken,
+      findProjectByToken,
+      createBuild,
+      createRun,
+      sealBuild,
+    }
+  })
+  return {
+    default: ApiClient,
+  }
+})
+
+vi.mock('@lhci/utils/src/build-context.js', () => {
+  return {
+    getCommitMessage: vi.fn(() => ''),
+    getAuthor: vi.fn(() => ''),
+    getAvatarUrl: vi.fn(() => ''),
+    getExternalBuildUrl: vi.fn(() => ''),
+    getCommitTime: vi.fn(() => ''),
+    getCurrentHash: vi.fn(() => ''),
+    getCurrentBranch: vi.fn(() => ''),
+    getAncestorHash: vi.fn(() => ''),
+  }
+})
+
+describe('lighthouseServer reports', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('sends the scanned URL without appending the path to it', async () => {
+    await Promise.resolve<Promise<any>>(generateReportPayload('lighthouseServer', lighthouseReport, {
+      lhciHost: 'http://localhost',
+      lhciBuildToken: 'token',
+    }))
+
+    const urls = createRun.mock.calls.map(([run]) => (run as { url: string }).url)
+
+    expect(urls).toEqual(lighthouseReport.map(({ route }) => route.url))
+  })
+
+  it('uses the final audited URL after a redirect', async () => {
+    const finalUrl = 'https://harlanzw.com/canonical'
+    vi.mocked(fsp.readFile).mockResolvedValueOnce(JSON.stringify({ finalUrl }) as any)
+
+    await Promise.resolve<Promise<any>>(generateReportPayload('lighthouseServer', lighthouseReport.slice(0, 1), {
+      lhciHost: 'http://localhost',
+      lhciBuildToken: 'token',
+    }))
+
+    expect(createRun).toBeCalledWith(expect.objectContaining({ url: finalUrl }))
+  })
+
+  it('expanded', async () => {
+    vi.useFakeTimers()
+
+    await Promise.resolve<Promise<any>>(generateReportPayload('lighthouseServer', lighthouseReport, {
+      lhciHost: 'http://localhost',
+      lhciBuildToken: 'token',
+    }))
+
+    expect(ApiClient).toBeCalledWith({ fetch, rootURL: 'http://localhost' })
+    expect(setBuildToken).toBeCalledWith('token')
+
+    expect(createBuild).toBeCalledWith({
+      projectId: 1,
+      lifecycle: 'unsealed',
+      hash: '',
+      branch: '',
+      ancestorHash: '',
+      commitMessage: '',
+      author: '',
+      avatarUrl: '',
+      externalBuildUrl: '',
+      runAt: new Date().toISOString(),
+      committedAt: '',
+      ancestorCommittedAt: undefined,
+    })
+
+    expect(fsp.readFile).toBeCalledTimes(lighthouseReport.length)
+
+    expect(createRun).toBeCalledTimes(lighthouseReport.length)
+
+    lighthouseReport.forEach(({ route }) => {
+      expect(createRun).toBeCalledWith({
+        projectId: 1,
+        buildId: 1,
+        representative: false,
+        url: route.url,
+        lhr: '{}',
+      })
+    })
+
+    expect(sealBuild).toBeCalledTimes(1)
+    expect(sealBuild).toBeCalledWith(1, 1)
+  })
+})

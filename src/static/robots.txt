@@ -1,0 +1,50 @@
+User-agent: *
+Allow: /
+Disallow: /design-system.html
+Disallow: /design-system/
+Disallow: /privacy.html
+Disallow: /privacy/
+Disallow: /404.html
+Disallow: /404/
+
+User-agent: Yandex
+Allow: /
+Disallow: /design-system.html
+Disallow: /design-system/
+Disallow: /privacy.html
+Disallow: /privacy/
+Disallow: /404.html
+Disallow: /404/
+Clean-param: utm_source&utm_medium&utm_campaign&utm_term&utm_content&yclid&gclid&fbclid&_ym_visorc&_ym_debug /
+
+User-agent: Googlebot
+Allow: /
+Disallow: /design-system.html
+Disallow: /design-system/
+Disallow: /privacy.html
+Disallow: /privacy/
+Disallow: /404.html
+Disallow: /404/
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://cortectech.pro/sitemap.xml

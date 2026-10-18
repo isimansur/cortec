@@ -1,0 +1,37 @@
+# https://docs.github.com/actions
+
+name: Release
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  npm:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - run: ./bin/build.sh dist/.htaccess bin/htaccess.conf
+      - uses: actions/setup-node@v7
+        with:
+          registry-url: "https://registry.npmjs.org"
+      - run: npm publish --provenance --ignore-scripts
+
+  github:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: ./bin/build.sh dist/h5bp.htaccess bin/htaccess.conf
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./dist/h5bp.htaccess
+          asset_name: h5bp.htaccess
+          asset_content_type: application/octet-stream

@@ -1,0 +1,50 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "lib": [
+      "ESNext",
+      "dom",
+      "dom.iterable",
+      "webworker"
+    ],
+    "moduleDetection": "force",
+    "useDefineForClassFields": true,
+    "module": "es2022",
+    "moduleResolution": "Bundler",
+    "paths": {
+      "unlighthouse": ["./packages/unlighthouse/src"],
+      "@unlighthouse/client": ["./packages/client/src"],
+      "@unlighthouse/cli": ["./packages/cli/src"],
+      "@unlighthouse/core": ["./packages/core/src"],
+      "@unlighthouse/server": ["./packages/server/src"],
+      "@unlighthouse/nuxt": ["./integrations/nuxt/src"],
+      "@unlighthouse/vite": ["./integrations/vite/src"],
+      "@unlighthouse/webpack": ["./integrations/webpack/src"]
+    },
+    "resolveJsonModule": true,
+    "types": [],
+    "allowJs": true,
+    "maxNodeModuleJsDepth": 200,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noImplicitThis": true,
+    "noUncheckedIndexedAccess": false,
+    "noEmit": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "**/*.d.ts"
+  ],
+  "exclude": [
+    "**/dist/**",
+    "**/.unlighthouse/**",
+    "**/node_modules/**"
+  ]
+}

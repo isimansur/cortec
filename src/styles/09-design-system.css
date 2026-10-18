@@ -1,0 +1,215 @@
+/* ==========================================================================
+   09. CORTEC LIVE DESIGN SYSTEM & UI-KIT SHOWCASE (/design-system/)
+   ========================================================================== */
+.ds-hero {
+  padding: 150px 0 72px;
+  border-bottom: 1px solid var(--ds-border-subtle);
+}
+
+.ds-nav-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 36px;
+}
+
+.ds-nav-pill {
+  font-family: var(--ds-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 10px 18px;
+  border-radius: var(--ds-radius-pill);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--ds-border-subtle);
+  color: var(--ds-text-secondary);
+  transition: all 0.35s var(--ds-ease-expo);
+}
+
+.ds-nav-pill:hover {
+  border-color: var(--ds-accent-sand);
+  color: var(--ds-text-primary);
+  background: rgba(200, 169, 142, 0.08);
+}
+
+.ds-section {
+  padding: 88px 0;
+  border-bottom: 1px solid var(--ds-border-subtle);
+}
+
+.ds-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.ds-token-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.ds-swatch-card {
+  background: var(--ds-bg-surface);
+  border: 1px solid var(--ds-border-subtle);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.4s var(--ds-ease-expo), border-color 0.4s var(--ds-ease-expo);
+}
+
+.ds-swatch-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--ds-border-hover);
+}
+
+.ds-swatch-color {
+  height: 96px;
+  width: 100%;
+  border-bottom: 1px solid var(--ds-border-subtle);
+  position: relative;
+}
+
+.ds-swatch-body {
+  padding: 16px 18px;
+}
+
+.ds-swatch-name {
+  font-family: var(--ds-font-mono);
+  font-size: 12px;
+  color: var(--ds-text-primary);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.ds-swatch-value {
+  font-family: var(--ds-font-mono);
+  font-size: 11px;
+  color: var(--ds-accent-sand);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.ds-swatch-desc {
+  font-size: 13px;
+  color: var(--ds-text-secondary);
+  line-height: 1.45;
+}
+
+.ds-type-table {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.ds-type-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 32px;
+  align-items: baseline;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--ds-border-subtle);
+}
+
+.ds-type-meta {
+  font-family: var(--ds-font-mono);
+  font-size: 11px;
+  color: var(--ds-text-muted);
+  line-height: 1.7;
+}
+
+.ds-logo-stage {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+
+.ds-logo-box {
+  padding: 56px 40px;
+  border-radius: 18px;
+  border: 1px solid var(--ds-border-subtle);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  min-height: 260px;
+}
+
+.ds-logo-box.is-obsidian {
+  background: #0A0B0D;
+}
+
+.ds-logo-box.is-graphite {
+  background: linear-gradient(145deg, #16181D 0%, #0E1013 100%);
+}
+
+.ds-logo-sub {
+  font-family: var(--ds-font-sans);
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.72em;
+  text-transform: lowercase;
+  color: var(--ds-text-secondary);
+  margin-top: 10px;
+  padding-left: 0.72em;
+}
+
+.ds-carrier-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+
+.ds-carrier-card {
+  background: var(--ds-bg-surface);
+  border: 1px solid var(--ds-border-subtle);
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ds-carrier-card img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-bottom: 1px solid var(--ds-border-subtle);
+}
+
+.ds-carrier-info {
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ds-arch-code {
+  background: #0A0B0D;
+  border: 1px solid var(--ds-border-subtle);
+  border-radius: 14px;
+  padding: 24px 28px;
+  font-family: var(--ds-font-mono);
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: var(--ds-text-secondary);
+  overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+  .ds-type-row,
+  .ds-logo-stage,
+  .ds-carrier-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .ds-hero {
+    padding: 116px 0 48px;
+  }
+  .ds-section {
+    padding: 56px 0;
+  }
+}

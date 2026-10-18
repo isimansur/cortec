@@ -1,0 +1,138 @@
+import type { UserConfig } from '@unlighthouse/core'
+import type { ReporterConfig } from './reporters/types'
+import type { CiOptions } from './types'
+import { setMaxListeners } from 'node:events'
+import { glob, rm } from 'node:fs/promises'
+import { createUnlighthouse, generateClient, useLogger, useUnlighthouse } from '@unlighthouse/core'
+import { relative, resolve } from 'pathe'
+import { isCI } from 'std-env'
+import { isScoreBelowBudget } from './ciBudget'
+import { createCiCli } from './createCli'
+import { handleError } from './errors'
+import { generateReportPayload, outputReport } from './reporters'
+import { pickCiOptions, validateHost, validateOptions } from './util'
+
+async function run() {
+  const startTime = new Date()
+
+  setMaxListeners(0)
+
+  const cli = createCiCli()
+
+  const { options } = cli.parse() as unknown as { options: CiOptions }
+
+  if (options.help || options.version)
+    return
+
+  const resolvedOptions: UserConfig = pickCiOptions(options)
+
+  await createUnlighthouse({
+    ...resolvedOptions,
+    hooks: {
+      'resolved-config': async (config) => {
+        await validateHost(config)
+      },
+    },
+    cache: false,
+  }, { name: 'ci' })
+
+  const { resolvedConfig, setCiContext, hooks, worker, start } = useUnlighthouse()
+
+  validateOptions(resolvedConfig)
+
+  // default reporter if not set by CLI or config file
+  if (!resolvedConfig.ci.reporter)
+    resolvedConfig.ci.reporter = 'jsonSimple'
+
+  const logger = useLogger()
+
+  let hasBudget = true
+  if (!resolvedConfig.ci?.budget)
+    hasBudget = false
+
+  await setCiContext()
+  const { routes } = await start()
+  // nothing queued means `worker-finished` never fires, so exit instead of waiting forever
+  if (!worker.reports().length) {
+    if (!routes.length)
+      logger.error('Failed to queue routes for scanning. Please check the logs with debug enabled.')
+    process.exit(1)
+  }
+
+  hooks.hook('worker-finished', async () => {
+    const end = new Date()
+    const seconds = Math.round((end.getTime() - startTime.getTime()) / 1000)
+
+    // stop the progress spinner before any output, its exit handler would otherwise print "Canceled"
+    worker.clearProgressDisplay()
+
+    logger.success(`Unlighthouse has finished scanning \`${resolvedConfig.site}\`: ${worker.reports().length} routes in \`${seconds}s\`.`)
+
+    let hadError = false
+    if (hasBudget) {
+      logger.info('Running score budgets.', resolvedConfig.ci.budget)
+      worker.reports().forEach((report) => {
+        const categories = report.report?.categories
+        if (!categories)
+          return
+
+        Object.values(categories).forEach((category: { score: number | null, key: string }) => {
+          let budget = resolvedConfig.ci.budget
+          if (!Number.isInteger(budget))
+            budget = resolvedConfig.ci.budget[category.key]
+
+          if (isScoreBelowBudget(category.score, budget as number | undefined)) {
+            logger.error(
+              `${report.route.path} has invalid score \`${category.score}\` for category \`${category.key}\`.`,
+            )
+            hadError = true
+          }
+        })
+      })
+      if (!hadError)
+        logger.success('Score assertions have passed.')
+    }
+    if (resolvedConfig.ci.reporter) {
+      const reporter = resolvedConfig.ci.reporter
+      const reporterConfig: ReporterConfig = {
+        columns: resolvedConfig.client.columns,
+        ...(resolvedConfig.ci?.reporterConfig || {}),
+
+      }
+      // @ts-expect-error untyped
+      const payload = await Promise.resolve<Promise<any>>(generateReportPayload(reporter, worker.reports(), reporterConfig))
+      let path = ''
+      if (payload)
+        path = `\`./${relative(resolvedConfig.root, await outputReport(reporter, resolvedConfig, payload))}\``
+
+      logger.success(`Generated \`${resolvedConfig.ci.reporter}\` report`, path)
+    }
+
+    if (resolvedConfig.ci?.buildStatic) {
+      logger.info('Generating static report.')
+      const { runtimeSettings, resolvedConfig } = useUnlighthouse()
+      await generateClient({ static: true })
+      // delete the json lighthouse payloads, we don't need them for the static mode
+      const jsonPayloads = await Array.fromAsync(glob(
+        ['lighthouse.json', '**/lighthouse.json', 'assets/lighthouse.fbx'],
+        { cwd: runtimeSettings.generatedClientPath },
+      ))
+      logger.debug(
+        `Deleting ${jsonPayloads.length} files not required for static build.`,
+      )
+      for (const payload of jsonPayloads)
+        await rm(resolve(runtimeSettings.generatedClientPath, payload))
+
+      const relativeDir = `./${relative(resolvedConfig.root, runtimeSettings.generatedClientPath)}`
+      logger.success(`Static report is ready for uploading: \`${relativeDir}\``)
+      if (!isCI) {
+        // tell the user they can preview it using sirv-cli and link them to the docs
+        logger.info(`You can preview the static report using \`npx sirv-cli ${relativeDir}\`.`)
+        logger.info('For deployment demos, see https://unlighthouse.dev/guide/guides/generating-static-reports#interactive-html-reports')
+      }
+    }
+    process.exit(hadError ? 1 : 0)
+  })
+}
+
+run().catch(handleError)

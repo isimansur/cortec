@@ -1,0 +1,231 @@
+/* ==========================================================================
+   QUIET FOOTER
+   ========================================================================== */
+
+.site-footer {
+  padding: 140px 0 90px;
+  background-color: var(--bg-deep);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 48px;
+  align-items: start;
+}
+
+.footer-brand {
+  grid-column: 1 / span 4;
+}
+
+.footer-brand p {
+  margin-top: 24px;
+  color: var(--text-body);
+  max-width: 38ch;
+  font-size: 0.92rem;
+}
+
+.footer-nav-col {
+  grid-column: 5 / span 3;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.footer-systems-col {
+  grid-column: 8 / span 3;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.footer-contact-col {
+  grid-column: 11 / span 2;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.footer-col-title {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-sand);
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+
+.footer-nav-col a,
+.footer-systems-col a,
+.footer-contact-col a,
+.footer-contact-col span {
+  font-size: 0.9rem;
+  color: var(--text-body);
+  font-weight: 300;
+  transition: color 0.35s var(--ease-out-expo), transform 0.35s var(--ease-out-expo);
+}
+
+.footer-nav-col a:hover,
+.footer-systems-col a:hover,
+.footer-contact-col a:hover {
+  color: var(--text-white);
+  transform: translateX(3px);
+}
+
+.footer-bottom {
+  margin-top: 100px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  color: rgba(247, 248, 250, 0.34);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+}
+
+
+/* ==========================================================================
+   INTERACTIVE 4-BRAND LOGOS PAVILION (VOLUMETRIC DEPTH, NO 1PX BORDERS)
+   ========================================================================== */
+
+.brand-logos-showcase {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(20px, 2.4vw, 34px);
+  align-items: stretch;
+}
+
+.brand-logo-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(36px, 3.2vw, 52px) clamp(28px, 2.5vw, 40px);
+  border-radius: 14px;
+  background: radial-gradient(
+    130% 120% at 50% 0%,
+    rgba(255, 255, 255, 0.045) 0%,
+    rgba(20, 22, 25, 0.72) 62%,
+    rgba(17, 18, 20, 0.92) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 28px 64px -18px rgba(0, 0, 0, 0.82);
+  color: var(--text-white);
+  transition:
+    transform 0.65s var(--ease-out-expo),
+    box-shadow 0.65s var(--ease-out-expo),
+    background 0.65s var(--ease-out-expo);
+  will-change: transform;
+}
+
+.brand-logo-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    340px circle at var(--glow-x, 50%) var(--glow-y, 20%),
+    rgba(200, 169, 142, 0.16),
+    transparent 72%
+  );
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out-expo);
+  pointer-events: none;
+}
+
+.brand-logo-card:hover {
+  transform: translate3d(0, -8px, 0);
+  box-shadow:
+    inset 0 1px 0 rgba(200, 169, 142, 0.36),
+    0 40px 88px -16px rgba(0, 0, 0, 0.95),
+    0 0 42px rgba(200, 169, 142, 0.08);
+}
+
+.brand-logo-card:hover::before {
+  opacity: 1;
+}
+
+.brand-origin {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-sand);
+  opacity: 0.82;
+}
+
+.brand-type-wrap {
+  margin: 34px 0 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.55s var(--ease-out-expo);
+}
+
+.brand-type-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.32rem, 1.65vw, 1.78rem);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  color: var(--text-white);
+  transition: color 0.45s var(--ease-out-expo), text-shadow 0.45s var(--ease-out-expo);
+}
+
+.brand-type-sub {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 300;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-halftone);
+  transition: color 0.45s var(--ease-out-expo);
+}
+
+.brand-logo-card:hover .brand-type-wrap {
+  transform: translateX(4px);
+}
+
+.brand-logo-card:hover .brand-type-name {
+  color: #FFFFFF;
+  text-shadow: 0 8px 28px rgba(200, 169, 142, 0.25);
+}
+
+.brand-logo-card:hover .brand-type-sub {
+  color: var(--accent-sand-light);
+}
+
+.brand-summary {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--text-body);
+  font-weight: 300;
+  margin-bottom: 32px;
+}
+
+.brand-history-cta {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(247, 248, 250, 0.52);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.4s var(--ease-out-expo), transform 0.4s var(--ease-out-expo);
+}
+
+.brand-logo-card:hover .brand-history-cta {
+  color: var(--accent-sand-light);
+  transform: translateX(4px);
+}
+
+@media (max-width: 1180px) and (min-width: 769px) {
+  .brand-logos-showcase {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+

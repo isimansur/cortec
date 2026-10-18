@@ -1,0 +1,62 @@
+/* ==========================================================================
+   OPTICAL SCROLL REVEAL ANIMATION (BLUR-TO-SHARP + DEPTH LIFT)
+   ========================================================================== */
+
+.reveal {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translate3d(0, 32px, 0);
+  transition:
+    opacity 1.15s var(--ease-out-expo),
+    filter 1.15s var(--ease-out-expo),
+    transform 1.15s var(--ease-out-expo);
+  will-change: opacity, filter, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  filter: blur(0px);
+  transform: translate3d(0, 0, 0);
+}
+
+.reveal .lead-paragraph,
+.reveal .body-paragraph {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition: opacity 1s var(--ease-out-expo) 0.14s, transform 1s var(--ease-out-expo) 0.14s;
+}
+
+.reveal.is-visible .lead-paragraph,
+.reveal.is-visible .body-paragraph {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.reveal .btn-group,
+.reveal .quiet-anchor-rail {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition: opacity 1s var(--ease-out-expo) 0.24s, transform 1s var(--ease-out-expo) 0.24s;
+}
+
+.reveal.is-visible .btn-group,
+.reveal.is-visible .quiet-anchor-rail {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+
+/* ==========================================================================
+   21. RENDERING & PAINT PERFORMANCE OPTIMIZATION
+   ========================================================================== */
+
+
+.macro-stage-frame img,
+.hero-visual-stage img,
+.editorial-media img,
+.strip-item img {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+

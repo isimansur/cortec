@@ -1,0 +1,71 @@
+/* ==========================================================================
+   01. CORTEC DESIGN SYSTEM TOKENS (SINGLE SOURCE OF TRUTH)
+   Aesthetic Persona: Quiet Architectural Minimalism
+   ========================================================================== */
+
+:root {
+  /* --- Surface & Obsidian Matte Palette --- */
+  --ds-bg-obsidian: #0A0B0D;
+  --ds-bg-deep: #111214;
+  --ds-bg-surface: #141619;
+  --ds-bg-elevated: #1A1D22;
+  --ds-bg-glass: rgba(17, 18, 20, 0.84);
+
+  /* --- Typography & Optical Hierarchy --- */
+  --ds-text-primary: #F7F8FA;
+  --ds-text-secondary: rgba(230, 234, 240, 0.68);
+  --ds-text-muted: rgba(214, 206, 198, 0.44);
+  --ds-text-micro: rgba(224, 214, 204, 0.38);
+
+  /* --- Anodized Metal Accents --- */
+  --ds-accent-sand: #C8A98E;
+  --ds-accent-sand-light: #DFC3AA;
+  --ds-accent-sand-glow: rgba(200, 169, 142, 0.18);
+
+  /* --- Structural Hairlines & Contours --- */
+  --ds-border-subtle: rgba(255, 255, 255, 0.07);
+  --ds-border-hover: rgba(200, 169, 142, 0.38);
+
+  /* --- Typography Families --- */
+  --ds-font-display: 'Unbounded', 'Onest', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ds-font-sans: 'Onest', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ds-font-mono: 'JetBrains Mono', monospace;
+
+  /* --- Fluid Type Scale --- */
+  --ds-text-h1: clamp(2.1rem, 4.4vw, 4.25rem);
+  --ds-text-h2: clamp(1.65rem, 3.1vw, 3.1rem);
+  --ds-text-h3: clamp(1.2rem, 1.8vw, 1.65rem);
+  --ds-text-lead: clamp(1.05rem, 1.25vw, 1.28rem);
+  --ds-text-body: 1rem;
+  --ds-text-xs: 0.75rem;
+
+  /* --- Spacing & Grid Tokens --- */
+  --ds-container-pad: 5vw;
+  --ds-container-max: 1560px;
+  --ds-section-space: clamp(88px, 11vw, 168px);
+  --ds-grid-gap: 32px;
+  --ds-radius-card: 18px;
+  --ds-radius-pill: 999px;
+
+  /* --- Kinematic Easing --- */
+  --ds-ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ds-ease-quart: cubic-bezier(0.25, 1, 0.5, 1);
+
+  /* --- Semantic Project Aliases (100% Backward Compatible) --- */
+  --bg-deep: var(--ds-bg-deep);
+  --bg-soft: var(--ds-bg-surface);
+  --text-white: var(--ds-text-primary);
+  --text-halftone: var(--ds-text-muted);
+  --text-body: var(--ds-text-secondary);
+  --text-whisper: var(--ds-text-micro);
+  --accent-sand: var(--ds-accent-sand);
+  --accent-sand-light: var(--ds-accent-sand-light);
+  --font-display: var(--ds-font-display);
+  --font-sans: var(--ds-font-sans);
+  --font-serif: var(--ds-font-display);
+  --font-mono: var(--ds-font-mono);
+  --ease-out-expo: var(--ds-ease-expo);
+  --ease-out-quart: var(--ds-ease-quart);
+  --scroll-progress: 0;
+  color-scheme: dark;
+}

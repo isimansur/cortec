@@ -1,0 +1,24 @@
+name: CORTEC Build, SEO & Architecture Quality Gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-verify:
+    name: Build Static Site & Run Google/Yandex SEO + SSOT Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20 LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Deterministic Build & Full SEO/Architecture Audit
+        run: npm test

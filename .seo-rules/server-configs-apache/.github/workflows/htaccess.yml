@@ -1,0 +1,40 @@
+# https://docs.github.com/actions
+
+name: .htaccess
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: ./test/build/test_userbuild.sh
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Build .htaccess
+        run: ./bin/build.sh test/conf/.htaccess test/build/htaccess_fixture.conf
+
+      - name: Install k6
+        uses: grafana/setup-k6-action@v1
+
+      - name: Test with server-configs-test
+        uses: h5bp/server-configs-test@8.2.3
+        with:
+          command: test
+          server: httpd
+          root-path: /usr/local/apache2/htdocs
+          configs-volumes: test/conf/.htaccess:/usr/local/apache2/htdocs/.htaccess;test/vhosts/.htaccess.server.localhost.conf:/usr/local/apache2/conf/httpd.conf
+          tests: basic-file-access:cache-busting:custom-errors:forbidden-files:enforce-gzip:precompressed-files-gzip:concatenation
+
+      - name: Benchmark
+        uses: h5bp/server-configs-test@8.2.3
+        with:
+          command: benchmark
+          server: httpd
+          root-path: /usr/local/apache2/htdocs
+          configs-volumes: test/conf/.htaccess:/usr/local/apache2/htdocs/.htaccess;test/vhosts/.htaccess.server.localhost.conf:/usr/local/apache2/conf/httpd.conf

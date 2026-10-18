@@ -1,0 +1,17 @@
+{
+  "name": "awesome-wpo",
+  "description": "Awesome web performance",
+  "author": "Davidson Fellipe <email@fellipe.com>",
+  "dependencies": {
+    "textlint": "^11.6.3",
+    "textlint-rule-no-dead-link": "^4.6.2",
+    "textlint-rule-terminology": "^2.1.4"
+  },
+  "license": "MIT",
+  "scripts": {
+    "lint": "textlint --rule textlint-rule-terminology ./{ARTICLES,MEETUPS,TALKS,INTERVIEWS}.md",
+    "lint-no-dead-link": "textlint --rule textlint-rule-no-dead-link *.md",
+    "lint-awesome": "npx --yes awesome-lint README.md"
+  },
+  "packageManager": "pnpm@10.12.1"
+}
