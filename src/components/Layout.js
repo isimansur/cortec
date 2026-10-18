@@ -213,17 +213,16 @@ ${articleOgTags}
   <meta property="twitter:image" content="${ogImageUrl}">
   <meta name="twitter:image" content="${ogImageUrl}">
 
-  <!-- Preconnect, Non-Render-Blocking Webfonts & LCP Preload for Core Web Vitals -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Self-Hosted Variable WOFF2 Preloads, Critical CSS & LCP Preload for Core Web Vitals -->
+  <link rel="preload" as="font" type="font/woff2" href="${prefix}assets/fonts/unbounded-cyrillic.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="${prefix}assets/fonts/onest-cyrillic.woff2" crossorigin>
 ${preloadTag}
-  ${inlineCss ? `<style>${inlineCss}</style>\n  <link rel="stylesheet" href="${prefix}assets/css/style.css?v=${cssHash}" media="print" onload="this.media='all'">\n  <noscript><link rel="stylesheet" href="${prefix}assets/css/style.css?v=${cssHash}"></noscript>` : `<link rel="stylesheet" href="${prefix}assets/css/style.css?v=${cssHash}">`}
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&family=Onest:wght@200;300;400;500&family=Unbounded:wght@200;300;400;500&display=swap" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&family=Onest:wght@200;300;400;500&family=Unbounded:wght@200;300;400;500&display=swap"></noscript>
+  ${inlineCss ? `<style>${inlineCss.replace(/\.\.\/fonts\//g, `${prefix}assets/fonts/`)}</style>\n  <link rel="stylesheet" href="${prefix}assets/css/style.css?v=${cssHash}" media="print" onload="this.media='all'">\n  <noscript><link rel="stylesheet" href="${prefix}assets/css/style.css?v=${cssHash}"></noscript>` : `<link rel="stylesheet" href="${prefix}assets/css/style.css?v=${cssHash}">`}
   <link rel="icon" type="image/svg+xml" href="${prefix}favicon.svg">
   <link rel="shortcut icon" type="image/svg+xml" href="${prefix}favicon.svg">
   <link rel="apple-touch-icon" href="${prefix}favicon.svg">
   <link rel="manifest" href="${prefix}site.webmanifest">
+  <script type="speculationrules">{"prefetch":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>
 
 ${schemaBlock}
 </head>

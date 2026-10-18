@@ -308,9 +308,34 @@ for (const file of htmlFiles) {
       `${rel}: DOM contains ${domNodeCount} elements (exceeds 1500 threshold)`
     );
   }
+
+  // 13B. [fontsource / google-webfonts-helper] Zero External Google Fonts CDN requests & Local WOFF2 Preload
+  if (/fonts\.googleapis\.com|fonts\.gstatic\.com/.test(html)) {
+    recordWarning(
+      'Font Optimization (fontsource / google-webfonts-helper)',
+      'self-hosted-woff2-only',
+      `${rel}: Contains external requests to fonts.googleapis.com / fonts.gstatic.com instead of 100% self-hosted WOFF2`
+    );
+  }
+  if (!/<link rel="preload" as="font" type="font\/woff2"[^>]+unbounded-cyrillic\.woff2" crossorigin>/.test(html)) {
+    recordWarning(
+      'Font Optimization (addyosmani/web-quality-skills)',
+      'preload-critical-woff2',
+      `${rel}: Missing <link rel="preload" as="font" type="font/woff2" crossorigin> for primary Cyrillic display font`
+    );
+  }
+
+  // 13C. [WICG/nav-speculation & GoogleChromeLabs/quicklink] Speculation Rules API in <head>
+  if (!/<script type="speculationrules">/.test(html)) {
+    recordWarning(
+      'Instant Navigation (WICG/nav-speculation / quicklink)',
+      'speculation-rules-prefetch',
+      `${rel}: Missing <script type="speculationrules"> for instant hover prefetching`
+    );
+  }
 }
 
-// 14. Check Fonts & Critical Rendering Path in CSS (Front-End-Performance-Checklist)
+// 14. Check Fonts & Critical Rendering Path in CSS (Front-End-Performance-Checklist & fontsource)
 const cssFile = path.join(DIST, 'assets/css/style.css');
 const cssContent = fs.readFileSync(cssFile, 'utf8');
 if (/@import\s+url\(['"]?https:\/\/fonts\.googleapis\.com/.test(cssContent)) {
@@ -319,6 +344,19 @@ if (/@import\s+url\(['"]?https:\/\/fonts\.googleapis\.com/.test(cssContent)) {
     'critical-request-chains / render-blocking-@import (Front-End-Performance-Checklist)',
     'assets/css/style.css uses @import url("https://fonts.googleapis.com/...") which creates a sequential render-blocking request chain instead of non-blocking <link> in <head>'
   );
+}
+const requiredWoff2 = [
+  'onest-cyrillic.woff2',
+  'onest-latin.woff2',
+  'unbounded-cyrillic.woff2',
+  'unbounded-latin.woff2',
+  'jetbrainsmono-cyrillic.woff2',
+  'jetbrainsmono-latin.woff2'
+];
+for (const wf of requiredWoff2) {
+  if (!fs.existsSync(path.join(DIST, 'assets/fonts', wf))) {
+    recordIssue('Font Optimization (fontsource)', 'missing-local-woff2', `Missing self-hosted font file: assets/fonts/${wf}`);
+  }
 }
 
 // 15. [GoogleChrome/lighthouse & Front-End-Performance-Checklist] content-visibility: auto for long card lists

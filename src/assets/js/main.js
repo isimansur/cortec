@@ -678,5 +678,47 @@ document.addEventListener('DOMContentLoaded', () => {
       chip.addEventListener('focus', () => activateRegion(chip.dataset.regionTrigger));
     });
   }
+
+  // 10. Adaptive Instant Navigation Prefetcher (GoogleChromeLabs/quicklink & instant.page pattern)
+  const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const isSaveData = Boolean(conn && (conn.saveData || (conn.effectiveType && conn.effectiveType.includes('2g'))));
+  if (!isSaveData) {
+    const prefetchedUrls = new Set();
+    const prefetchInternalPage = (anchor) => {
+      if (!anchor || !anchor.href) return;
+      try {
+        const url = new URL(anchor.href, window.location.href);
+        if (url.origin !== window.location.origin) return;
+        if (url.pathname === window.location.pathname && url.hash) return;
+        const cleanHref = url.origin + url.pathname;
+        if (prefetchedUrls.has(cleanHref)) return;
+        prefetchedUrls.add(cleanHref);
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = cleanHref;
+        link.as = 'document';
+        document.head.appendChild(link);
+      } catch (_) {}
+    };
+
+    document.addEventListener(
+      'pointerenter',
+      (e) => {
+        const a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+        if (a) prefetchInternalPage(a);
+      },
+      { passive: true, capture: true }
+    );
+
+    document.addEventListener(
+      'touchstart',
+      (e) => {
+        const a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+        if (a) prefetchInternalPage(a);
+      },
+      { passive: true }
+    );
+  }
 });
+
 
