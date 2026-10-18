@@ -110,7 +110,7 @@ module.exports = {
 
               <div class="form-field">
                 <label for="contact-info">Номер телефона</label>
-                <input type="tel" id="contact-info" name="contact" autocomplete="tel" inputmode="numeric" maxlength="18" pattern="\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}" title="Введите номер в формате +7 (928) 000-00-00" oninput="let d=this.value.replace(/\D/g,'');if(!d){this.value='';return;}if(d[0]==='8'||d[0]==='7')d=d.slice(1);d=d.slice(0,10);let f='+7';if(d.length>0)f+=' ('+d.slice(0,3);if(d.length>=4)f+=') '+d.slice(3,6);if(d.length>=7)f+='-'+d.slice(6,8);if(d.length>=9)f+='-'+d.slice(8,10);this.value=f;" required placeholder="+7 (928) 000-00-00">
+                <input type="tel" id="contact-info" name="contact" autocomplete="tel" inputmode="numeric" maxlength="18" pattern="\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2}" title="Введите номер в формате +7 (928) 000-00-00" oninput="let d=this.value.replace(/\\D/g,'');if(!d){this.value='';return;}if(d[0]==='8'||d[0]==='7')d=d.slice(1);d=d.slice(0,10);let f='+7';if(d.length>0)f+=' ('+d.slice(0,3);if(d.length>=4)f+=') '+d.slice(3,6);if(d.length>=7)f+='-'+d.slice(6,8);if(d.length>=9)f+='-'+d.slice(8,10);this.value=f;" required placeholder="+7 (928) 000-00-00">
               </div>
 
               <div class="form-field">
