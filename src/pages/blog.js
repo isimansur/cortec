@@ -10,7 +10,7 @@ module.exports = {
   ogTitle: 'Инженерный журнал CORTEC — Статика, теплотехника и архитектура светопрозрачных конструкций',
   ogDescription: 'Инженерные разборы: статика фасадов ALUTECH, темная ламинация KBE, гибрид KÖMMERLING AluClip Zero, оптика AGC Stopray и монтаж по ГОСТ 30971.',
   twitterDescription: 'Инженерный журнал CORTEC о панорамном и фасадном остеклении в Чеченской Республике и на Северном Кавказе.',
-  preloadImg: 'hero-volumetric-node',
+  preloadImg: 'blog-engineering-hero',
   schemaJson: buildBlogIndexSchema(BLOG_POSTS),
 
   renderMain({ prefix = '' } = {}) {
@@ -21,17 +21,31 @@ module.exports = {
 
     const cardsHtml = BLOG_POSTS.map((post) => `
           <a href="${prefix}blog/${post.slug}.html" class="blog-card" data-cluster="${post.cluster}" data-search="${(post.title + ' ' + post.h1 + ' ' + post.h1Sub + ' ' + post.keywords + ' ' + post.regionBadge).toLowerCase()}">
-            <div class="blog-card-top">
-              <span class="blog-card-num">${post.clusterLabel}</span>
+            <div class="blog-card-media">
+              <img
+                src="${prefix}assets/img/${post.heroImg}.avif"
+                srcset="${prefix}assets/img/${post.heroImg}-sm.avif 688w, ${prefix}assets/img/${post.heroImg}.avif 1376w"
+                sizes="(max-width: 768px) 50vw, 33vw"
+                width="1344"
+                height="768"
+                alt="${post.h1} — ${post.regionBadge}"
+                loading="lazy"
+                decoding="async"
+              >
               <span class="blog-card-region">${post.regionBadge}</span>
             </div>
-            <h2 class="blog-card-title">
-              ${post.h1} <span class="halftone">${post.h1Sub}</span>
-            </h2>
-            <p class="blog-card-desc">${post.description}</p>
-            <div class="blog-card-footer">
-              <span>Время чтения: ${post.readingTime}</span>
-              <span class="blog-card-arrow">Читать материал →</span>
+            <div class="blog-card-body">
+              <div class="blog-card-top">
+                <span class="blog-card-num">${post.clusterLabel}</span>
+              </div>
+              <h2 class="blog-card-title">
+                ${post.h1} <span class="halftone">${post.h1Sub}</span>
+              </h2>
+              <p class="blog-card-desc">${post.description}</p>
+              <div class="blog-card-footer">
+                <span>Время чтения: ${post.readingTime}</span>
+                <span class="blog-card-arrow">Читать материал →</span>
+              </div>
             </div>
           </a>`).join('\n');
 
@@ -40,8 +54,8 @@ module.exports = {
     <section class="hero-viewport" aria-label="Инженерный журнал CORTEC">
       <div class="hero-media-wrap">
         <img
-          src="${prefix}assets/img/hero-volumetric-node.avif"
-          srcset="${prefix}assets/img/hero-volumetric-node-sm.avif 688w, ${prefix}assets/img/hero-volumetric-node.avif 1376w"
+          src="${prefix}assets/img/blog-engineering-hero.avif"
+          srcset="${prefix}assets/img/blog-engineering-hero-sm.avif 688w, ${prefix}assets/img/blog-engineering-hero.avif 1376w"
           sizes="100vw"
           width="1344"
           height="768"

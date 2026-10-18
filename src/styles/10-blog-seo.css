@@ -156,7 +156,8 @@
   background: rgba(255, 255, 255, 0.024);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
-  padding: 28px;
+  overflow: hidden;
+  padding: 0;
   text-decoration: none;
   color: inherit;
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.28s ease, background 0.28s ease;
@@ -172,12 +173,54 @@
   transform: scale(0.985);
 }
 
+.blog-card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #0A0B0D;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.blog-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: brightness(0.88) contrast(1.04);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), filter 0.35s ease;
+}
+
+.blog-card:hover .blog-card-media img {
+  transform: scale(1.045);
+  filter: brightness(0.96) contrast(1.06);
+}
+
+.blog-card-media .blog-card-region {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(11, 12, 14, 0.76);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--text-primary);
+}
+
+.blog-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 24px 26px 26px;
+}
+
 .blog-card-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 18px;
+  margin-bottom: 12px;
   flex-wrap: wrap;
 }
 
@@ -635,6 +678,146 @@
   margin: 0;
 }
 
+/* Stylized SKFO Service Areas Map on Contact Page */
+.skfo-map-header {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 36px;
+  align-items: end;
+  margin-bottom: 36px;
+}
+
+.skfo-map-intro {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.skfo-map-canvas {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #0A0B0D;
+  border: 1px solid rgba(197, 179, 148, 0.28);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.55);
+}
+
+.skfo-map-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.42;
+  filter: contrast(1.08) brightness(0.85);
+  pointer-events: none;
+}
+
+.skfo-map-overlay {
+  position: relative;
+  z-index: 2;
+  background: radial-gradient(circle at 54% 50%, rgba(17, 18, 20, 0.35) 0%, rgba(10, 11, 13, 0.86) 100%);
+  padding: clamp(20px, 3vw, 34px);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.skfo-map-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.skfo-coord-badge {
+  font-size: max(0.75rem, 12px);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #E5D6B8;
+  background: rgba(197, 179, 148, 0.14);
+  border: 1px solid rgba(197, 179, 148, 0.34);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-variant-numeric: tabular-nums;
+}
+
+.skfo-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.skfo-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: max(0.78rem, 12.5px);
+  color: var(--text-secondary);
+}
+
+.skfo-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.skfo-dot--hq {
+  background: var(--accent-sand);
+  box-shadow: 0 0 0 4px rgba(200, 169, 142, 0.25);
+}
+
+.skfo-dot--p1 {
+  background: var(--accent-sand);
+}
+
+.skfo-dot--p2 {
+  background: #111214;
+  border: 2px solid var(--accent-sand);
+}
+
+.skfo-vector-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  min-height: 300px;
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
+}
+
+.skfo-map-bottom-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.skfo-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.skfo-metric-val {
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  font-weight: 500;
+  color: var(--accent-sand);
+  font-variant-numeric: tabular-nums;
+}
+
+.skfo-metric-lbl {
+  font-size: max(0.76rem, 12px);
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
 /* Mobile Responsive (Apple HIG 390px) */
 @media (max-width: 1024px) {
   .blog-grid,
@@ -643,8 +826,12 @@
   }
   .regional-priority-grid,
   .blog-eeat-card,
-  .blog-faq-grid {
+  .blog-faq-grid,
+  .skfo-map-header {
     grid-template-columns: 1fr;
+  }
+  .skfo-map-bottom-bar {
+    grid-template-columns: repeat(2, 1fr);
   }
   .blog-prev-next {
     grid-template-columns: 1fr;
@@ -656,13 +843,17 @@
 
 @media (max-width: 768px) {
   .blog-grid,
-  .sitelinks-grid {
+  .sitelinks-grid,
+  .skfo-map-bottom-bar {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  .blog-card,
+  .blog-card {
+    padding: 0;
+  }
+  .blog-card-body,
   .sitelink-card {
-    padding: 22px;
+    padding: 20px;
   }
   .blog-filter-rail {
     gap: 8px;
