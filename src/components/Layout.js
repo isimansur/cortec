@@ -212,13 +212,14 @@ ${articleOgTags}
   <meta name="twitter:description" content="${twitterDescription || ogDescription || description}">
   <meta name="twitter:image" content="${ogImageUrl}">
 
-  <!-- Preconnect, Webfonts & LCP Preload for Core Web Vitals -->
+  <!-- Preconnect, Non-Render-Blocking Webfonts & LCP Preload for Core Web Vitals -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&family=Onest:wght@200;300;400;500&family=Unbounded:wght@200;300;400;500&display=swap">
 ${preloadTag}
-
   <link rel="stylesheet" href="${prefix}assets/css/style.css?v=${cssHash}">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&family=Onest:wght@200;300;400;500&family=Unbounded:wght@200;300;400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&family=Onest:wght@200;300;400;500&family=Unbounded:wght@200;300;400;500&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&family=Onest:wght@200;300;400;500&family=Unbounded:wght@200;300;400;500&display=swap"></noscript>
   <link rel="icon" type="image/svg+xml" href="${prefix}favicon.svg">
   <link rel="shortcut icon" type="image/svg+xml" href="${prefix}favicon.svg">
   <link rel="apple-touch-icon" href="${prefix}favicon.svg">

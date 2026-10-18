@@ -10,9 +10,10 @@
     opacity 1.15s var(--ease-out-expo),
     filter 1.15s var(--ease-out-expo),
     transform 1.15s var(--ease-out-expo);
-  will-change: opacity, filter, transform;
 }
 
+/* Above-the-fold Hero content renders at 100% opacity on frame 0 (Zero LCP Render Delay) */
+.hero-content .reveal,
 .reveal.is-visible {
   opacity: 1;
   filter: blur(0px);
@@ -26,6 +27,8 @@
   transition: opacity 1s var(--ease-out-expo) 0.14s, transform 1s var(--ease-out-expo) 0.14s;
 }
 
+.hero-content .reveal .lead-paragraph,
+.hero-content .reveal .body-paragraph,
 .reveal.is-visible .lead-paragraph,
 .reveal.is-visible .body-paragraph {
   opacity: 1;
@@ -39,6 +42,8 @@
   transition: opacity 1s var(--ease-out-expo) 0.24s, transform 1s var(--ease-out-expo) 0.24s;
 }
 
+.hero-content .reveal .btn-group,
+.hero-content .reveal .quiet-anchor-rail,
 .reveal.is-visible .btn-group,
 .reveal.is-visible .quiet-anchor-rail {
   opacity: 1;

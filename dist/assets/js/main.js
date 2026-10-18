@@ -45,14 +45,19 @@ newChildren.appendChild(processNode(child));
 heading.innerHTML = '';
 heading.appendChild(newChildren);
 };
+const isDesktop = window.matchMedia('(min-width: 1025px)');
+if (isDesktop.matches) {
 document.querySelectorAll('h1, h2').forEach(splitHeadingIntoWords);
-requestAnimationFrame(() => {
 requestAnimationFrame(() => {
 document.body.classList.add('is-loaded');
 });
-});
+} else {
+document.body.classList.add('is-loaded');
+}
 const header = document.querySelector('.site-header');
+let headerTicking = false;
 const updateHeaderAndProgress = () => {
+headerTicking = false;
 const scrollY = window.scrollY;
 if (header) {
 if (scrollY > 32) {
@@ -61,11 +66,22 @@ header.classList.add('is-scrolled');
 header.classList.remove('is-scrolled');
 }
 }
+if (isDesktop.matches) {
 const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
 const progress = Math.min(1, Math.max(0, scrollY / maxScroll));
 document.documentElement.style.setProperty('--scroll-progress', progress.toFixed(4));
+}
 };
-window.addEventListener('scroll', updateHeaderAndProgress, { passive: true });
+window.addEventListener(
+'scroll',
+() => {
+if (!headerTicking) {
+headerTicking = true;
+requestAnimationFrame(updateHeaderAndProgress);
+}
+},
+{ passive: true }
+);
 updateHeaderAndProgress();
 const menuBtn = document.querySelector('.mobile-menu-toggle');
 const nav = document.querySelector('.main-nav');
@@ -139,16 +155,19 @@ entry.target.classList.remove('is-inview');
 );
 macroStages.forEach((stage) => stageObserver.observe(stage));
 }
-const isDesktop = window.matchMedia('(min-width: 1025px)');
 const parallaxScenes = document.querySelectorAll('.hero-viewport, .macro-stage');
 let currentScrollY = window.scrollY;
 let targetScrollY = window.scrollY;
 let rafRunning = false;
 const updateParallaxFrame = () => {
+if (!isDesktop.matches) {
+rafRunning = false;
+return;
+}
 currentScrollY += (targetScrollY - currentScrollY) * 0.14;
 const vh = window.innerHeight;
-const imgAmp = isDesktop.matches ? -38 : -20;
-const txtAmp = isDesktop.matches ? 16 : 7;
+const imgAmp = -38;
+const txtAmp = 16;
 parallaxScenes.forEach((scene) => {
 const rect = scene.getBoundingClientRect();
 if (rect.bottom < -200 || rect.top > vh + 200) return;
@@ -164,6 +183,7 @@ requestAnimationFrame(updateParallaxFrame);
 rafRunning = false;
 }
 };
+if (isDesktop.matches) {
 window.addEventListener(
 'scroll',
 () => {
@@ -176,6 +196,7 @@ requestAnimationFrame(updateParallaxFrame);
 { passive: true }
 );
 updateParallaxFrame();
+}
 const focusCards = document.querySelectorAll('.brand-logo-card, .apex-strip-item');
 if ('IntersectionObserver' in window && focusCards.length > 0) {
 const focusObserver = new IntersectionObserver(

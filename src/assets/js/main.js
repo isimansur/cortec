@@ -53,18 +53,22 @@ document.addEventListener('DOMContentLoaded', () => {
     heading.appendChild(newChildren);
   };
 
-  document.querySelectorAll('h1, h2').forEach(splitHeadingIntoWords);
+  const isDesktop = window.matchMedia('(min-width: 1025px)');
 
-  // Trigger initial load state on next frame
-  requestAnimationFrame(() => {
+  if (isDesktop.matches) {
+    document.querySelectorAll('h1, h2').forEach(splitHeadingIntoWords);
     requestAnimationFrame(() => {
       document.body.classList.add('is-loaded');
     });
-  });
+  } else {
+    document.body.classList.add('is-loaded');
+  }
 
   // 2. Header scroll state & top optical progress beam
   const header = document.querySelector('.site-header');
+  let headerTicking = false;
   const updateHeaderAndProgress = () => {
+    headerTicking = false;
     const scrollY = window.scrollY;
     if (header) {
       if (scrollY > 32) {
@@ -73,11 +77,22 @@ document.addEventListener('DOMContentLoaded', () => {
         header.classList.remove('is-scrolled');
       }
     }
-    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-    const progress = Math.min(1, Math.max(0, scrollY / maxScroll));
-    document.documentElement.style.setProperty('--scroll-progress', progress.toFixed(4));
+    if (isDesktop.matches) {
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const progress = Math.min(1, Math.max(0, scrollY / maxScroll));
+      document.documentElement.style.setProperty('--scroll-progress', progress.toFixed(4));
+    }
   };
-  window.addEventListener('scroll', updateHeaderAndProgress, { passive: true });
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!headerTicking) {
+        headerTicking = true;
+        requestAnimationFrame(updateHeaderAndProgress);
+      }
+    },
+    { passive: true }
+  );
   updateHeaderAndProgress();
 
   // 3. Mobile menu & Systems dropdown toggle
@@ -164,19 +179,21 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 6. Desktop Interactive Physics: Smooth Scroll Parallax, Hero Spatial Drift, Magnetic Buttons & 3D Gallery Tilt
-  const isDesktop = window.matchMedia('(min-width: 1025px)');
-
-  // 6a. Continuous rAF Scroll Parallax for Hero & Macro Stages
+  // 6a. Continuous rAF Scroll Parallax for Hero & Macro Stages (Desktop Only to keep Mobile TBT = 0ms)
   const parallaxScenes = document.querySelectorAll('.hero-viewport, .macro-stage');
   let currentScrollY = window.scrollY;
   let targetScrollY = window.scrollY;
   let rafRunning = false;
 
   const updateParallaxFrame = () => {
+    if (!isDesktop.matches) {
+      rafRunning = false;
+      return;
+    }
     currentScrollY += (targetScrollY - currentScrollY) * 0.14;
     const vh = window.innerHeight;
-    const imgAmp = isDesktop.matches ? -38 : -20;
-    const txtAmp = isDesktop.matches ? 16 : 7;
+    const imgAmp = -38;
+    const txtAmp = 16;
 
     parallaxScenes.forEach((scene) => {
       const rect = scene.getBoundingClientRect();
@@ -197,19 +214,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  window.addEventListener(
-    'scroll',
-    () => {
-      targetScrollY = window.scrollY;
-      if (!rafRunning) {
-        rafRunning = true;
-        requestAnimationFrame(updateParallaxFrame);
-      }
-    },
-    { passive: true }
-  );
-
-  updateParallaxFrame();
+  if (isDesktop.matches) {
+    window.addEventListener(
+      'scroll',
+      () => {
+        targetScrollY = window.scrollY;
+        if (!rafRunning) {
+          rafRunning = true;
+          requestAnimationFrame(updateParallaxFrame);
+        }
+      },
+      { passive: true }
+    );
+    updateParallaxFrame();
+  }
 
   // Mobile scroll-focus observer for Brand Cards & Strip Cards
   const focusCards = document.querySelectorAll('.brand-logo-card, .apex-strip-item');
