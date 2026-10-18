@@ -109,8 +109,8 @@ module.exports = {
               </div>
 
               <div class="form-field">
-                <label for="contact-info">Телефон или электронная почта</label>
-                <input type="text" id="contact-info" name="contact" autocomplete="tel" required placeholder="+7 (928) ___-__-__ или email">
+                <label for="contact-info">Номер телефона</label>
+                <input type="tel" id="contact-info" name="contact" autocomplete="tel" inputmode="tel" maxlength="18" pattern="\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}" title="Введите номер в формате +7 (928) 000-00-00" required placeholder="+7 (928) 000-00-00">
               </div>
 
               <div class="form-field">

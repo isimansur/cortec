@@ -398,8 +398,46 @@ document.addEventListener('DOMContentLoaded', () => {
   // 8. Contact form handling (Direct WhatsApp +7 928 000-76-66 dispatch via SSOT data-* attributes)
   const contactForm = document.querySelector('#cortec-contact-form');
   const feedbackEl = document.querySelector('#form-feedback');
+  const phoneInput = document.querySelector('#contact-info');
   const objectTypeInput = document.querySelector('#object-type-input');
   const tactilePills = document.querySelectorAll('.tactile-pill[data-pill-group="object"]');
+
+  if (phoneInput) {
+    const formatRussianPhone = (rawVal) => {
+      let digits = rawVal.replace(/\D/g, '');
+      if (!digits) return '';
+      if (digits[0] === '8' || digits[0] === '7') {
+        digits = digits.slice(1);
+      }
+      digits = digits.slice(0, 10);
+      let formatted = '+7';
+      if (digits.length > 0) formatted += ' (' + digits.slice(0, 3);
+      if (digits.length >= 4) formatted += ') ' + digits.slice(3, 6);
+      if (digits.length >= 7) formatted += '-' + digits.slice(6, 8);
+      if (digits.length >= 9) formatted += '-' + digits.slice(8, 10);
+      return formatted;
+    };
+
+    phoneInput.addEventListener('keydown', (e) => {
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'];
+      if (allowedKeys.includes(e.key)) {
+        if (e.key === 'Backspace' && phoneInput.value === '+7') {
+          e.preventDefault();
+          phoneInput.value = '';
+        }
+        return;
+      }
+      if (!/^\d$/.test(e.key) && !(e.key === '+' && phoneInput.value.length === 0)) {
+        e.preventDefault();
+      }
+    });
+
+    phoneInput.addEventListener('input', () => {
+      phoneInput.value = formatRussianPhone(phoneInput.value);
+      phoneInput.setCustomValidity('');
+    });
+  }
 
   if (tactilePills.length > 0 && objectTypeInput) {
     tactilePills.forEach((pill) => {
@@ -417,6 +455,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const formData = new FormData(contactForm);
       const name = (formData.get('name') || '').toString().trim();
       const contact = (formData.get('contact') || '').toString().trim();
+      const digitsOnly = contact.replace(/\D/g, '');
+      if (digitsOnly.length < 11) {
+        if (phoneInput) {
+          phoneInput.setCustomValidity('Пожалуйста, введите полный номер телефона (10 цифр после +7).');
+          phoneInput.reportValidity();
+        }
+        return;
+      }
       const objectType = (formData.get('objectType') || '').toString().trim();
       const system = (formData.get('system') || '').toString().trim();
       const message = (formData.get('message') || '').toString().trim();
@@ -426,7 +472,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const lines = [
         `Здравствуйте, CORTEC! Заявка с сайта ${domainHost}:`,
         name ? `• Имя: ${name}` : '',
-        contact ? `• Контакт: ${contact}` : '',
+        contact ? `• Телефон: ${contact}` : '',
         objectType ? `• Тип объекта: ${objectType}` : '',
         system ? `• Система: ${system}` : '',
         message ? `• Задача / объект: ${message}` : ''
