@@ -15,11 +15,13 @@ const path = require('path');
 
 const DIST = path.join(__dirname, 'dist');
 
+const isVerificationHtml = (name) => /^yandex_[a-f0-9]+\.html$/i.test(name) || /^google[a-f0-9]+\.html$/i.test(name);
+
 function getAllHtmlFiles(dir, list = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) getAllHtmlFiles(full, list);
-    else if (entry.name.endsWith('.html')) list.push(full);
+    else if (entry.name.endsWith('.html') && !isVerificationHtml(entry.name)) list.push(full);
   }
   return list;
 }

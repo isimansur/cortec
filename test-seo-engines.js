@@ -59,9 +59,10 @@ function stripTags(html) {
     .trim();
 }
 
-// Get all canonical root/blog HTML files
+// Get all canonical root/blog HTML files (excluding search engine verification files yandex_*.html and google*.html)
+const isVerificationHtml = (name) => /^yandex_[a-f0-9]+\.html$/i.test(name) || /^google[a-f0-9]+\.html$/i.test(name);
 const coreFiles = fs.readdirSync(DIST)
-  .filter((f) => f.endsWith('.html'))
+  .filter((f) => f.endsWith('.html') && !isVerificationHtml(f))
   .map((f) => ({ rel: f, full: path.join(DIST, f) }));
 
 const blogFiles = fs.existsSync(path.join(DIST, 'blog'))
@@ -530,8 +531,18 @@ for (const pf of fs.readdirSync(PAGES_DIR).filter((f) => f.endsWith('.js'))) {
   }
 }
 
-// 8.2 Verify server & edge security artifacts in dist/
-for (const secFile of ['.htaccess', '_headers', '.well-known/security.txt', 'robots.txt', 'sitemap.xml', 'rss.xml', 'llms.txt']) {
+// 8.2 Verify server & edge security artifacts + Google/Yandex Webmaster verification files in dist/
+for (const secFile of [
+  '.htaccess',
+  '_headers',
+  '.well-known/security.txt',
+  'robots.txt',
+  'sitemap.xml',
+  'rss.xml',
+  'llms.txt',
+  'yandex_7da0847a6bc80161.html',
+  'googlea8ed8641fb68ac09.html'
+]) {
   const fullSec = path.join(DIST, secFile);
   if (!fs.existsSync(fullSec)) {
     fail('8. Senior Architecture & SSOT', secFile, `Отсутствует обязательный инфраструктурный файл в dist/: ${secFile}`);
