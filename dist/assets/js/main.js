@@ -175,38 +175,6 @@ backdrop.innerHTML = `
 `;
 stagger.insertBefore(backdrop, stagger.firstChild);
 });
-document.querySelectorAll('.macro-stage').forEach((stage, idx) => {
-if (stage.querySelector('.stage-seam-backdrop')) return;
-const flip = stage.classList.contains('macro-stage--text-right') || idx % 2 === 1;
-const seam = document.createElement('div');
-seam.className = `stage-seam-backdrop${flip ? ' is-flipped' : ''}`;
-seam.setAttribute('aria-hidden', 'true');
-seam.innerHTML = `
-<svg class="stage-seam-svg" viewBox="0 0 1440 200" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<radialGradient id="seamNodeGlow-${idx}" cx="50%" cy="50%" r="50%">
-<stop offset="0%" stop-color="#F4F1EA" stop-opacity="0.6" />
-<stop offset="45%" stop-color="#C8A98E" stop-opacity="0.2" />
-<stop offset="100%" stop-color="#C8A98E" stop-opacity="0" />
-</radialGradient>
-</defs>
-<path vector-effect="non-scaling-stroke" class="stage-seam-line stage-seam-line--accent" d="M -40 164 C 440 152, 960 48, 1480 38" />
-<path vector-effect="non-scaling-stroke" class="stage-seam-line" d="M -40 118 C 520 142, 920 82, 1480 96" />
-<g class="stage-seam-nodes">
-<circle cx="468" cy="126" r="5" fill="url(#seamNodeGlow-${idx})" />
-<circle cx="468" cy="126" r="1.5" class="stagger-node-core" />
-<circle cx="964" cy="70" r="5.5" fill="url(#seamNodeGlow-${idx})" />
-<circle cx="964" cy="70" r="1.6" class="stagger-node-core" />
-</g>
-<g class="stage-seam-travellers">
-<circle r="1.9" class="stagger-traveller-dot stagger-traveller-dot--gold">
-<animateMotion dur="52s" begin="-${(idx * 11) % 45}s" repeatCount="indefinite" path="M -40 164 C 440 152, 960 48, 1480 38" />
-</circle>
-</g>
-</svg>
-`;
-stage.insertBefore(seam, stage.firstChild);
-});
 const revealItems = document.querySelectorAll('.reveal, .apex-five-strip, .editorial-stagger');
 if ('IntersectionObserver' in window && revealItems.length > 0) {
 const revealObserver = new IntersectionObserver(
