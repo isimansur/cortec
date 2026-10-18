@@ -128,63 +128,47 @@ document.body.style.overflow = '';
 }
 document.querySelectorAll('.editorial-stagger').forEach((stagger, idx) => {
 if (stagger.querySelector('.stagger-rays-backdrop')) return;
+const rows = Array.from(stagger.querySelectorAll(':scope > .stagger-row'));
+const singleColRows = rows.filter((r) => r.children.length === 1).length;
+if (singleColRows < 2) return;
 const flip = idx % 2 === 1;
 const backdrop = document.createElement('div');
 backdrop.className = `stagger-rays-backdrop${flip ? ' is-flipped' : ''}`;
 backdrop.setAttribute('aria-hidden', 'true');
 backdrop.innerHTML = `
-<svg class="stagger-rays-svg" viewBox="0 0 1440 900" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg class="stagger-rays-svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <radialGradient id="rayNodeGlow-${idx}" cx="50%" cy="50%" r="50%">
-<stop offset="0%" stop-color="#F4F1EA" stop-opacity="0.95" />
-<stop offset="35%" stop-color="#C8A98E" stop-opacity="0.55" />
+<stop offset="0%" stop-color="#F4F1EA" stop-opacity="0.65" />
+<stop offset="40%" stop-color="#C8A98E" stop-opacity="0.22" />
 <stop offset="100%" stop-color="#C8A98E" stop-opacity="0" />
 </radialGradient>
 </defs>
-<!-- Ray 1: Steep upward trajectory -->
-<path id="stagger-ray-${idx}-1" class="stagger-ray-line" d="M -40 880 Q 180 430 430 -40" />
-<!-- Ray 2: High diagonal trajectory -->
-<path id="stagger-ray-${idx}-2" class="stagger-ray-line" d="M -40 880 Q 340 460 820 -40" />
-<!-- Ray 3: Central sweeping trajectory -->
-<path id="stagger-ray-${idx}-3" class="stagger-ray-line stagger-ray-line--accent" d="M -40 880 Q 520 490 1240 -20" />
-<!-- Ray 4: Wide cross-screen trajectory -->
-<path id="stagger-ray-${idx}-4" class="stagger-ray-line" d="M -40 880 Q 680 560 1480 190" />
-<!-- Ray 5: Low horizon trajectory -->
-<path id="stagger-ray-${idx}-5" class="stagger-ray-line" d="M -40 880 Q 760 690 1480 510" />
-<!-- Soft static anchor nodes along the rays -->
+<!-- 4 ultra-thin hairline rays with non-scaling stroke -->
+<path vector-effect="non-scaling-stroke" class="stagger-ray-line" d="M -60 920 Q 210 450 510 -40" />
+<path vector-effect="non-scaling-stroke" class="stagger-ray-line stagger-ray-line--accent" d="M -60 920 Q 420 470 980 -40" />
+<path vector-effect="non-scaling-stroke" class="stagger-ray-line" d="M -60 920 Q 620 530 1460 90" />
+<path vector-effect="non-scaling-stroke" class="stagger-ray-line" d="M -60 920 Q 740 680 1480 460" />
+<!-- Subtle micro-nodes along the rays -->
 <g class="stagger-ray-nodes">
-<circle cx="176" cy="462" r="10" fill="url(#rayNodeGlow-${idx})" />
-<circle cx="176" cy="462" r="3.2" class="stagger-node-core" />
-<circle cx="395" cy="402" r="11" fill="url(#rayNodeGlow-${idx})" />
-<circle cx="395" cy="402" r="3.5" class="stagger-node-core" />
-<circle cx="634" cy="212" r="10" fill="url(#rayNodeGlow-${idx})" />
-<circle cx="634" cy="212" r="3.2" class="stagger-node-core" />
-<circle cx="578" cy="442" r="12" fill="url(#rayNodeGlow-${idx})" />
-<circle cx="578" cy="442" r="3.8" class="stagger-node-core" />
-<circle cx="945" cy="184" r="11" fill="url(#rayNodeGlow-${idx})" />
-<circle cx="945" cy="184" r="3.4" class="stagger-node-core" />
-<circle cx="718" cy="542" r="11" fill="url(#rayNodeGlow-${idx})" />
-<circle cx="718" cy="542" r="3.5" class="stagger-node-core" />
-<circle cx="1142" cy="348" r="12" fill="url(#rayNodeGlow-${idx})" />
-<circle cx="1142" cy="348" r="3.6" class="stagger-node-core" />
-<circle cx="856" cy="662" r="10" fill="url(#rayNodeGlow-${idx})" />
-<circle cx="856" cy="662" r="3.2" class="stagger-node-core" />
-<circle cx="1296" cy="558" r="11" fill="url(#rayNodeGlow-${idx})" />
-<circle cx="1296" cy="558" r="3.4" class="stagger-node-core" />
+<circle cx="242" cy="422" r="5.5" fill="url(#rayNodeGlow-${idx})" />
+<circle cx="242" cy="422" r="1.6" class="stagger-node-core" />
+<circle cx="512" cy="396" r="6" fill="url(#rayNodeGlow-${idx})" />
+<circle cx="512" cy="396" r="1.8" class="stagger-node-core" />
+<circle cx="812" cy="128" r="5.5" fill="url(#rayNodeGlow-${idx})" />
+<circle cx="812" cy="128" r="1.6" class="stagger-node-core" />
+<circle cx="786" cy="466" r="6" fill="url(#rayNodeGlow-${idx})" />
+<circle cx="786" cy="466" r="1.8" class="stagger-node-core" />
+<circle cx="1146" cy="566" r="5.5" fill="url(#rayNodeGlow-${idx})" />
+<circle cx="1146" cy="566" r="1.6" class="stagger-node-core" />
 </g>
-<!-- Travelling luminous nodes gliding along the dashed rays -->
+<!-- Slow, meditative gliding micro-nodes (45s - 60s cycle) -->
 <g class="stagger-travellers">
-<circle r="4" class="stagger-traveller-dot">
-<animateMotion dur="14s" repeatCount="indefinite" path="M -40 880 Q 340 460 820 -40" />
+<circle r="2" class="stagger-traveller-dot">
+<animateMotion dur="48s" begin="-12s" repeatCount="indefinite" path="M -60 920 Q 420 470 980 -40" />
 </circle>
-<circle r="4.5" class="stagger-traveller-dot stagger-traveller-dot--gold">
-<animateMotion dur="18s" begin="-5s" repeatCount="indefinite" path="M -40 880 Q 520 490 1240 -20" />
-</circle>
-<circle r="4" class="stagger-traveller-dot">
-<animateMotion dur="16s" begin="-9s" repeatCount="indefinite" path="M -40 880 Q 680 560 1480 190" />
-</circle>
-<circle r="3.5" class="stagger-traveller-dot stagger-traveller-dot--gold">
-<animateMotion dur="21s" begin="-3s" repeatCount="indefinite" path="M -40 880 Q 760 690 1480 510" />
+<circle r="2.2" class="stagger-traveller-dot stagger-traveller-dot--gold">
+<animateMotion dur="58s" begin="-26s" repeatCount="indefinite" path="M -60 920 Q 620 530 1460 90" />
 </circle>
 </g>
 </svg>
