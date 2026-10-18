@@ -142,7 +142,8 @@ for (const slug of PAGE_SLUGS) {
     canonicalPath: slug === 'index' ? '' : `${slug}.html`,
     mainHtml: mainRoot,
     prefix: '',
-    cssHash
+    cssHash,
+    inlineCss: combinedCss
   });
   const outRootFile = path.join(DIST, pageMod.file);
   fs.writeFileSync(outRootFile, htmlRoot);
@@ -158,7 +159,8 @@ for (const slug of PAGE_SLUGS) {
       canonicalPath: `${slug}.html`,
       mainHtml: mainSub,
       prefix: '../',
-      cssHash
+      cssHash,
+      inlineCss: combinedCss
     });
     const outSubFile = path.join(subDir, 'index.html');
     fs.writeFileSync(outSubFile, htmlSub);
@@ -192,7 +194,8 @@ for (const post of BLOG_POSTS) {
     schemaJson,
     mainHtml: mainBlogFlat,
     prefix: '../',
-    cssHash
+    cssHash,
+    inlineCss: combinedCss
   });
   const outBlogFlat = path.join(DIST, 'blog', `${post.slug}.html`);
   fs.writeFileSync(outBlogFlat, htmlBlogFlat);
@@ -217,7 +220,8 @@ for (const post of BLOG_POSTS) {
     schemaJson,
     mainHtml: mainBlogSub,
     prefix: '../../',
-    cssHash
+    cssHash,
+    inlineCss: combinedCss
   });
   const outBlogSub = path.join(subBlogDir, 'index.html');
   fs.writeFileSync(outBlogSub, htmlBlogSub);

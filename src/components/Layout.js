@@ -22,7 +22,8 @@ function renderLayout({
   noindex = false,
   mainHtml,
   prefix = '',
-  cssHash = '12'
+  cssHash = '12',
+  inlineCss = ''
 }) {
   const cleanPath = canonicalPath !== undefined
     ? canonicalPath
@@ -216,8 +217,7 @@ ${articleOgTags}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 ${preloadTag}
-  <link rel="stylesheet" href="${prefix}assets/css/style.css?v=${cssHash}">
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&family=Onest:wght@200;300;400;500&family=Unbounded:wght@200;300;400;500&display=swap">
+  ${inlineCss ? `<style>${inlineCss}</style>\n  <link rel="preload" as="style" href="${prefix}assets/css/style.css?v=${cssHash}">\n  <link rel="stylesheet" href="${prefix}assets/css/style.css?v=${cssHash}" media="print" onload="this.media='all'">\n  <noscript><link rel="stylesheet" href="${prefix}assets/css/style.css?v=${cssHash}"></noscript>` : `<link rel="stylesheet" href="${prefix}assets/css/style.css?v=${cssHash}">`}
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&family=Onest:wght@200;300;400;500&family=Unbounded:wght@200;300;400;500&display=swap" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&family=Onest:wght@200;300;400;500&family=Unbounded:wght@200;300;400;500&display=swap"></noscript>
   <link rel="icon" type="image/svg+xml" href="${prefix}favicon.svg">
