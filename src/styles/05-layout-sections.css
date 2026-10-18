@@ -197,20 +197,95 @@ body.is-loaded .hero-media-wrap img {
 }
 
 /* ==========================================================================
-   APEX STAGGERED RHYTHM EDITORIAL BLOCKS (1-2 COLUMNS, NO CARDS, NO BORDERS)
+   APEX STAGGERED RHYTHM EDITORIAL BLOCKS + SCROLL-DRAWN CAD BLUEPRINT AXES
    ========================================================================== */
 
 .editorial-stagger {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: clamp(88px, 10vw, 144px);
+  gap: clamp(64px, 7.5vw, 108px);
+}
+
+/* Central vertical architectural datum axis running through staggered blocks */
+.editorial-stagger::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    rgba(200, 169, 142, 0) 0%,
+    rgba(200, 169, 142, 0.22) 12%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(200, 169, 142, 0.22) 88%,
+    rgba(200, 169, 142, 0) 100%
+  );
+  transform: translateX(-50%);
+  pointer-events: none;
 }
 
 .stagger-row {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: clamp(32px, 4vw, 56px);
-  align-items: start;
+  align-items: center;
+}
+
+/* Animated horizontal datum line and central node dot appearing on scroll */
+.editorial-stagger .stagger-row::before {
+  content: "";
+  position: absolute;
+  top: 22px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(200, 169, 142, 0) 0%,
+    rgba(200, 169, 142, 0.18) 25%,
+    rgba(200, 169, 142, 0.34) 50%,
+    rgba(200, 169, 142, 0.18) 75%,
+    rgba(200, 169, 142, 0) 100%
+  );
+  transform: scaleX(0.15);
+  opacity: 0;
+  transition:
+    transform 1.35s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.9s ease;
+  pointer-events: none;
+}
+
+.editorial-stagger .stagger-row::after {
+  content: "";
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #111214;
+  border: 1.5px solid var(--accent-sand);
+  box-shadow: 0 0 0 5px rgba(200, 169, 142, 0.08);
+  transform: translate(-50%, 0) scale(0.4);
+  opacity: 0;
+  transition:
+    transform 0.95s cubic-bezier(0.22, 1, 0.36, 1) 0.18s,
+    opacity 0.75s ease 0.18s;
+  pointer-events: none;
+}
+
+.editorial-stagger .stagger-row.is-visible::before {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.editorial-stagger .stagger-row.is-visible::after {
+  transform: translate(-50%, 0) scale(1);
+  opacity: 1;
 }
 
 .stagger-left {
@@ -232,6 +307,169 @@ body.is-loaded .hero-media-wrap img {
 .stagger-item-title {
   margin-bottom: 20px;
   scroll-margin-top: 120px;
+}
+
+/* Scroll-Revealed Architectural CAD Blueprint Bridge in Empty Stagger Columns */
+.stagger-cad-bridge {
+  position: relative;
+  padding: 20px 24px;
+  border-radius: 18px;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(200, 169, 142, 0.055) 0%,
+    rgba(255, 255, 255, 0.014) 70%,
+    rgba(11, 12, 14, 0) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
+    border-color 0.45s ease;
+}
+
+.stagger-row.is-visible .stagger-cad-bridge {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stagger-row:hover .stagger-cad-bridge {
+  border-color: rgba(200, 169, 142, 0.28);
+}
+
+.cad-bridge-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cad-bridge-head,
+.cad-bridge-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cad-bridge-code {
+  color: var(--accent-sand);
+}
+
+.cad-bridge-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(200, 169, 142, 0.38), rgba(255, 255, 255, 0.06));
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+}
+
+.stagger-row.is-visible .cad-bridge-line {
+  transform: scaleX(1);
+}
+
+.cad-bridge-meta,
+.cad-bridge-coords {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.cad-bridge-label {
+  color: var(--text-secondary);
+}
+
+.cad-blueprint-svg {
+  width: 100%;
+  height: auto;
+  max-height: 175px;
+  display: block;
+}
+
+.cad-blueprint-svg .cad-axis {
+  stroke: rgba(255, 255, 255, 0.09);
+  stroke-width: 1;
+  stroke-dasharray: 4 6;
+}
+
+.cad-blueprint-svg .cad-ring {
+  stroke: rgba(200, 169, 142, 0.18);
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+  transform-origin: 230px 110px;
+  transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.stagger-row:hover .cad-blueprint-svg .cad-ring {
+  transform: rotate(18deg) scale(1.04);
+}
+
+.cad-blueprint-svg .cad-ring-inner {
+  stroke: rgba(255, 255, 255, 0.16);
+  stroke-width: 1;
+}
+
+.cad-blueprint-svg .cad-stroke {
+  stroke: rgba(244, 241, 234, 0.42);
+  stroke-width: 1.35;
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  transition: stroke-dashoffset 1.65s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
+}
+
+.cad-blueprint-svg .cad-stroke-gold {
+  stroke: #C8A98E;
+  stroke-width: 1.6;
+  stroke-dasharray: 500;
+  stroke-dashoffset: 500;
+  transition: stroke-dashoffset 1.8s cubic-bezier(0.22, 1, 0.36, 1) 0.38s;
+}
+
+.stagger-row.is-visible .cad-blueprint-svg .cad-stroke,
+.stagger-row.is-visible .cad-blueprint-svg .cad-stroke-gold {
+  stroke-dashoffset: 0;
+}
+
+.cad-blueprint-svg .cad-node-fill {
+  fill: rgba(200, 169, 142, 0.08);
+  stroke: rgba(200, 169, 142, 0.34);
+  stroke-width: 1;
+}
+
+.cad-blueprint-svg .cad-dot {
+  fill: #C8A98E;
+}
+
+.cad-blueprint-svg .cad-dim {
+  stroke: rgba(200, 169, 142, 0.36);
+  stroke-width: 0.9;
+}
+
+.cad-blueprint-svg .cad-svg-txt {
+  fill: #D5BE9E;
+  font-family: var(--font-mono, monospace);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+}
+
+.cad-blueprint-svg .cad-svg-txt-muted {
+  fill: rgba(255, 255, 255, 0.42);
+  font-family: var(--font-mono, monospace);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 1024px) {
+  .editorial-stagger::before,
+  .editorial-stagger .stagger-row::before,
+  .editorial-stagger .stagger-row::after,
+  .stagger-cad-bridge {
+    display: none;
+  }
 }
 
 /* ==========================================================================
