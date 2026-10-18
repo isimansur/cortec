@@ -73,13 +73,14 @@ function minifyCss(css) {
 
 function minifyJs(js) {
   return js
+    .replace(/\/\*[\s\S]*?\*\//g, '')
     .split('\n')
     .map((line) => line.replace(/^\s*\/\/.*$/, '').trim())
     .filter(Boolean)
     .join('\n');
 }
 
-// 3. Concatenate & minify modular CSS Design System (01..10) + JS
+// 3. Concatenate & minify modular CSS Design System (01..10) + Critical Above-the-Fold CSS (01..05) + JS
 const styleFiles = fs.readdirSync(path.join(SRC, 'styles'))
   .filter((f) => f.endsWith('.css'))
   .sort();
@@ -88,17 +89,26 @@ const rawCss = styleFiles
   .map((f) => fs.readFileSync(path.join(SRC, 'styles', f), 'utf8'))
   .join('\n\n');
 
+const criticalStyleFiles = styleFiles.filter((f) => /^(01|02|03|04|05)-/.test(f));
+const rawCriticalCss = criticalStyleFiles
+  .map((f) => fs.readFileSync(path.join(SRC, 'styles', f), 'utf8'))
+  .join('\n\n');
+
 const combinedCss = minifyCss(rawCss);
+const criticalCss = minifyCss(rawCriticalCss);
 const cssPath = path.join(DIST, 'assets/css/style.css');
 fs.writeFileSync(cssPath, combinedCss);
+
+const cssHash = crypto.createHash('md5').update(combinedCss).digest('hex').slice(0, 8);
+let jsHash = cssHash;
 
 const jsDistPath = path.join(DIST, 'assets/js/main.js');
 if (fs.existsSync(jsDistPath)) {
   const rawJs = fs.readFileSync(jsDistPath, 'utf8');
-  fs.writeFileSync(jsDistPath, minifyJs(rawJs));
+  const minJs = minifyJs(rawJs);
+  fs.writeFileSync(jsDistPath, minJs);
+  jsHash = crypto.createHash('md5').update(minJs).digest('hex').slice(0, 8);
 }
-
-const cssHash = crypto.createHash('md5').update(combinedCss).digest('hex').slice(0, 8);
 
 // 4. Render all core pages + 30 blog articles
 let verifiedImages = 0;
@@ -143,7 +153,8 @@ for (const slug of PAGE_SLUGS) {
     mainHtml: mainRoot,
     prefix: '',
     cssHash,
-    inlineCss: combinedCss
+    jsHash,
+    inlineCss: criticalCss
   });
   const outRootFile = path.join(DIST, pageMod.file);
   fs.writeFileSync(outRootFile, htmlRoot);
@@ -160,7 +171,8 @@ for (const slug of PAGE_SLUGS) {
       mainHtml: mainSub,
       prefix: '../',
       cssHash,
-      inlineCss: combinedCss
+      jsHash,
+      inlineCss: criticalCss
     });
     const outSubFile = path.join(subDir, 'index.html');
     fs.writeFileSync(outSubFile, htmlSub);
@@ -195,7 +207,8 @@ for (const post of BLOG_POSTS) {
     mainHtml: mainBlogFlat,
     prefix: '../',
     cssHash,
-    inlineCss: combinedCss
+    jsHash,
+    inlineCss: criticalCss
   });
   const outBlogFlat = path.join(DIST, 'blog', `${post.slug}.html`);
   fs.writeFileSync(outBlogFlat, htmlBlogFlat);
@@ -221,7 +234,8 @@ for (const post of BLOG_POSTS) {
     mainHtml: mainBlogSub,
     prefix: '../../',
     cssHash,
-    inlineCss: combinedCss
+    jsHash,
+    inlineCss: criticalCss
   });
   const outBlogSub = path.join(subBlogDir, 'index.html');
   fs.writeFileSync(outBlogSub, htmlBlogSub);

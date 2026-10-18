@@ -236,9 +236,81 @@ for (const file of htmlFiles) {
       }
     }
   }
+
+  // 10. [sitespeedio/coach-core & YellowLabTools] Duplicate Full CSS Inline + External Download & HTML Weight Budget
+  const htmlBytes = Buffer.byteLength(html, 'utf8');
+  const maxHtmlBudget = rel.startsWith('blog') && !rel.includes('blog/') || rel === 'blog/index.html' ? 160 * 1024 : 100 * 1024;
+  if (htmlBytes > maxHtmlBudget) {
+    recordWarning(
+      'Performance (sitespeedio/coach-core)',
+      'html-transfer-size-budget',
+      `${rel}: HTML size is ${(htmlBytes / 1024).toFixed(1)} KB (exceeds ${(maxHtmlBudget / 1024).toFixed(0)} KB coach-core budget)`
+    );
+  }
+  const inlineStyleMatches = [...html.matchAll(/<style>([\s\S]*?)<\/style>/g)];
+  const totalInlineCssBytes = inlineStyleMatches.reduce((acc, m) => acc + Buffer.byteLength(m[1], 'utf8'), 0);
+  if (totalInlineCssBytes > 25 * 1024 && /<link[^>]+href="[^"]*style\.css/.test(html)) {
+    recordWarning(
+      'Performance (YellowLabTools / coach-core)',
+      'duplicate-inline-and-external-css',
+      `${rel}: Inlines ${(totalInlineCssBytes / 1024).toFixed(1)} KB of CSS while ALSO loading external style.css (double CSS parse & download)`
+    );
+  }
+
+  // 11. [sitespeedio/coach-core & Front-End-Performance-Checklist] Minified JSON-LD Structured Data
+  for (const block of jsonLdBlocks) {
+    if (/\n\s{2,}"/.test(block[1])) {
+      recordWarning(
+        'Performance (sitespeedio/coach-core)',
+        'unminified-json-ld',
+        `${rel}: JSON-LD block contains pretty-printed indentation whitespace (${Buffer.byteLength(block[1], 'utf8')} bytes)`
+      );
+    }
+  }
+
+  // 12. [GoogleChrome/lighthouse & harlan-zw/unlighthouse] LCP Preload imagesizes & decoding="async" check
+  const preloadImgMatch = html.match(/<link rel="preload" as="image"[^>]+>/);
+  if (preloadImgMatch && imgTags.length > 0) {
+    const preloadSizes = (preloadImgMatch[0].match(/\bimagesizes="([^"]+)"/) || [])[1];
+    const heroSizes = (imgTags[0].match(/\bsizes="([^"]+)"/) || [])[1];
+    if (preloadSizes && heroSizes && preloadSizes !== heroSizes) {
+      recordWarning(
+        'Performance / LCP (GoogleChrome/lighthouse)',
+        'preload-lcp-imagesizes-mismatch',
+        `${rel}: <link rel="preload" imagesizes="${preloadSizes}"> does not match Hero <img sizes="${heroSizes}">`
+      );
+    }
+    if (/decoding="async"/.test(imgTags[0]) && !/fetchpriority="high"/.test(imgTags[0])) {
+      recordWarning(
+        'Performance / LCP (GoogleChrome/lighthouse)',
+        'lcp-fetchpriority-high',
+        `${rel}: Hero LCP <img> is missing fetchpriority="high"`
+      );
+    }
+  }
+
+  // 13. [webhintio/hint] Explicit button type & DOM node count budget (YellowLabTools < 1500 nodes)
+  const buttonTags = [...html.matchAll(/<button\b([^>]*)>/g)];
+  for (const [fullBtn, btnAttrs] of buttonTags) {
+    if (!/\btype="(button|submit|reset)"/.test(btnAttrs)) {
+      recordWarning(
+        'HTML / Interop (webhintio/hint)',
+        'button-type',
+        `${rel}: <button> missing explicit type="button|submit": ${fullBtn}`
+      );
+    }
+  }
+  const domNodeCount = (html.match(/<[a-zA-Z][a-zA-Z0-9-]*/g) || []).length;
+  if (domNodeCount > 1500) {
+    recordWarning(
+      'Performance / DOM (YellowLabTools / Lighthouse)',
+      'dom-size-budget',
+      `${rel}: DOM contains ${domNodeCount} elements (exceeds 1500 threshold)`
+    );
+  }
 }
 
-// 10. Check Fonts & Critical Rendering Path in CSS (Front-End-Performance-Checklist)
+// 14. Check Fonts & Critical Rendering Path in CSS (Front-End-Performance-Checklist)
 const cssFile = path.join(DIST, 'assets/css/style.css');
 const cssContent = fs.readFileSync(cssFile, 'utf8');
 if (/@import\s+url\(['"]?https:\/\/fonts\.googleapis\.com/.test(cssContent)) {
@@ -249,7 +321,16 @@ if (/@import\s+url\(['"]?https:\/\/fonts\.googleapis\.com/.test(cssContent)) {
   );
 }
 
-// 11. Check CSS & JS Minification (Front-End-Performance-Checklist)
+// 15. [GoogleChrome/lighthouse & Front-End-Performance-Checklist] content-visibility: auto for long card lists
+if (!/content-visibility\s*:\s*auto/.test(cssContent)) {
+  recordWarning(
+    'Rendering Performance (GoogleChrome/lighthouse)',
+    'content-visibility-auto',
+    'assets/css/style.css does not use content-visibility: auto for offscreen cards/grids (.blog-card)'
+  );
+}
+
+// 16. Check CSS & JS Minification + Independent Cache Busting Hash (webhintio/hint & Front-End-Performance-Checklist)
 const cssLines = cssContent.split('\n').length;
 if (cssLines > 50) {
   recordWarning(
@@ -260,15 +341,40 @@ if (cssLines > 50) {
 }
 const jsFile = path.join(DIST, 'assets/js/main.js');
 const jsContent = fs.readFileSync(jsFile, 'utf8');
-if (/^\s*\/\//m.test(jsContent) || /\n\s*\n/.test(jsContent)) {
+if (/^\s*\/\//m.test(jsContent) || /\n\s*\n/.test(jsContent) || /\/\*[\s\S]*?\*\//.test(jsContent)) {
   recordWarning(
     'Performance',
     'javascript-minification (Front-End-Performance-Checklist)',
     `assets/js/main.js contains unstripped comments or blank lines (${(Buffer.byteLength(jsContent) / 1024).toFixed(1)} KB)`
   );
 }
+const indexHtmlContent = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8');
+const cssVerMatch = indexHtmlContent.match(/style\.css\?v=([a-f0-9]+)/);
+const jsVerMatch = indexHtmlContent.match(/main\.js\?v=([a-f0-9]+)/);
+if (cssVerMatch && jsVerMatch && cssVerMatch[1] === jsVerMatch[1]) {
+  recordWarning(
+    'Caching / Versioning (webhintio/hint)',
+    'independent-asset-hash',
+    `main.js?v=${jsVerMatch[1]} reuses the exact same hash as style.css?v=${cssVerMatch[1]} instead of a content-derived JS hash`
+  );
+}
 
-// 12. Check Sitemap & Robots consistency (Front-End-Checklist SEO rules)
+// 17. [YellowLabTools & GoogleChrome/lighthouse] AVIF Image Weight Budget (< 95 KB per AVIF)
+const imgDir = path.join(DIST, 'assets/img');
+for (const imgName of fs.readdirSync(imgDir)) {
+  if (imgName.endsWith('.avif')) {
+    const stat = fs.statSync(path.join(imgDir, imgName));
+    if (stat.size > 95 * 1024) {
+      recordWarning(
+        'Image Optimization (YellowLabTools / Lighthouse)',
+        'avif-weight-budget',
+        `assets/img/${imgName} is ${(stat.size / 1024).toFixed(1)} KB (exceeds 95 KB AVIF budget)`
+      );
+    }
+  }
+}
+
+// 18. Check Sitemap & Robots consistency (Front-End-Checklist SEO rules)
 const sitemapContent = fs.readFileSync(path.join(DIST, 'sitemap.xml'), 'utf8');
 const sitemapLocs = [...sitemapContent.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 for (const loc of sitemapLocs) {
@@ -277,7 +383,7 @@ for (const loc of sitemapLocs) {
   }
 }
 
-// 13. Check .htaccess against h5bp/server-configs-apache & Front-End-Checklist Security
+// 19. Check .htaccess against h5bp/server-configs-apache & Front-End-Checklist Security
 const htaccess = fs.readFileSync(path.join(DIST, '.htaccess'), 'utf8');
 if (!/X-Frame-Options/i.test(htaccess)) {
   recordWarning('Security (.htaccess)', 'x-frame-options (Front-End-Checklist / h5bp)', '.htaccess missing X-Frame-Options header');
@@ -311,3 +417,4 @@ for (const [key, list] of uniqueWarnings.entries()) {
   console.log(`      e.g. ${list[0]}`);
 }
 console.log('================================================================');
+

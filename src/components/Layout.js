@@ -23,6 +23,7 @@ function renderLayout({
   mainHtml,
   prefix = '',
   cssHash = '12',
+  jsHash = cssHash,
   inlineCss = ''
 }) {
   const cleanPath = canonicalPath !== undefined
@@ -149,7 +150,7 @@ ${systemSubmenuLinks}
           });
         }
       }
-      enrichedSchemaJson = JSON.stringify(parsed, null, 2);
+      enrichedSchemaJson = JSON.stringify(parsed);
     } catch (_) {
       enrichedSchemaJson = schemaJson;
     }
@@ -157,9 +158,7 @@ ${systemSubmenuLinks}
 
   const schemaBlock = (!noindex && enrichedSchemaJson)
     ? `  <!-- Schema.org JSON-LD (Google Sitelinks + Yandex Quick Links & BreadcrumbList) -->
-  <script type="application/ld+json">
-${enrichedSchemaJson}
-  </script>`
+  <script type="application/ld+json">${enrichedSchemaJson}</script>`
     : '';
 
   return `<!DOCTYPE html>
@@ -211,13 +210,14 @@ ${articleOgTags}
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${ogTitle || title}">
   <meta name="twitter:description" content="${twitterDescription || ogDescription || description}">
+  <meta property="twitter:image" content="${ogImageUrl}">
   <meta name="twitter:image" content="${ogImageUrl}">
 
   <!-- Preconnect, Non-Render-Blocking Webfonts & LCP Preload for Core Web Vitals -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 ${preloadTag}
-  ${inlineCss ? `<style>${inlineCss}</style>\n  <link rel="preload" as="style" href="${prefix}assets/css/style.css?v=${cssHash}">\n  <link rel="stylesheet" href="${prefix}assets/css/style.css?v=${cssHash}" media="print" onload="this.media='all'">\n  <noscript><link rel="stylesheet" href="${prefix}assets/css/style.css?v=${cssHash}"></noscript>` : `<link rel="stylesheet" href="${prefix}assets/css/style.css?v=${cssHash}">`}
+  ${inlineCss ? `<style>${inlineCss}</style>\n  <link rel="stylesheet" href="${prefix}assets/css/style.css?v=${cssHash}" media="print" onload="this.media='all'">\n  <noscript><link rel="stylesheet" href="${prefix}assets/css/style.css?v=${cssHash}"></noscript>` : `<link rel="stylesheet" href="${prefix}assets/css/style.css?v=${cssHash}">`}
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&family=Onest:wght@200;300;400;500&family=Unbounded:wght@200;300;400;500&display=swap" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&family=Onest:wght@200;300;400;500&family=Unbounded:wght@200;300;400;500&display=swap"></noscript>
   <link rel="icon" type="image/svg+xml" href="${prefix}favicon.svg">
@@ -240,7 +240,7 @@ ${schemaBlock}
 ${navLinks}
     </nav>
     <a href="${prefix}contact.html" class="header-cta">Обсудить проект</a>
-    <button class="mobile-menu-toggle" aria-expanded="false" aria-label="Открыть меню">Меню</button>
+    <button type="button" class="mobile-menu-toggle" aria-expanded="false" aria-label="Открыть меню">Меню</button>
   </header>
 
   <main id="main-content">
@@ -305,7 +305,7 @@ ${footerSysLinks}
     </div>
   </footer>
 
-  <script src="${prefix}assets/js/main.js?v=${cssHash}" defer></script>
+  <script src="${prefix}assets/js/main.js?v=${jsHash}" defer></script>
 </body>
 </html>`;
 }
