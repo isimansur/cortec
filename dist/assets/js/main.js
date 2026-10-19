@@ -192,6 +192,19 @@ revealItems.forEach((el) => revealObserver.observe(el));
 } else {
 revealItems.forEach((el) => el.classList.add('is-visible'));
 }
+const macroSequences = document.querySelectorAll('.macro-scroll-sequence');
+macroSequences.forEach((seq) => {
+const stages = seq.querySelectorAll('.macro-stage');
+if (stages.length < 2 || seq.querySelector('.macro-datum-spine')) return;
+const spine = document.createElement('div');
+spine.className = 'macro-datum-spine';
+spine.setAttribute('aria-hidden', 'true');
+const ticksHtml = Array.from(stages)
+.map((_, i) => `<span class="macro-datum-tick${i === 0 ? ' is-active' : ''}" data-stage-idx="${i}">0${i + 1}</span>`)
+.join('');
+spine.innerHTML = `<div class="macro-datum-track"><div class="macro-datum-fill"></div></div>${ticksHtml}`;
+seq.insertBefore(spine, seq.firstChild);
+});
 const macroStages = document.querySelectorAll('.macro-stage');
 if ('IntersectionObserver' in window && macroStages.length > 0) {
 const stageObserver = new IntersectionObserver(
@@ -229,6 +242,32 @@ const imgShift = (centerOffset * imgAmp).toFixed(2);
 const textShift = (centerOffset * txtAmp).toFixed(2);
 scene.style.setProperty('--stage-parallax-y', `${imgShift}px`);
 scene.style.setProperty('--text-parallax-y', `${textShift}px`);
+if (scene.classList.contains('macro-stage')) {
+const absDist = Math.abs(centerOffset);
+const defocus = Math.max(0, Math.min(1, (absDist - 0.22) / 0.52));
+const blurPx = (defocus * 5.5).toFixed(2);
+scene.style.setProperty('--stage-blur', `${blurPx}px`);
+}
+});
+macroSequences.forEach((seq) => {
+const seqRect = seq.getBoundingClientRect();
+if (seqRect.bottom < -100 || seqRect.top > vh + 100) return;
+const totalSpan = Math.max(1, seqRect.height - vh * 0.4);
+const progressed = Math.min(1, Math.max(0.06, (vh * 0.6 - seqRect.top) / totalSpan));
+seq.style.setProperty('--seq-progress', progressed.toFixed(4));
+const stages = seq.querySelectorAll('.macro-stage');
+const ticks = seq.querySelectorAll('.macro-datum-tick');
+let closestIdx = 0;
+let minDist = Infinity;
+stages.forEach((st, i) => {
+const stRect = st.getBoundingClientRect();
+const dist = Math.abs(stRect.top + stRect.height * 0.5 - vh * 0.5);
+if (dist < minDist) {
+minDist = dist;
+closestIdx = i;
+}
+});
+ticks.forEach((t, i) => t.classList.toggle('is-active', i === closestIdx));
 });
 if (Math.abs(targetScrollY - currentScrollY) > 0.25) {
 requestAnimationFrame(updateParallaxFrame);

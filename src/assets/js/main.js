@@ -226,7 +226,22 @@ document.addEventListener('DOMContentLoaded', () => {
     revealItems.forEach((el) => el.classList.add('is-visible'));
   }
 
-  // 5. IntersectionObserver for continuous full-bleed macro stages
+  // 5. Continuous Vertical Editorial Datum Spine for Macro Scroll Sequences
+  const macroSequences = document.querySelectorAll('.macro-scroll-sequence');
+  macroSequences.forEach((seq) => {
+    const stages = seq.querySelectorAll('.macro-stage');
+    if (stages.length < 2 || seq.querySelector('.macro-datum-spine')) return;
+    const spine = document.createElement('div');
+    spine.className = 'macro-datum-spine';
+    spine.setAttribute('aria-hidden', 'true');
+    const ticksHtml = Array.from(stages)
+      .map((_, i) => `<span class="macro-datum-tick${i === 0 ? ' is-active' : ''}" data-stage-idx="${i}">0${i + 1}</span>`)
+      .join('');
+    spine.innerHTML = `<div class="macro-datum-track"><div class="macro-datum-fill"></div></div>${ticksHtml}`;
+    seq.insertBefore(spine, seq.firstChild);
+  });
+
+  // 5b. IntersectionObserver for continuous full-bleed macro stages
   const macroStages = document.querySelectorAll('.macro-stage');
   if ('IntersectionObserver' in window && macroStages.length > 0) {
     const stageObserver = new IntersectionObserver(
@@ -244,8 +259,8 @@ document.addEventListener('DOMContentLoaded', () => {
     macroStages.forEach((stage) => stageObserver.observe(stage));
   }
 
-  // 6. Desktop Interactive Physics: Smooth Scroll Parallax, Hero Spatial Drift, Magnetic Buttons & 3D Gallery Tilt
-  // 6a. Continuous rAF Scroll Parallax for Hero & Macro Stages (Desktop Only to keep Mobile TBT = 0ms)
+  // 6. Desktop Interactive Physics: Smooth Scroll Parallax, Optical Rack Focus, Hero Spatial Drift, Magnetic Buttons & 3D Gallery Tilt
+  // 6a. Continuous rAF Scroll Parallax & Optical Rack Focus for Hero & Macro Stages (Desktop Only to keep Mobile TBT = 0ms)
   const parallaxScenes = document.querySelectorAll('.hero-viewport, .macro-stage');
   let currentScrollY = window.scrollY;
   let targetScrollY = window.scrollY;
@@ -271,6 +286,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
       scene.style.setProperty('--stage-parallax-y', `${imgShift}px`);
       scene.style.setProperty('--text-parallax-y', `${textShift}px`);
+
+      if (scene.classList.contains('macro-stage')) {
+        const absDist = Math.abs(centerOffset);
+        const defocus = Math.max(0, Math.min(1, (absDist - 0.22) / 0.52));
+        const blurPx = (defocus * 5.5).toFixed(2);
+        scene.style.setProperty('--stage-blur', `${blurPx}px`);
+      }
+    });
+
+    macroSequences.forEach((seq) => {
+      const seqRect = seq.getBoundingClientRect();
+      if (seqRect.bottom < -100 || seqRect.top > vh + 100) return;
+      const totalSpan = Math.max(1, seqRect.height - vh * 0.4);
+      const progressed = Math.min(1, Math.max(0.06, (vh * 0.6 - seqRect.top) / totalSpan));
+      seq.style.setProperty('--seq-progress', progressed.toFixed(4));
+
+      const stages = seq.querySelectorAll('.macro-stage');
+      const ticks = seq.querySelectorAll('.macro-datum-tick');
+      let closestIdx = 0;
+      let minDist = Infinity;
+      stages.forEach((st, i) => {
+        const stRect = st.getBoundingClientRect();
+        const dist = Math.abs(stRect.top + stRect.height * 0.5 - vh * 0.5);
+        if (dist < minDist) {
+          minDist = dist;
+          closestIdx = i;
+        }
+      });
+      ticks.forEach((t, i) => t.classList.toggle('is-active', i === closestIdx));
     });
 
     if (Math.abs(targetScrollY - currentScrollY) > 0.25) {

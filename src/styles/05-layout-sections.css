@@ -188,7 +188,8 @@ body.is-loaded .hero-media-wrap img {
 }
 
 /* ==========================================================================
-   CONTINUOUS FULL-BLEED MACRO SCROLL SEQUENCE (SEAMLESS EASED ALPHA DISSOLVE)
+   CONTINUOUS FULL-BLEED MACRO SCROLL SEQUENCE
+   (Constant-Luminance Cosine Cross-Dissolve + Optical Rack Focus + Editorial Spine)
    ========================================================================== */
 
 .macro-scroll-sequence {
@@ -196,21 +197,121 @@ body.is-loaded .hero-media-wrap img {
   background-color: var(--bg-deep);
 }
 
+/* Continuous Vertical Editorial Datum Spine (El Croquis / Olson Kundig trend) */
+.macro-datum-spine {
+  position: absolute;
+  top: 8vh;
+  bottom: 8vh;
+  left: clamp(14px, 2vw, 34px);
+  width: 28px;
+  z-index: 4;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.macro-datum-track {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 4px;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(244, 241, 234, 0.09) 8%,
+    rgba(244, 241, 234, 0.09) 92%,
+    transparent 100%
+  );
+  overflow: hidden;
+}
+
+.macro-datum-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(200, 169, 142, 0.08) 0%,
+    rgba(200, 169, 142, 0.55) 88%,
+    #f4f1ea 100%
+  );
+  transform-origin: top center;
+  transform: scaleY(var(--seq-progress, 0.12));
+  will-change: transform;
+}
+
+.macro-datum-tick {
+  position: relative;
+  padding-left: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: rgba(244, 241, 234, 0.24);
+  transition: color 0.6s ease, transform 0.6s var(--ease-out-expo);
+}
+
+.macro-datum-tick::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(244, 241, 234, 0.22);
+  transform: translateY(-50%) scale(0.75);
+  transition: background-color 0.6s ease, box-shadow 0.6s ease, transform 0.6s var(--ease-out-expo);
+}
+
+.macro-datum-tick.is-active {
+  color: rgba(200, 169, 142, 0.92);
+  transform: translateX(2px);
+}
+
+.macro-datum-tick.is-active::before {
+  background: #c8a98e;
+  box-shadow: 0 0 10px rgba(200, 169, 142, 0.65);
+  transform: translateY(-50%) scale(1.1);
+}
+
 .macro-stage {
   position: relative;
-  min-height: 104vh;
+  min-height: 108vh;
   width: 100%;
   display: flex;
   align-items: center;
-  padding: clamp(140px, 16vw, 220px) 0;
+  padding: clamp(160px, 18vw, 240px) 0;
   overflow: hidden;
-  /* Transparent background so adjacent overlapping stages cross-dissolve optically */
+  /* Transparent background so adjacent overlapping stages cross-dissolve at constant luminance */
   background-color: transparent;
 }
 
+/* Ambient Material Light Bleed uniting adjacent stages and text blocks */
+.macro-stage::before {
+  content: '';
+  position: absolute;
+  inset: -12% 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 58% 54% at 70% 50%, rgba(200, 169, 142, 0.075) 0%, rgba(124, 152, 176, 0.035) 48%, transparent 78%);
+}
+
+.macro-stage--text-right::before {
+  background:
+    radial-gradient(ellipse 58% 54% at 30% 50%, rgba(200, 169, 142, 0.075) 0%, rgba(124, 152, 176, 0.035) 48%, transparent 78%);
+}
+
 @media (min-width: 1025px) {
+  /* -28vh overlap aligns the 50% cosine alpha point of Stage N with the 50% point of Stage N+1 (cos² + sin² = 1),
+     completely eliminating the dark trough between consecutive macro photographs */
   .macro-stage + .macro-stage {
-    margin-top: -11vh;
+    margin-top: -28vh;
   }
 }
 
@@ -220,47 +321,47 @@ body.is-loaded .hero-media-wrap img {
   z-index: 1;
   pointer-events: none;
   overflow: hidden;
-  /* 15-stop sinusoidal easing mask (Larsenwork / Codrops pattern) eliminating Mach bands at top & bottom */
+  /* Matched 26% top/bottom cosine-squared easing mask so overlapping stages sum to 100% luminance */
   -webkit-mask-image: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(0, 0, 0, 0.03) 3%,
-    rgba(0, 0, 0, 0.10) 6.5%,
-    rgba(0, 0, 0, 0.22) 10.5%,
-    rgba(0, 0, 0, 0.39) 15%,
-    rgba(0, 0, 0, 0.59) 20%,
-    rgba(0, 0, 0, 0.78) 25%,
-    rgba(0, 0, 0, 0.92) 30%,
-    #000 36%,
-    #000 64%,
-    rgba(0, 0, 0, 0.92) 70%,
-    rgba(0, 0, 0, 0.78) 75%,
-    rgba(0, 0, 0, 0.59) 80%,
-    rgba(0, 0, 0, 0.39) 85%,
-    rgba(0, 0, 0, 0.22) 89.5%,
-    rgba(0, 0, 0, 0.10) 93.5%,
-    rgba(0, 0, 0, 0.03) 97%,
+    rgba(0, 0, 0, 0.05) 3.5%,
+    rgba(0, 0, 0, 0.16) 7%,
+    rgba(0, 0, 0, 0.33) 10.5%,
+    rgba(0, 0, 0, 0.52) 13.5%,
+    rgba(0, 0, 0, 0.71) 17%,
+    rgba(0, 0, 0, 0.87) 20.5%,
+    rgba(0, 0, 0, 0.96) 23.5%,
+    #000 26.5%,
+    #000 73.5%,
+    rgba(0, 0, 0, 0.96) 76.5%,
+    rgba(0, 0, 0, 0.87) 79.5%,
+    rgba(0, 0, 0, 0.71) 83%,
+    rgba(0, 0, 0, 0.52) 86.5%,
+    rgba(0, 0, 0, 0.33) 89.5%,
+    rgba(0, 0, 0, 0.16) 93%,
+    rgba(0, 0, 0, 0.05) 96.5%,
     transparent 100%
   );
   mask-image: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(0, 0, 0, 0.03) 3%,
-    rgba(0, 0, 0, 0.10) 6.5%,
-    rgba(0, 0, 0, 0.22) 10.5%,
-    rgba(0, 0, 0, 0.39) 15%,
-    rgba(0, 0, 0, 0.59) 20%,
-    rgba(0, 0, 0, 0.78) 25%,
-    rgba(0, 0, 0, 0.92) 30%,
-    #000 36%,
-    #000 64%,
-    rgba(0, 0, 0, 0.92) 70%,
-    rgba(0, 0, 0, 0.78) 75%,
-    rgba(0, 0, 0, 0.59) 80%,
-    rgba(0, 0, 0, 0.39) 85%,
-    rgba(0, 0, 0, 0.22) 89.5%,
-    rgba(0, 0, 0, 0.10) 93.5%,
-    rgba(0, 0, 0, 0.03) 97%,
+    rgba(0, 0, 0, 0.05) 3.5%,
+    rgba(0, 0, 0, 0.16) 7%,
+    rgba(0, 0, 0, 0.33) 10.5%,
+    rgba(0, 0, 0, 0.52) 13.5%,
+    rgba(0, 0, 0, 0.71) 17%,
+    rgba(0, 0, 0, 0.87) 20.5%,
+    rgba(0, 0, 0, 0.96) 23.5%,
+    #000 26.5%,
+    #000 73.5%,
+    rgba(0, 0, 0, 0.96) 76.5%,
+    rgba(0, 0, 0, 0.87) 79.5%,
+    rgba(0, 0, 0, 0.71) 83%,
+    rgba(0, 0, 0, 0.52) 86.5%,
+    rgba(0, 0, 0, 0.33) 89.5%,
+    rgba(0, 0, 0, 0.16) 93%,
+    rgba(0, 0, 0, 0.05) 96.5%,
     transparent 100%
   );
 }
@@ -270,15 +371,14 @@ body.is-loaded .hero-media-wrap img {
   height: 100%;
   object-fit: cover;
   object-position: center center;
-  opacity: 0.72;
-  filter: brightness(0.88) contrast(1.06);
+  opacity: 0.78;
+  filter: brightness(0.9) contrast(1.06) blur(var(--stage-blur, 0px));
   /* 1.18 -> 1.12 scale guarantees >55px vertical bleed so ±42px parallax NEVER exposes raw image edges */
   transform: scale(1.18) translate3d(0, var(--stage-parallax-y, 0px), 0);
   transition:
     transform 2s var(--ease-out-expo),
-    opacity 1.6s var(--ease-out-expo),
-    filter 1.6s var(--ease-out-expo);
-  will-change: transform, opacity;
+    opacity 1.6s var(--ease-out-expo);
+  will-change: transform, opacity, filter;
   /* Horizontal feather mask so internal photo borders on left/right dissolve into #111214 */
   -webkit-mask-image: linear-gradient(
     90deg,
@@ -308,41 +408,38 @@ body.is-loaded .hero-media-wrap img {
 
 .macro-stage.is-inview .macro-stage-media img {
   transform: scale(1.12) translate3d(0, var(--stage-parallax-y, 0px), 0);
-  opacity: 0.94;
-  filter: brightness(0.98) contrast(1.06);
+  opacity: 0.96;
+  filter: brightness(0.98) contrast(1.06) blur(var(--stage-blur, 0px));
 }
 
-/* Directional atmospheric dissolve:
-   When text is on the LEFT, left side melts into #111214 while right side shows the macro object in full volume.
-   When text is on the RIGHT (.macro-stage--text-right), right side melts into #111214 while left side shows the macro object in full volume. */
+/* Pure horizontal directional shading for typography legibility —
+   NO vertical black darkening here so top/bottom cross-dissolve stays constant-luminance! */
 .macro-stage-media::after {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 90% 80% at 64% 50%, rgba(17, 18, 20, 0) 25%, rgba(17, 18, 20, 0.58) 78%, #111214 100%),
     linear-gradient(
       90deg,
       #111214 0%,
-      rgba(17, 18, 20, 0.92) 22%,
-      rgba(17, 18, 20, 0.68) 36%,
-      rgba(17, 18, 20, 0.32) 52%,
-      rgba(17, 18, 20, 0.06) 72%,
-      rgba(17, 18, 20, 0.48) 100%
+      rgba(17, 18, 20, 0.90) 20%,
+      rgba(17, 18, 20, 0.62) 35%,
+      rgba(17, 18, 20, 0.24) 52%,
+      rgba(17, 18, 20, 0.04) 72%,
+      rgba(17, 18, 20, 0.42) 100%
     );
 }
 
 .macro-stage--text-right .macro-stage-media::after {
   background:
-    radial-gradient(ellipse 90% 80% at 36% 50%, rgba(17, 18, 20, 0) 25%, rgba(17, 18, 20, 0.58) 78%, #111214 100%),
     linear-gradient(
       270deg,
       #111214 0%,
-      rgba(17, 18, 20, 0.94) 24%,
-      rgba(17, 18, 20, 0.72) 38%,
-      rgba(17, 18, 20, 0.36) 54%,
-      rgba(17, 18, 20, 0.06) 74%,
-      rgba(17, 18, 20, 0.48) 100%
+      rgba(17, 18, 20, 0.92) 22%,
+      rgba(17, 18, 20, 0.66) 37%,
+      rgba(17, 18, 20, 0.28) 54%,
+      rgba(17, 18, 20, 0.04) 74%,
+      rgba(17, 18, 20, 0.42) 100%
     );
 }
 
