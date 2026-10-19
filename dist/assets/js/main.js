@@ -46,14 +46,10 @@ heading.innerHTML = '';
 heading.appendChild(newChildren);
 };
 const isDesktop = window.matchMedia('(min-width: 1025px)');
-if (isDesktop.matches) {
 document.querySelectorAll('h1, h2:not(.blog-card-title)').forEach(splitHeadingIntoWords);
 requestAnimationFrame(() => {
 document.body.classList.add('is-loaded');
 });
-} else {
-document.body.classList.add('is-loaded');
-}
 const header = document.querySelector('.site-header');
 let headerTicking = false;
 let cachedMaxScroll = 1;
@@ -226,14 +222,12 @@ let currentScrollY = window.scrollY;
 let targetScrollY = window.scrollY;
 let rafRunning = false;
 const updateParallaxFrame = () => {
-if (!isDesktop.matches) {
-rafRunning = false;
-return;
-}
-currentScrollY += (targetScrollY - currentScrollY) * 0.14;
+currentScrollY += (targetScrollY - currentScrollY) * 0.16;
 const vh = window.innerHeight;
-const imgAmp = -38;
-const txtAmp = 16;
+const desktopMode = isDesktop.matches;
+const imgAmp = desktopMode ? -38 : -24;
+const txtAmp = desktopMode ? 16 : 10;
+const maxBlur = desktopMode ? 5.5 : 4.2;
 parallaxScenes.forEach((scene) => {
 const rect = scene.getBoundingClientRect();
 if (rect.bottom < -200 || rect.top > vh + 200) return;
@@ -245,7 +239,7 @@ scene.style.setProperty('--text-parallax-y', `${textShift}px`);
 if (scene.classList.contains('macro-stage')) {
 const absDist = Math.abs(centerOffset);
 const defocus = Math.max(0, Math.min(1, (absDist - 0.22) / 0.52));
-const blurPx = (defocus * 5.5).toFixed(2);
+const blurPx = (defocus * maxBlur).toFixed(2);
 scene.style.setProperty('--stage-blur', `${blurPx}px`);
 }
 });
@@ -275,7 +269,6 @@ requestAnimationFrame(updateParallaxFrame);
 rafRunning = false;
 }
 };
-if (isDesktop.matches) {
 window.addEventListener(
 'scroll',
 () => {
@@ -288,7 +281,6 @@ requestAnimationFrame(updateParallaxFrame);
 { passive: true }
 );
 updateParallaxFrame();
-}
 const focusCards = document.querySelectorAll('.brand-logo-card, .apex-strip-item');
 if ('IntersectionObserver' in window && focusCards.length > 0) {
 const focusObserver = new IntersectionObserver(

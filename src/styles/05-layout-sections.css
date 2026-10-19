@@ -600,7 +600,7 @@ body.is-loaded .hero-media-wrap img {
 
 @media (max-width: 768px) {
   .stagger-rays-backdrop {
-    opacity: 0.4;
+    opacity: 0.88;
   }
 }
 

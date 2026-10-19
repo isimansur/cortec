@@ -55,14 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const isDesktop = window.matchMedia('(min-width: 1025px)');
 
-  if (isDesktop.matches) {
-    document.querySelectorAll('h1, h2:not(.blog-card-title)').forEach(splitHeadingIntoWords);
-    requestAnimationFrame(() => {
-      document.body.classList.add('is-loaded');
-    });
-  } else {
+  document.querySelectorAll('h1, h2:not(.blog-card-title)').forEach(splitHeadingIntoWords);
+  requestAnimationFrame(() => {
     document.body.classList.add('is-loaded');
-  }
+  });
 
   // 2. Header scroll state & architectural scroll progress bar (All Pages, Mobile + Desktop, Zero-Reflow)
   const header = document.querySelector('.site-header');
@@ -260,21 +256,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 6. Desktop Interactive Physics: Smooth Scroll Parallax, Optical Rack Focus, Hero Spatial Drift, Magnetic Buttons & 3D Gallery Tilt
-  // 6a. Continuous rAF Scroll Parallax & Optical Rack Focus for Hero & Macro Stages (Desktop Only to keep Mobile TBT = 0ms)
+  // 6a. Continuous rAF Scroll Parallax & Optical Rack Focus for Hero & Macro Stages (All Viewports: Desktop + Mobile)
   const parallaxScenes = document.querySelectorAll('.hero-viewport, .macro-stage');
   let currentScrollY = window.scrollY;
   let targetScrollY = window.scrollY;
   let rafRunning = false;
 
   const updateParallaxFrame = () => {
-    if (!isDesktop.matches) {
-      rafRunning = false;
-      return;
-    }
-    currentScrollY += (targetScrollY - currentScrollY) * 0.14;
+    currentScrollY += (targetScrollY - currentScrollY) * 0.16;
     const vh = window.innerHeight;
-    const imgAmp = -38;
-    const txtAmp = 16;
+    const desktopMode = isDesktop.matches;
+    const imgAmp = desktopMode ? -38 : -24;
+    const txtAmp = desktopMode ? 16 : 10;
+    const maxBlur = desktopMode ? 5.5 : 4.2;
 
     parallaxScenes.forEach((scene) => {
       const rect = scene.getBoundingClientRect();
@@ -290,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (scene.classList.contains('macro-stage')) {
         const absDist = Math.abs(centerOffset);
         const defocus = Math.max(0, Math.min(1, (absDist - 0.22) / 0.52));
-        const blurPx = (defocus * 5.5).toFixed(2);
+        const blurPx = (defocus * maxBlur).toFixed(2);
         scene.style.setProperty('--stage-blur', `${blurPx}px`);
       }
     });
@@ -324,20 +318,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  if (isDesktop.matches) {
-    window.addEventListener(
-      'scroll',
-      () => {
-        targetScrollY = window.scrollY;
-        if (!rafRunning) {
-          rafRunning = true;
-          requestAnimationFrame(updateParallaxFrame);
-        }
-      },
-      { passive: true }
-    );
-    updateParallaxFrame();
-  }
+  window.addEventListener(
+    'scroll',
+    () => {
+      targetScrollY = window.scrollY;
+      if (!rafRunning) {
+        rafRunning = true;
+        requestAnimationFrame(updateParallaxFrame);
+      }
+    },
+    { passive: true }
+  );
+  updateParallaxFrame();
 
   // Mobile scroll-focus observer for Brand Cards & Strip Cards
   const focusCards = document.querySelectorAll('.brand-logo-card, .apex-strip-item');

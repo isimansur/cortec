@@ -33,87 +33,160 @@
     justify-self: start;
   }
 
+  /* Keep the Vertical Editorial Datum Spine visible along the left edge on Tablet & Mobile */
   .macro-datum-spine {
-    display: none;
+    display: flex;
+    top: 6vh;
+    bottom: 6vh;
+    left: 6px;
+    width: 18px;
   }
 
-  /* Full-bleed edge-to-edge dissolving scenes on Tablet & Mobile:
-     The macro image spans 100% width in the upper part of the stage and dissolves into #111214 at top & bottom,
-     while the text sits cleanly below the focal object so they never overlap! */
-  .hero-viewport,
-  .macro-stage {
-    min-height: auto;
+  .macro-datum-tick {
+    padding-left: 9px;
+    font-size: 0.52rem;
+    letter-spacing: 0.08em;
+  }
+
+  /* True Desktop-like Full-Bleed Spatial Stages on Tablet & Mobile:
+     .hero-media-wrap and .macro-stage-media remain position: absolute; inset: 0; covering 100% of the stage,
+     with -22svh overlap and cosine-squared alpha masks so consecutive photos cross-dissolve directly into each other! */
+  .hero-viewport {
+    min-height: 94svh;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-    padding: 0 0 28px;
+    justify-content: flex-end;
+    padding: 120px 0 64px;
+  }
+
+  .macro-stage {
+    min-height: 92svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 148px 0 88px;
   }
 
   .macro-stage + .macro-stage {
-    margin-top: -32px;
+    margin-top: -22svh;
   }
 
-  .hero-media-wrap,
-  .macro-stage-media {
-    position: relative;
-    inset: auto;
+  .hero-media-wrap {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    height: clamp(320px, 52vh, 520px);
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .macro-stage-media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     -webkit-mask-image: linear-gradient(
       180deg,
       transparent 0%,
-      rgba(0, 0, 0, 0.16) 4.5%,
-      rgba(0, 0, 0, 0.56) 11%,
-      rgba(0, 0, 0, 0.90) 18%,
-      #000 25%,
-      #000 66%,
-      rgba(0, 0, 0, 0.88) 75%,
-      rgba(0, 0, 0, 0.56) 84%,
-      rgba(0, 0, 0, 0.22) 92%,
-      rgba(0, 0, 0, 0.05) 97%,
+      rgba(0, 0, 0, 0.05) 3.5%,
+      rgba(0, 0, 0, 0.16) 7%,
+      rgba(0, 0, 0, 0.33) 10.5%,
+      rgba(0, 0, 0, 0.52) 13.5%,
+      rgba(0, 0, 0, 0.71) 17%,
+      rgba(0, 0, 0, 0.87) 20.5%,
+      rgba(0, 0, 0, 0.96) 23.5%,
+      #000 26.5%,
+      #000 73.5%,
+      rgba(0, 0, 0, 0.96) 76.5%,
+      rgba(0, 0, 0, 0.87) 79.5%,
+      rgba(0, 0, 0, 0.71) 83%,
+      rgba(0, 0, 0, 0.52) 86.5%,
+      rgba(0, 0, 0, 0.33) 89.5%,
+      rgba(0, 0, 0, 0.16) 93%,
+      rgba(0, 0, 0, 0.05) 96.5%,
       transparent 100%
     );
     mask-image: linear-gradient(
       180deg,
       transparent 0%,
-      rgba(0, 0, 0, 0.16) 4.5%,
-      rgba(0, 0, 0, 0.56) 11%,
-      rgba(0, 0, 0, 0.90) 18%,
-      #000 25%,
-      #000 66%,
-      rgba(0, 0, 0, 0.88) 75%,
-      rgba(0, 0, 0, 0.56) 84%,
-      rgba(0, 0, 0, 0.22) 92%,
-      rgba(0, 0, 0, 0.05) 97%,
+      rgba(0, 0, 0, 0.05) 3.5%,
+      rgba(0, 0, 0, 0.16) 7%,
+      rgba(0, 0, 0, 0.33) 10.5%,
+      rgba(0, 0, 0, 0.52) 13.5%,
+      rgba(0, 0, 0, 0.71) 17%,
+      rgba(0, 0, 0, 0.87) 20.5%,
+      rgba(0, 0, 0, 0.96) 23.5%,
+      #000 26.5%,
+      #000 73.5%,
+      rgba(0, 0, 0, 0.96) 76.5%,
+      rgba(0, 0, 0, 0.87) 79.5%,
+      rgba(0, 0, 0, 0.71) 83%,
+      rgba(0, 0, 0, 0.52) 86.5%,
+      rgba(0, 0, 0, 0.33) 89.5%,
+      rgba(0, 0, 0, 0.16) 93%,
+      rgba(0, 0, 0, 0.05) 96.5%,
       transparent 100%
     );
   }
 
   .hero-media-wrap img,
-  .hero-viewport--right .hero-media-wrap img,
   .macro-stage-media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center center;
-    opacity: 0.96;
-    filter: brightness(1) contrast(1.06);
+    object-position: 68% 24%;
+    opacity: 0.92;
+    filter: brightness(0.96) contrast(1.06) blur(var(--stage-blur, 0px));
   }
 
+  .hero-viewport--right .hero-media-wrap img,
+  .macro-stage--text-right .macro-stage-media img {
+    object-position: 32% 24%;
+  }
+
+  /* Directional atmospheric veil: upper macro focal point stays bright and volumetric,
+     lower-left / lower-right editorial zone smoothly shades behind typography without vertical black banding */
   .hero-media-wrap::after,
+  .macro-stage-media::after {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(17, 18, 20, 0.04) 0%,
+        rgba(17, 18, 20, 0.14) 32%,
+        rgba(17, 18, 20, 0.64) 62%,
+        rgba(17, 18, 20, 0.82) 100%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(17, 18, 20, 0.78) 0%,
+        rgba(17, 18, 20, 0.42) 56%,
+        rgba(17, 18, 20, 0.08) 100%
+      );
+  }
+
   .hero-viewport--right .hero-media-wrap::after,
-  .macro-stage-media::after,
   .macro-stage--text-right .macro-stage-media::after {
     background:
-      radial-gradient(ellipse 105% 95% at 50% 48%, transparent 52%, rgba(17, 18, 20, 0.42) 88%, rgba(17, 18, 20, 0.78) 100%);
+      linear-gradient(
+        180deg,
+        rgba(17, 18, 20, 0.04) 0%,
+        rgba(17, 18, 20, 0.14) 32%,
+        rgba(17, 18, 20, 0.64) 62%,
+        rgba(17, 18, 20, 0.82) 100%
+      ),
+      linear-gradient(
+        270deg,
+        rgba(17, 18, 20, 0.78) 0%,
+        rgba(17, 18, 20, 0.42) 56%,
+        rgba(17, 18, 20, 0.08) 100%
+      );
   }
 
   .hero-content,
   .macro-stage-content {
-    margin-top: -64px;
-    padding: 0 5vw;
-    transform: none;
+    margin-top: 0;
+    padding: 0 5vw 0 7vw;
+    transform: translate3d(0, var(--text-parallax-y, 0px), 0);
   }
 }
 
@@ -213,13 +286,13 @@
 
   .hero-media-wrap,
   .macro-stage-media {
-    height: clamp(290px, 46vh, 420px);
+    height: 100%;
   }
 
   .hero-content,
   .macro-stage-content {
-    margin-top: -44px;
-    padding: 0 5vw;
+    margin-top: 0;
+    padding: 0 5vw 0 7.5vw;
   }
 
   h1, .h1-display {
@@ -263,39 +336,28 @@
     margin-top: 28px;
   }
 
-  /* APEX 5-STRIP GALLERY ON MOBILE: Smooth Horizontal Strip Gallery with Center Frame Larger */
+  /* APEX 5-STRIP GALLERY ON MOBILE: Same 5-Vertical-Strip Stepped Architectural Composition as Desktop */
   .apex-five-strip {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 16px;
-    padding: 12px 6vw 32px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    display: grid;
+    grid-template-columns: 1fr 1.08fr 1.38fr 1.08fr 1fr;
+    gap: clamp(6px, 1.8vw, 14px);
+    align-items: center;
+    padding: 12px 3vw 24px;
+    overflow: visible;
   }
 
-  .apex-five-strip::-webkit-scrollbar {
-    display: none;
-  }
-
-  .apex-strip-item,
   .apex-strip-item:nth-child(1),
-  .apex-strip-item:nth-child(2),
-  .apex-strip-item:nth-child(4),
   .apex-strip-item:nth-child(5) {
-    display: block;
-    flex: 0 0 68vw;
-    max-width: 280px;
-    aspect-ratio: 2 / 3.0;
-    scroll-snap-align: center;
+    aspect-ratio: 2 / 3.2;
+  }
+
+  .apex-strip-item:nth-child(2),
+  .apex-strip-item:nth-child(4) {
+    aspect-ratio: 2 / 3.35;
   }
 
   .apex-strip-item:nth-child(3) {
-    display: block;
-    flex: 0 0 74vw;
-    max-width: 310px;
-    aspect-ratio: 2 / 3.25;
-    scroll-snap-align: center;
+    aspect-ratio: 2 / 3.68;
   }
 
   .brand-logos-showcase {
@@ -458,29 +520,29 @@ section,
 @media (max-width: 1024px) {
   .hero-media-wrap img,
   .hero-viewport--right .hero-media-wrap img {
-    transform: none;
-    opacity: 0.98;
-    filter: brightness(1.02) contrast(1.06);
+    transform: scale(1.14) translate3d(0, var(--stage-parallax-y, 0px), 0);
+    opacity: 0.94;
+    filter: brightness(0.98) contrast(1.06);
   }
 
   .macro-stage-media img {
-    transform: scale(1.14) translate3d(0, var(--stage-parallax-y, 0px), 0);
-    opacity: 0.88;
-    filter: brightness(0.94) contrast(1.06);
+    transform: scale(1.16) translate3d(0, var(--stage-parallax-y, 0px), 0);
+    opacity: 0.84;
+    filter: brightness(0.92) contrast(1.06) blur(var(--stage-blur, 0px));
     transition:
-      transform 1.1s var(--ease-out-expo),
-      opacity 0.9s var(--ease-out-expo);
+      transform 1.4s var(--ease-out-expo),
+      opacity 1.1s var(--ease-out-expo);
   }
 
   .macro-stage.is-inview .macro-stage-media img {
-    transform: scale(1.10) translate3d(0, var(--stage-parallax-y, 0px), 0);
-    opacity: 0.98;
-    filter: brightness(1.02) contrast(1.06);
+    transform: scale(1.12) translate3d(0, var(--stage-parallax-y, 0px), 0);
+    opacity: 0.96;
+    filter: brightness(0.98) contrast(1.06) blur(var(--stage-blur, 0px));
   }
 
   .hero-content,
   .macro-stage-content {
-    transform: none;
+    transform: translate3d(0, var(--text-parallax-y, 0px), 0);
   }
 }
 
@@ -571,7 +633,7 @@ section,
     color: var(--accent-sand-light) !important;
   }
 
-  /* 1-column full-width Brand Cards on mobile (no skyscraper columns!) */
+  /* 2-column Brand Cards on Tablet, 1-column on Phone with Desktop Glass Elevation */
   .brand-logos-showcase {
     grid-template-columns: 1fr !important;
     gap: 18px !important;
@@ -604,22 +666,16 @@ section,
   .macro-stage-content,
   .stagger-row,
   .footer-grid,
-  .editorial-stagger,
-  .brand-logos-showcase {
+  .editorial-stagger {
     grid-template-columns: 1fr !important;
     column-gap: 0 !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
   }
 
-  .stagger-left,
-  .stagger-right,
   .stagger-center-wide,
   .stagger-offset-mid,
   .hero-content-inner,
-  .hero-viewport--right .hero-content-inner,
-  .macro-stage-text-left,
-  .macro-stage-text-right,
   .footer-brand,
   .footer-nav-col,
   .footer-systems-col,
@@ -627,6 +683,28 @@ section,
     grid-column: 1 / -1 !important;
     width: 100% !important;
     max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* Preserve the Desktop Asymmetric Left / Right Staggered Editorial Rhythm on Mobile & Tablet! */
+  .stagger-left,
+  .macro-stage-text-left {
+    grid-column: 1 / -1 !important;
+    width: 92% !important;
+    max-width: 560px !important;
+    margin-right: auto !important;
+    min-width: 0 !important;
+  }
+
+  .stagger-right,
+  .macro-stage-text-right,
+  .hero-viewport--right .hero-content-inner {
+    grid-column: 1 / -1 !important;
+    width: 90% !important;
+    max-width: 560px !important;
+    margin-left: auto !important;
+    padding-left: clamp(14px, 3.8vw, 28px) !important;
+    border-left: 1px solid rgba(200, 169, 142, 0.22);
     min-width: 0 !important;
   }
 }
@@ -843,43 +921,50 @@ input[type="tel"] {
     text-overflow: ellipsis !important;
   }
 
-  /* 7. Apex 5-Strip Gallery -> Clean 1-Column Architectural Stack on Mobile (Zero Overflow!) */
+  /* 7. Apex 5-Strip Gallery -> Identical 5-Vertical-Strip Stepped Architectural Composition as Desktop! */
   .apex-five-strip {
     display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 16px !important;
+    grid-template-columns: 1fr 1.08fr 1.38fr 1.08fr 1fr !important;
+    gap: clamp(5px, 1.6vw, 12px) !important;
+    align-items: center !important;
     height: auto !important;
-    min-height: 0 !important;
-    padding: 0 !important;
-    margin: 28px 0 !important;
-    overflow: hidden !important;
+    min-height: clamp(240px, 42vh, 360px) !important;
+    padding: 8px 3vw !important;
+    margin: 24px 0 !important;
+    overflow: visible !important;
   }
 
-  .apex-strip-item,
-  .apex-strip-item:nth-child(1),
-  .apex-strip-item:nth-child(2),
-  .apex-strip-item:nth-child(3),
-  .apex-strip-item:nth-child(4),
-  .apex-strip-item:nth-child(5) {
+  .apex-strip-item {
     width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
-    height: 240px !important;
-    flex: none !important;
+    height: auto !important;
     margin: 0 !important;
-    border-radius: 18px !important;
-    transform: none !important;
-    opacity: 1 !important;
-    filter: none !important;
-    border: 1px solid rgba(255, 255, 255, 0.09) !important;
-    box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.75) !important;
+    border-radius: 6px !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 24px 54px -12px rgba(0, 0, 0, 0.9) !important;
+  }
+
+  .apex-strip-item:nth-child(1),
+  .apex-strip-item:nth-child(5) {
+    aspect-ratio: 2 / 3.35 !important;
+  }
+
+  .apex-strip-item:nth-child(2),
+  .apex-strip-item:nth-child(4) {
+    aspect-ratio: 2 / 3.55 !important;
+  }
+
+  .apex-strip-item:nth-child(3) {
+    aspect-ratio: 2 / 3.9 !important;
+    border-color: rgba(200, 169, 142, 0.28) !important;
+    box-shadow: 0 32px 72px -10px rgba(0, 0, 0, 0.96), 0 0 28px rgba(200, 169, 142, 0.12) !important;
   }
 
   .apex-strip-item img {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
-    transform: none !important;
   }
 
   /* 8. Brand Cards Elevated Apple Dark Mode Surface */
@@ -923,21 +1008,8 @@ input[type="tel"] {
   }
 }
 
-/* Mobile ProMotion 120Hz Crisp Scroll Reveal & Offscreen Content-Visibility (Zero Long Tasks) */
+/* Mobile ProMotion 120Hz Optical Scroll Reveal */
 @media (max-width: 768px) {
-  .reveal,
-  .reveal.is-visible {
-    filter: none !important;
-    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) !important;
-  }
-  .hero-media img,
-  .macro-bg img,
-  .hero-visual-stage img,
-  .macro-stage-frame img {
-    transform: none !important;
-  }
-  .macro-scroll-sequence,
-  .apex-gallery-section,
   .site-footer {
     content-visibility: auto;
     contain-intrinsic-size: 1px 900px;
