@@ -101,7 +101,7 @@ function renderBlogArticle(post, { prefix = '../' } = {}) {
         <img
           src="${prefix}assets/img/${post.heroImg}.avif"
           srcset="${prefix}assets/img/${post.heroImg}-sm.avif 688w, ${prefix}assets/img/${post.heroImg}.avif 1376w"
-          sizes="100vw"
+          sizes="(max-width: 768px) 50vw, 100vw"
           width="1344"
           height="768"
           alt="${post.heroAlt}"

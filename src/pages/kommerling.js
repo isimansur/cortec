@@ -23,7 +23,7 @@ module.exports = {
     <section class="hero-viewport">
       <div class="hero-media-wrap">
         <img
-          src="assets/img/kommerling-aluclip-node.avif" srcset="assets/img/kommerling-aluclip-node-sm.avif 688w, assets/img/kommerling-aluclip-node.avif 1376w" sizes="100vw"
+          src="assets/img/kommerling-aluclip-node.avif" srcset="assets/img/kommerling-aluclip-node-sm.avif 688w, assets/img/kommerling-aluclip-node.avif 1376w" sizes="(max-width: 768px) 50vw, 100vw"
           alt="Гибридный немецкий профиль KÖMMERLING AluClip Zero с анодированной алюминиевой накладкой и графитовым ядром"
           width="1344"
           height="768"
@@ -117,7 +117,7 @@ module.exports = {
       <article class="macro-stage macro-stage--text-right" id="premidoor">
         <div class="macro-stage-media">
           <img
-            src="assets/img/kommerling-premidoor-node.avif" srcset="assets/img/kommerling-premidoor-node-sm.avif 688w, assets/img/kommerling-premidoor-node.avif 1376w" sizes="100vw"
+            src="assets/img/kommerling-premidoor-node.avif" srcset="assets/img/kommerling-premidoor-node-sm.avif 688w, assets/img/kommerling-premidoor-node.avif 1376w" sizes="(max-width: 768px) 50vw, 100vw"
             alt="Низкий безбарьерный порог и узкий переплет портала KÖMMERLING PremiDoor 76 и 88 Lux"
             width="1344"
             height="768"

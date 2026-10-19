@@ -56,7 +56,7 @@ module.exports = {
         <img
           src="${prefix}assets/img/blog-engineering-hero.avif"
           srcset="${prefix}assets/img/blog-engineering-hero-sm.avif 688w, ${prefix}assets/img/blog-engineering-hero.avif 1376w"
-          sizes="100vw"
+          sizes="(max-width: 768px) 50vw, 100vw"
           width="1344"
           height="768"
           alt="Инженерный журнал CORTEC — Архитектурное остекление в Грозном и на Северном Кавказе"

@@ -48,7 +48,7 @@ module.exports = {
     <!-- SCREEN 1: FULLSCREEN HERO FOR KBE -->
     <section class="hero-viewport hero-viewport--right" aria-label="Немецкие профильные системы KBE">
       <div class="hero-media-wrap">
-        <img src="assets/img/kbe-graphite-profile.avif" srcset="assets/img/kbe-graphite-profile-sm.avif 688w, assets/img/kbe-graphite-profile.avif 1376w" sizes="100vw" width="1344" height="768" alt="Инженерный разрез многокамерного профиля KBE в темной графитовой ламинации с двухкамерным стеклопакетом" title="Немецкие профильные оконно-дверные системы KBE в темной ламинации" fetchpriority="high" decoding="async">
+        <img src="assets/img/kbe-graphite-profile.avif" srcset="assets/img/kbe-graphite-profile-sm.avif 688w, assets/img/kbe-graphite-profile.avif 1376w" sizes="(max-width: 768px) 50vw, 100vw" width="1344" height="768" alt="Инженерный разрез многокамерного профиля KBE в темной графитовой ламинации с двухкамерным стеклопакетом" title="Немецкие профильные оконно-дверные системы KBE в темной ламинации" fetchpriority="high" decoding="async">
       </div>
       <div class="hero-content">
         <div class="hero-content-inner reveal">
@@ -167,7 +167,7 @@ module.exports = {
     <!-- FULL-BLEED MACRO SCENE: ACOUSTICS & GLASS -->
     <section class="macro-stage macro-stage--text-right" aria-labelledby="kbe-acoustics-scene-heading">
       <div class="macro-stage-media">
-        <img src="assets/img/multilayer-glass-edge.avif" srcset="assets/img/multilayer-glass-edge-sm.avif 688w, assets/img/multilayer-glass-edge.avif 1376w" sizes="100vw" width="1344" height="768" alt="Многослойный энергоэффективный и шумоизоляционный стеклопакет для систем KBE" title="Акустические и мультифункциональные стеклопакеты в окнах KBE" loading="lazy" decoding="async">
+        <img src="assets/img/multilayer-glass-edge.avif" srcset="assets/img/multilayer-glass-edge-sm.avif 688w, assets/img/multilayer-glass-edge.avif 1376w" sizes="(max-width: 768px) 50vw, 100vw" width="1344" height="768" alt="Многослойный энергоэффективный и шумоизоляционный стеклопакет для систем KBE" title="Акустические и мультифункциональные стеклопакеты в окнах KBE" loading="lazy" decoding="async">
       </div>
       <div class="macro-stage-content">
         <div class="macro-stage-text-right reveal">
@@ -231,7 +231,7 @@ module.exports = {
     <!-- FULL-BLEED MACRO SCENE: HARDWARE & HANDLE -->
     <section class="macro-stage" aria-labelledby="kbe-scale-heading">
       <div class="macro-stage-media">
-        <img src="assets/img/minimalist-window-handle.avif" srcset="assets/img/minimalist-window-handle-sm.avif 688w, assets/img/minimalist-window-handle.avif 1376w" sizes="100vw" width="1344" height="768" alt="Минималистичная темная ручка и скрытая противовзломная фурнитура на профиле KBE" title="Скрытая фурнитура и минималистичные ручки для окон KBE" loading="lazy" decoding="async">
+        <img src="assets/img/minimalist-window-handle.avif" srcset="assets/img/minimalist-window-handle-sm.avif 688w, assets/img/minimalist-window-handle.avif 1376w" sizes="(max-width: 768px) 50vw, 100vw" width="1344" height="768" alt="Минималистичная темная ручка и скрытая противовзломная фурнитура на профиле KBE" title="Скрытая фурнитура и минималистичные ручки для окон KBE" loading="lazy" decoding="async">
       </div>
       <div class="macro-stage-content">
         <div class="macro-stage-text-left reveal">

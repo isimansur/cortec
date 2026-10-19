@@ -47,7 +47,7 @@ module.exports = {
     <!-- SCREEN 1: FULLSCREEN HERO FOR ALUTECH -->
     <section class="hero-viewport" aria-label="Архитектурные алюминиевые системы ALUTECH">
       <div class="hero-media-wrap">
-        <img src="assets/img/hero-volumetric-node.avif" srcset="assets/img/hero-volumetric-node-sm.avif 688w, assets/img/hero-volumetric-node.avif 1376w" sizes="100vw" width="1344" height="768" alt="Объемный стоечно-ригельный фасадный узел ALUTECH в темном анодированном профиле с теплым внутренним светом" title="Архитектурные алюминиевые фасады и витражи ALUTECH" fetchpriority="high" decoding="async">
+        <img src="assets/img/hero-volumetric-node.avif" srcset="assets/img/hero-volumetric-node-sm.avif 688w, assets/img/hero-volumetric-node.avif 1376w" sizes="(max-width: 768px) 50vw, 100vw" width="1344" height="768" alt="Объемный стоечно-ригельный фасадный узел ALUTECH в темном анодированном профиле с теплым внутренним светом" title="Архитектурные алюминиевые фасады и витражи ALUTECH" fetchpriority="high" decoding="async">
       </div>
       <div class="hero-content">
         <div class="hero-content-inner reveal">

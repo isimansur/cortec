@@ -28,7 +28,7 @@ module.exports = {
     <!-- SCREEN 1: HERO FOR ELEMENTS (GLASS EDGE MACRO) -->
     <section class="hero-viewport hero-viewport--right" aria-label="Компоненты светопрозрачных конструкций">
       <div class="hero-media-wrap">
-        <img src="assets/img/multilayer-glass-edge.avif" srcset="assets/img/multilayer-glass-edge-sm.avif 688w, assets/img/multilayer-glass-edge.avif 1376w" sizes="100vw" width="1344" height="768" alt="Чистый архитектурный торец многослойного двухкамерного стеклопакета с преломлением теплого света" title="Двухкамерный мультифункциональный стеклопакет с теплой дистанционной рамкой" fetchpriority="high" decoding="async">
+        <img src="assets/img/multilayer-glass-edge.avif" srcset="assets/img/multilayer-glass-edge-sm.avif 688w, assets/img/multilayer-glass-edge.avif 1376w" sizes="(max-width: 768px) 50vw, 100vw" width="1344" height="768" alt="Чистый архитектурный торец многослойного двухкамерного стеклопакета с преломлением теплого света" title="Двухкамерный мультифункциональный стеклопакет с теплой дистанционной рамкой" fetchpriority="high" decoding="async">
       </div>
       <div class="hero-content">
         <div class="hero-content-inner reveal">
@@ -97,7 +97,7 @@ module.exports = {
     <!-- FULL-BLEED SCENE: MINIMALIST HANDLE -->
     <section class="macro-stage" aria-labelledby="furnitura-i-ruchki">
       <div class="macro-stage-media">
-        <img src="assets/img/minimalist-window-handle.avif" srcset="assets/img/minimalist-window-handle-sm.avif 688w, assets/img/minimalist-window-handle.avif 1376w" sizes="100vw" width="1344" height="768" alt="Минималистичная темная оконная ручка на фоне матовой графитовой рамы" title="Безрозеточные оконные ручки в темном анодированном исполнении" loading="lazy" decoding="async">
+        <img src="assets/img/minimalist-window-handle.avif" srcset="assets/img/minimalist-window-handle-sm.avif 688w, assets/img/minimalist-window-handle.avif 1376w" sizes="(max-width: 768px) 50vw, 100vw" width="1344" height="768" alt="Минималистичная темная оконная ручка на фоне матовой графитовой рамы" title="Безрозеточные оконные ручки в темном анодированном исполнении" loading="lazy" decoding="async">
       </div>
       <div class="macro-stage-content">
         <div class="macro-stage-text-left reveal">

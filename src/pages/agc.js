@@ -23,7 +23,7 @@ module.exports = {
     <section class="hero-viewport hero-viewport--right">
       <div class="hero-media-wrap">
         <img
-          src="assets/img/agc-stopray-glass.avif" srcset="assets/img/agc-stopray-glass-sm.avif 688w, assets/img/agc-stopray-glass.avif 1376w" sizes="100vw"
+          src="assets/img/agc-stopray-glass.avif" srcset="assets/img/agc-stopray-glass-sm.avif 688w, assets/img/agc-stopray-glass.avif 1376w" sizes="(max-width: 768px) 50vw, 100vw"
           alt="Торцы многослойного архитектурного стекла AGC Planibel Clearvision и Stopray с магнетронным покрытием"
           width="1344"
           height="768"
@@ -117,7 +117,7 @@ module.exports = {
       <article class="macro-stage macro-stage--text-left" id="jumbo">
         <div class="macro-stage-media">
           <img
-            src="assets/img/agc-planibel-facade.avif" srcset="assets/img/agc-planibel-facade-sm.avif 688w, assets/img/agc-planibel-facade.avif 1376w" sizes="100vw"
+            src="assets/img/agc-planibel-facade.avif" srcset="assets/img/agc-planibel-facade-sm.avif 688w, assets/img/agc-planibel-facade.avif 1376w" sizes="(max-width: 768px) 50vw, 100vw"
             alt="Бесшовный структурный стеклянный угол из крупноформатного стекла AGC Planibel Clearvision и Stopray"
             width="1344"
             height="768"

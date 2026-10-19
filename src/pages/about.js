@@ -18,7 +18,7 @@ module.exports = {
     <!-- SCREEN 1: HERO FOR ABOUT -->
     <section class="hero-viewport" aria-label="Компания CORTEC">
       <div class="hero-media-wrap">
-        <img src="assets/img/alutech-facade-node.avif" srcset="assets/img/alutech-facade-node-sm.avif 688w, assets/img/alutech-facade-node.avif 1376w" sizes="100vw" width="1344" height="768" alt="Архитектурный узел остекления CORTEC в глубоком графитовом цвете с теплым светом внутри" title="Инженерное проектирование и монтаж светопрозрачных конструкций CORTEC" fetchpriority="high" decoding="async">
+        <img src="assets/img/alutech-facade-node.avif" srcset="assets/img/alutech-facade-node-sm.avif 688w, assets/img/alutech-facade-node.avif 1376w" sizes="(max-width: 768px) 50vw, 100vw" width="1344" height="768" alt="Архитектурный узел остекления CORTEC в глубоком графитовом цвете с теплым светом внутри" title="Инженерное проектирование и монтаж светопрозрачных конструкций CORTEC" fetchpriority="high" decoding="async">
       </div>
       <div class="hero-content">
         <div class="hero-content-inner reveal">
@@ -101,7 +101,7 @@ module.exports = {
     <!-- FULL-BLEED QUIET SCENE -->
     <section class="macro-stage macro-stage--text-right" aria-labelledby="about-cta-heading">
       <div class="macro-stage-media">
-        <img src="assets/img/kbe-graphite-profile.avif" srcset="assets/img/kbe-graphite-profile-sm.avif 688w, assets/img/kbe-graphite-profile.avif 1376w" sizes="100vw" width="1344" height="768" alt="Прецизионный срез темного инженерного профиля и двухкамерного стеклопакета" title="Инженерный расчет и комплектация профильных систем" loading="lazy" decoding="async">
+        <img src="assets/img/kbe-graphite-profile.avif" srcset="assets/img/kbe-graphite-profile-sm.avif 688w, assets/img/kbe-graphite-profile.avif 1376w" sizes="(max-width: 768px) 50vw, 100vw" width="1344" height="768" alt="Прецизионный срез темного инженерного профиля и двухкамерного стеклопакета" title="Инженерный расчет и комплектация профильных систем" loading="lazy" decoding="async">
       </div>
       <div class="macro-stage-content">
         <div class="macro-stage-text-right reveal">

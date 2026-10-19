@@ -22,7 +22,7 @@ module.exports = {
     <!-- SCREEN 1: HERO FOR CONTACT -->
     <section class="hero-viewport" aria-label="Контакты проектного отдела CORTEC в Грозном и карта обслуживания СКФО">
       <div class="hero-media-wrap">
-        <img src="${prefix}assets/img/contact-skfo-glass-map-hero.avif" srcset="${prefix}assets/img/contact-skfo-glass-map-hero-sm.avif 688w, ${prefix}assets/img/contact-skfo-glass-map-hero.avif 1376w" sizes="100vw" width="1344" height="768" alt="Архитектурный 3D-макет рельефной карты Северного Кавказа (СКФО) из многослойного просветленного стекла AGC и анодированных алюминиевых профилей ALUTECH с центральным узлом в Грозном" title="Офис CORTEC в Грозном и география проектирования по Чеченской Республике и СКФО" fetchpriority="high" decoding="async">
+        <img src="${prefix}assets/img/contact-skfo-glass-map-hero.avif" srcset="${prefix}assets/img/contact-skfo-glass-map-hero-sm.avif 688w, ${prefix}assets/img/contact-skfo-glass-map-hero.avif 1376w" sizes="(max-width: 768px) 50vw, 100vw" width="1344" height="768" alt="Архитектурный 3D-макет рельефной карты Северного Кавказа (СКФО) из многослойного просветленного стекла AGC и анодированных алюминиевых профилей ALUTECH с центральным узлом в Грозном" title="Офис CORTEC в Грозном и география проектирования по Чеченской Республике и СКФО" fetchpriority="high" decoding="async">
       </div>
       <div class="hero-content">
         <div class="hero-content-inner reveal">

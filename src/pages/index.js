@@ -18,7 +18,7 @@ module.exports = {
     <!-- SCREEN 1: FULLSCREEN HERO SCENE -->
     <section class="hero-viewport" aria-label="Архитектурное остекление CORTEC">
       <div class="hero-media-wrap">
-        <img src="assets/img/hero-volumetric-node.avif" srcset="assets/img/hero-volumetric-node-sm.avif 688w, assets/img/hero-volumetric-node.avif 1376w" sizes="100vw" width="1344" height="768" alt="Объемный угловой узел алюминиевого стоечно-ригельного фасада ALUTECH с двухкамерным стеклопакетом и теплым светом" title="Фасадное и панорамное остекление CORTEC на базе систем ALUTECH, KBE, KÖMMERLING и стекла AGC" fetchpriority="high" decoding="async">
+        <img src="assets/img/hero-volumetric-node.avif" srcset="assets/img/hero-volumetric-node-sm.avif 688w, assets/img/hero-volumetric-node.avif 1376w" sizes="(max-width: 768px) 50vw, 100vw" width="1344" height="768" alt="Объемный угловой узел алюминиевого стоечно-ригельного фасада ALUTECH с двухкамерным стеклопакетом и теплым светом" title="Фасадное и панорамное остекление CORTEC на базе систем ALUTECH, KBE, KÖMMERLING и стекла AGC" fetchpriority="high" decoding="async">
       </div>
       <div class="hero-content">
         <div class="hero-content-inner reveal">
@@ -105,7 +105,7 @@ module.exports = {
       <!-- MACRO STAGE 1: FRAME & THERMAL NODE (ALUTECH) -->
       <section class="macro-stage" aria-labelledby="macro-frame-heading">
         <div class="macro-stage-media">
-          <img src="assets/img/alutech-facade-node.avif" srcset="assets/img/alutech-facade-node-sm.avif 688w, assets/img/alutech-facade-node.avif 1376w" sizes="100vw" width="1344" height="768" alt="Макро-план примыкания стойки и ригеля алюминиевого фасада ALUTECH в темном анодированном графите" title="Стоечно-ригельное и структурное остекление фасадов ALUTECH" loading="lazy" decoding="async">
+          <img src="assets/img/alutech-facade-node.avif" srcset="assets/img/alutech-facade-node-sm.avif 688w, assets/img/alutech-facade-node.avif 1376w" sizes="(max-width: 768px) 50vw, 100vw" width="1344" height="768" alt="Макро-план примыкания стойки и ригеля алюминиевого фасада ALUTECH в темном анодированном графите" title="Стоечно-ригельное и структурное остекление фасадов ALUTECH" loading="lazy" decoding="async">
         </div>
         <div class="macro-stage-content">
           <div class="macro-stage-text-left reveal">
@@ -124,7 +124,7 @@ module.exports = {
       <!-- MACRO STAGE 2: HANDLE & CONCEALED KINEMATICS -->
       <section class="macro-stage" aria-labelledby="macro-handle-heading">
         <div class="macro-stage-media">
-          <img src="assets/img/minimalist-window-handle.avif" srcset="assets/img/minimalist-window-handle-sm.avif 688w, assets/img/minimalist-window-handle.avif 1376w" sizes="100vw" width="1344" height="768" alt="Минималистичная безрозеточная темная оконная ручка на матовом графитовом профиле" title="Минималистичные оконные ручки и скрытая фурнитура CORTEC" loading="lazy" decoding="async">
+          <img src="assets/img/minimalist-window-handle.avif" srcset="assets/img/minimalist-window-handle-sm.avif 688w, assets/img/minimalist-window-handle.avif 1376w" sizes="(max-width: 768px) 50vw, 100vw" width="1344" height="768" alt="Минималистичная безрозеточная темная оконная ручка на матовом графитовом профиле" title="Минималистичные оконные ручки и скрытая фурнитура CORTEC" loading="lazy" decoding="async">
         </div>
         <div class="macro-stage-content">
           <div class="macro-stage-text-left reveal">
@@ -143,7 +143,7 @@ module.exports = {
       <!-- MACRO STAGE 3: AGC ARCHITECTURAL GLASS -->
       <section class="macro-stage macro-stage--text-right" aria-labelledby="macro-glass-heading">
         <div class="macro-stage-media">
-          <img src="assets/img/agc-stopray-glass.avif" srcset="assets/img/agc-stopray-glass-sm.avif 688w, assets/img/agc-stopray-glass.avif 1376w" sizes="100vw" width="1344" height="768" alt="Макросъемка торца просветленного стекла AGC Planibel Clearvision и мультифункционального покрытия Stopray" title="Архитектурное стекло AGC Stopray, Planibel Clearvision и триплекс Stratophone" loading="lazy" decoding="async">
+          <img src="assets/img/agc-stopray-glass.avif" srcset="assets/img/agc-stopray-glass-sm.avif 688w, assets/img/agc-stopray-glass.avif 1376w" sizes="(max-width: 768px) 50vw, 100vw" width="1344" height="768" alt="Макросъемка торца просветленного стекла AGC Planibel Clearvision и мультифункционального покрытия Stopray" title="Архитектурное стекло AGC Stopray, Planibel Clearvision и триплекс Stratophone" loading="lazy" decoding="async">
         </div>
         <div class="macro-stage-content">
           <div class="macro-stage-text-right reveal">
@@ -162,7 +162,7 @@ module.exports = {
       <!-- MACRO STAGE 4: KÖMMERLING HYBRID ALUCLIP ZERO -->
       <section class="macro-stage" aria-labelledby="macro-kommerling-heading">
         <div class="macro-stage-media">
-          <img src="assets/img/kommerling-aluclip-node.avif" srcset="assets/img/kommerling-aluclip-node-sm.avif 688w, assets/img/kommerling-aluclip-node.avif 1376w" sizes="100vw" width="1344" height="768" alt="Гибридный немецкий профиль KÖMMERLING AluClip Zero с анодированной алюминиевой накладкой и графитовым ядром" title="Немецкие профильные системы KÖMMERLING 88, AluClip Zero и proCoverTec" loading="lazy" decoding="async">
+          <img src="assets/img/kommerling-aluclip-node.avif" srcset="assets/img/kommerling-aluclip-node-sm.avif 688w, assets/img/kommerling-aluclip-node.avif 1376w" sizes="(max-width: 768px) 50vw, 100vw" width="1344" height="768" alt="Гибридный немецкий профиль KÖMMERLING AluClip Zero с анодированной алюминиевой накладкой и графитовым ядром" title="Немецкие профильные системы KÖMMERLING 88, AluClip Zero и proCoverTec" loading="lazy" decoding="async">
         </div>
         <div class="macro-stage-content">
           <div class="macro-stage-text-left reveal">
@@ -181,7 +181,7 @@ module.exports = {
       <!-- MACRO STAGE 5: MONUMENTAL KBE PROFILE -->
       <section class="macro-stage macro-stage--text-right" aria-labelledby="macro-kbe-heading">
         <div class="macro-stage-media">
-          <img src="assets/img/kbe-graphite-profile.avif" srcset="assets/img/kbe-graphite-profile-sm.avif 688w, assets/img/kbe-graphite-profile.avif 1376w" sizes="100vw" width="1344" height="768" alt="Строгий темный многокамерный профиль KBE в антрацитовой ламинации с трехконтурным уплотнением" title="Немецкие профильные системы KBE в темной ламинации" loading="lazy" decoding="async">
+          <img src="assets/img/kbe-graphite-profile.avif" srcset="assets/img/kbe-graphite-profile-sm.avif 688w, assets/img/kbe-graphite-profile.avif 1376w" sizes="(max-width: 768px) 50vw, 100vw" width="1344" height="768" alt="Строгий темный многокамерный профиль KBE в антрацитовой ламинации с трехконтурным уплотнением" title="Немецкие профильные системы KBE в темной ламинации" loading="lazy" decoding="async">
         </div>
         <div class="macro-stage-content">
           <div class="macro-stage-text-right reveal">

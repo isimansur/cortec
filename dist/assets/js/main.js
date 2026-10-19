@@ -231,14 +231,18 @@ const maxBlur = desktopMode ? 5.5 : 4.2;
 parallaxScenes.forEach((scene) => {
 const rect = scene.getBoundingClientRect();
 if (rect.bottom < -200 || rect.top > vh + 200) return;
+const mediaEl = scene.querySelector('.macro-stage-media, .hero-media-wrap') || scene;
+const mediaRect = mediaEl.getBoundingClientRect();
+const focalCenterY = desktopMode ? vh * 0.5 : vh * 0.42;
+const mediaOffset = (mediaRect.top + mediaRect.height * 0.5 - focalCenterY) / vh;
 const centerOffset = (rect.top + rect.height * 0.5 - vh * 0.5) / vh;
-const imgShift = (centerOffset * imgAmp).toFixed(2);
+const imgShift = (mediaOffset * imgAmp).toFixed(2);
 const textShift = (centerOffset * txtAmp).toFixed(2);
 scene.style.setProperty('--stage-parallax-y', `${imgShift}px`);
 scene.style.setProperty('--text-parallax-y', `${textShift}px`);
 if (scene.classList.contains('macro-stage')) {
-const absDist = Math.abs(centerOffset);
-const defocus = Math.max(0, Math.min(1, (absDist - 0.22) / 0.52));
+const absDist = Math.abs(mediaOffset);
+const defocus = Math.max(0, Math.min(1, (absDist - 0.24) / 0.46));
 const blurPx = (defocus * maxBlur).toFixed(2);
 scene.style.setProperty('--stage-blur', `${blurPx}px`);
 }
