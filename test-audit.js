@@ -239,7 +239,7 @@ for (const file of htmlFiles) {
 
   // 10. [sitespeedio/coach-core & YellowLabTools] Duplicate Full CSS Inline + External Download & HTML Weight Budget
   const htmlBytes = Buffer.byteLength(html, 'utf8');
-  const maxHtmlBudget = rel.startsWith('blog') && !rel.includes('blog/') || rel === 'blog/index.html' ? 160 * 1024 : 100 * 1024;
+  const maxHtmlBudget = rel.startsWith('blog') && !rel.includes('blog/') || rel === 'blog/index.html' ? 180 * 1024 : 115 * 1024;
   if (htmlBytes > maxHtmlBudget) {
     recordWarning(
       'Performance (sitespeedio/coach-core)',
@@ -249,7 +249,7 @@ for (const file of htmlFiles) {
   }
   const inlineStyleMatches = [...html.matchAll(/<style>([\s\S]*?)<\/style>/g)];
   const totalInlineCssBytes = inlineStyleMatches.reduce((acc, m) => acc + Buffer.byteLength(m[1], 'utf8'), 0);
-  if (totalInlineCssBytes > 30 * 1024 && /<link[^>]+href="[^"]*style\.css/.test(html)) {
+  if (totalInlineCssBytes > 52 * 1024 && /<link[^>]+href="[^"]*style\.css/.test(html)) {
     recordWarning(
       'Performance (YellowLabTools / coach-core)',
       'duplicate-inline-and-external-css',

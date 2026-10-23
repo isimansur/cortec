@@ -55,7 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const isDesktop = window.matchMedia('(min-width: 1025px)');
 
-  document.querySelectorAll('h1, h2:not(.blog-card-title)').forEach(splitHeadingIntoWords);
+  if (isDesktop.matches) {
+    document.querySelectorAll('h2:not(.blog-card-title)').forEach(splitHeadingIntoWords);
+  }
   requestAnimationFrame(() => {
     document.body.classList.add('is-loaded');
   });
@@ -273,6 +275,15 @@ document.addEventListener('DOMContentLoaded', () => {
     parallaxScenes.forEach((scene) => {
       const rect = scene.getBoundingClientRect();
       if (rect.bottom < -200 || rect.top > vh + 200) return;
+
+      if (scene.classList.contains('hero-viewport')) {
+        const heroScrollRatio = Math.max(0, currentScrollY) / vh;
+        const imgShift = (heroScrollRatio * -imgAmp).toFixed(2);
+        const textShift = (heroScrollRatio * -txtAmp).toFixed(2);
+        scene.style.setProperty('--stage-parallax-y', `${imgShift}px`);
+        scene.style.setProperty('--text-parallax-y', `${textShift}px`);
+        return;
+      }
 
       const mediaEl = scene.querySelector('.macro-stage-media, .hero-media-wrap') || scene;
       const mediaRect = mediaEl.getBoundingClientRect();

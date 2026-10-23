@@ -80,21 +80,24 @@ function minifyJs(js) {
     .join('\n');
 }
 
-// 3. Concatenate & minify modular CSS Design System (01..10) + Critical Above-the-Fold CSS (01..05) + JS
+// 3. Concatenate & minify modular CSS Design System: Critical Above-the-Fold + Responsive CSS (01..05, 07..08) inlined, Deferred (06, 09, 10) external
 const styleFiles = fs.readdirSync(path.join(SRC, 'styles'))
   .filter((f) => f.endsWith('.css'))
   .sort();
 
-const rawCss = styleFiles
-  .map((f) => fs.readFileSync(path.join(SRC, 'styles', f), 'utf8'))
-  .join('\n\n');
+const criticalRegex = /^(01|02|03|04|05|07|08)-/;
+const criticalStyleFiles = styleFiles.filter((f) => criticalRegex.test(f));
+const deferredStyleFiles = styleFiles.filter((f) => !criticalRegex.test(f));
 
-const criticalStyleFiles = styleFiles.filter((f) => /^(01|02|03|04|05)-/.test(f));
 const rawCriticalCss = criticalStyleFiles
   .map((f) => fs.readFileSync(path.join(SRC, 'styles', f), 'utf8'))
   .join('\n\n');
 
-const combinedCss = minifyCss(rawCss);
+const rawDeferredCss = deferredStyleFiles
+  .map((f) => fs.readFileSync(path.join(SRC, 'styles', f), 'utf8'))
+  .join('\n\n');
+
+const combinedCss = minifyCss(rawDeferredCss);
 const criticalCss = minifyCss(rawCriticalCss);
 const cssPath = path.join(DIST, 'assets/css/style.css');
 fs.writeFileSync(cssPath, combinedCss);
