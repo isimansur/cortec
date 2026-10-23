@@ -268,7 +268,7 @@ site.siteNavigationSchema = {
       position: idx + 1,
       name: item.sitelinkTitle,
       description: item.description,
-      url: `${site.brand.domain}/${item.file}`
+      url: `${site.brand.domain}/${item.slug}`
     }))
 };
 

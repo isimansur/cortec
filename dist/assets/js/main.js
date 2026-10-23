@@ -629,7 +629,7 @@ if (titleEl) titleEl.textContent = data.title;
 if (descEl) descEl.textContent = data.desc;
 if (windEl) windEl.textContent = data.wind;
 if (sysEl) sysEl.textContent = data.sys;
-if (linkEl) linkEl.setAttribute('href', data.href);
+if (linkEl) linkEl.setAttribute('href', data.href.replace(/\.html$/, ''));
 };
 skfoNodes.forEach((node) => {
 node.addEventListener('click', () => activateRegion(node.dataset.regionId));

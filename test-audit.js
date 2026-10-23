@@ -222,6 +222,8 @@ for (const file of htmlFiles) {
         targetFile = path.resolve(baseDir, filePart);
         if (fs.existsSync(targetFile) && fs.statSync(targetFile).isDirectory()) {
           targetFile = path.join(targetFile, 'index.html');
+        } else if (!fs.existsSync(targetFile) && fs.existsSync(`${targetFile}.html`)) {
+          targetFile = `${targetFile}.html`;
         }
         if (!fs.existsSync(targetFile)) {
           recordIssue('SEO / Broken Links', 'broken-links', `${rel}: Broken internal link -> ${href}`);

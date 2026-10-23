@@ -26,10 +26,15 @@ function renderLayout({
   jsHash = cssHash,
   inlineCss = ''
 }) {
-  const cleanPath = canonicalPath !== undefined
+  const cleanPath = (canonicalPath !== undefined
     ? canonicalPath
-    : (slug === 'index' ? '' : `${slug}.html`);
+    : (slug === 'index' ? '' : slug)).replace(/\.html$/, '');
   const canonicalUrl = cleanPath ? `${site.brand.domain}/${cleanPath}` : `${site.brand.domain}/`;
+
+  const toCleanHref = (fileStr) => {
+    if (!fileStr || fileStr === 'index.html') return prefix || './';
+    return `${prefix}${fileStr.replace(/\.html(#|$)/, '$1')}`;
+  };
 
   const systemItems = site.nav.filter((item) => item.group === 'systems');
   const isSystemActive = systemItems.some((item) => item.slug === slug);
@@ -38,7 +43,7 @@ function renderLayout({
     const isActive = item.slug === slug;
     const activeAttr = isActive ? ' class="nav-dropdown-link is-active" aria-current="page"' : ' class="nav-dropdown-link"';
     const titleAttr = item.sitelinkTitle ? ` title="${item.sitelinkTitle}: ${item.description}"` : '';
-    return `          <a href="${prefix}${item.file}" itemprop="url"${activeAttr}${titleAttr}>
+    return `          <a href="${toCleanHref(item.file)}" itemprop="url"${activeAttr}${titleAttr}>
             <span class="nav-dropdown-title" itemprop="name">${item.label}</span>
             <span class="nav-dropdown-sub">${item.sublabel || ''}</span>
           </a>`;
@@ -48,7 +53,7 @@ function renderLayout({
     const isActive = item.slug === slug || (slug && slug.startsWith('blog/') && item.slug === 'blog');
     const activeAttr = isActive ? ' class="nav-top-link is-active" aria-current="page"' : ' class="nav-top-link"';
     const titleAttr = item.sitelinkTitle ? ` title="${item.sitelinkTitle}: ${item.description}"` : '';
-    return `      <a href="${prefix}${item.file}" itemprop="url"${activeAttr}${titleAttr}><span itemprop="name">${item.label}</span></a>`;
+    return `      <a href="${toCleanHref(item.file)}" itemprop="url"${activeAttr}${titleAttr}><span itemprop="name">${item.label}</span></a>`;
   };
 
   const indexItem = site.nav.find((i) => i.slug === 'index');
@@ -71,11 +76,11 @@ ${systemSubmenuLinks}
   ].join('\n');
 
   const footerNavLinks = site.footerNav.map((item) =>
-    `          <a href="${prefix}${item.file}">${item.label}</a>`
+    `          <a href="${toCleanHref(item.file)}">${item.label}</a>`
   ).join('\n');
 
   const footerSysLinks = site.footerSystems.map((item) =>
-    `          <a href="${prefix}${item.file}">${item.label}</a>`
+    `          <a href="${toCleanHref(item.file)}">${item.label}</a>`
   ).join('\n');
 
   const preloadTag = preloadImg
@@ -117,15 +122,8 @@ ${systemSubmenuLinks}
           if (node['@type'] === 'BreadcrumbList' && Array.isArray(node.itemListElement)) {
             node.itemListElement = node.itemListElement.map((li) => {
               let targetUrl = li.item || li.url || canonicalUrl;
-              // Ensure internal page URLs match canonical .html format (except root '/')
-              if (
-                typeof targetUrl === 'string' &&
-                targetUrl.startsWith(site.brand.domain + '/') &&
-                targetUrl !== `${site.brand.domain}/` &&
-                !targetUrl.endsWith('.html') &&
-                !targetUrl.includes('#')
-              ) {
-                targetUrl = `${targetUrl}.html`;
+              if (typeof targetUrl === 'string' && targetUrl.startsWith(site.brand.domain + '/')) {
+                targetUrl = targetUrl.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
               }
               return {
                 '@type': 'ListItem',
@@ -231,14 +229,14 @@ ${schemaBlock}
 
   <!-- HEADER -->
   <header class="site-header">
-    <a href="${prefix}index.html" class="brand-logo" aria-label="CORTEC technologies — На главную">
+    <a href="${prefix || './'}" class="brand-logo" aria-label="CORTEC technologies — На главную">
       ${site.logoSvg}
       <span class="brand-logo-sub">technologies</span>
     </a>
     <nav class="main-nav" aria-label="Основная навигация" itemscope itemtype="https://schema.org/SiteNavigationElement">
 ${navLinks}
     </nav>
-    <a href="${prefix}contact.html" class="header-cta">Обсудить проект</a>
+    <a href="${prefix}contact" class="header-cta">Обсудить проект</a>
     <button type="button" class="mobile-menu-toggle" aria-expanded="false" aria-label="Открыть меню">Меню</button>
   </header>
 
@@ -251,7 +249,7 @@ ${mainHtml}
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <a href="${prefix}index.html" class="brand-logo" aria-label="CORTEC technologies — На главную">
+          <a href="${prefix || './'}" class="brand-logo" aria-label="CORTEC technologies — На главную">
             ${site.logoSvg}
             <span class="brand-logo-sub">technologies</span>
           </a>
@@ -299,7 +297,7 @@ ${footerSysLinks}
 
       <div class="footer-bottom">
         <span>© ${site.brand.copyrightYear} ${site.brand.name} · ${site.contact.fullAddress}</span>
-        <span><a href="${prefix}privacy.html" class="text-link">Политика конфиденциальности</a> · Технологии ALUTECH · KBE · KÖMMERLING · AGC</span>
+        <span><a href="${prefix}privacy" class="text-link">Политика конфиденциальности</a> · Технологии ALUTECH · KBE · KÖMMERLING · AGC</span>
       </div>
     </div>
   </footer>

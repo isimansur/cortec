@@ -12,10 +12,13 @@ const site = require('../data/site');
  * @returns {string}
  */
 function toAbsoluteUrl(relPath = '') {
-  if (!relPath || relPath === 'index.html' || relPath === '/') {
+  if (!relPath || relPath === 'index.html' || relPath === 'index' || relPath === '/') {
     return `${site.brand.domain}/`;
   }
-  const clean = relPath.replace(/^\/+/, '');
+  const clean = relPath
+    .replace(/^\/+/, '')
+    .replace(/\/index\.html$/, '')
+    .replace(/\.html(#|$)/, '$1');
   return `${site.brand.domain}/${clean}`;
 }
 

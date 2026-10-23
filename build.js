@@ -118,7 +118,10 @@ let verifiedImages = 0;
 let missingImages = [];
 
 function optimizeResponsiveSizes(html) {
-  return html.replace(/sizes="100vw"/g, 'sizes="(max-width: 768px) 50vw, 100vw"');
+  return html
+    .replace(/sizes="100vw"/g, 'sizes="(max-width: 768px) 50vw, 100vw"')
+    .replace(/href="((?:\.\.\/)*)index\.html(#[^"]*)?"/g, (_, pfx, hash = '') => `href="${pfx || './'}${hash}"`)
+    .replace(/href="((?:\.\.\/)*[a-z0-9/_-]+)\.html(#[^"]*)?"/gi, 'href="$1$2"');
 }
 
 function normalizePrefixInHtml(html, prefix) {
@@ -152,7 +155,7 @@ for (const slug of PAGE_SLUGS) {
   const mainRoot = normalizePrefixInHtml(pageMod.renderMain({ prefix: '' }), '');
   const htmlRoot = renderLayout({
     ...pageMod,
-    canonicalPath: slug === 'index' ? '' : `${slug}.html`,
+    canonicalPath: slug === 'index' ? '' : slug,
     mainHtml: mainRoot,
     prefix: '',
     cssHash,
@@ -170,7 +173,7 @@ for (const slug of PAGE_SLUGS) {
     const mainSub = normalizePrefixInHtml(pageMod.renderMain({ prefix: '../' }), '../');
     const htmlSub = renderLayout({
       ...pageMod,
-      canonicalPath: `${slug}.html`,
+      canonicalPath: slug,
       mainHtml: mainSub,
       prefix: '../',
       cssHash,
@@ -196,7 +199,7 @@ for (const post of BLOG_POSTS) {
   const mainBlogFlat = optimizeResponsiveSizes(renderBlogArticle(post, { prefix: '../' }));
   const htmlBlogFlat = renderLayout({
     slug: `blog/${post.slug}`,
-    canonicalPath: `blog/${post.slug}.html`,
+    canonicalPath: `blog/${post.slug}`,
     title: post.title,
     description: post.description,
     keywords: post.keywords,
@@ -223,7 +226,7 @@ for (const post of BLOG_POSTS) {
   const mainBlogSub = optimizeResponsiveSizes(renderBlogArticle(post, { prefix: '../../' }));
   const htmlBlogSub = renderLayout({
     slug: `blog/${post.slug}`,
-    canonicalPath: `blog/${post.slug}.html`,
+    canonicalPath: `blog/${post.slug}`,
     title: post.title,
     description: post.description,
     keywords: post.keywords,
@@ -250,7 +253,7 @@ const NOINDEX_SLUGS = new Set(['design-system', 'privacy', '404']);
 const coreSitemapUrls = PAGE_SLUGS
   .filter((slug) => !NOINDEX_SLUGS.has(slug))
   .map((slug) => {
-    const loc = slug === 'index' ? `${site.brand.domain}/` : `${site.brand.domain}/${slug}.html`;
+    const loc = slug === 'index' ? `${site.brand.domain}/` : `${site.brand.domain}/${slug}`;
     const priority = slug === 'index' ? '1.0' : '0.9';
     return `  <url>
     <loc>${loc}</loc>
@@ -263,7 +266,7 @@ const coreSitemapUrls = PAGE_SLUGS
 const blogSitemapUrls = BLOG_POSTS.map((post) => {
   const priority = post.cluster === 'chechnya' ? '0.9' : (post.cluster === 'caucasus' ? '0.85' : '0.8');
   return `  <url>
-    <loc>${site.brand.domain}/blog/${post.slug}.html</loc>
+    <loc>${site.brand.domain}/blog/${post.slug}</loc>
     <lastmod>${post.dateModified || post.datePublished}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>${priority}</priority>
@@ -280,8 +283,8 @@ fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml);
 // 5B. Generate RSS 2.0 Feed (rss.xml) for Yandex Turbo / Search / Feed Readers
 const rssItems = BLOG_POSTS.map((post) => `    <item>
       <title>${escapeXml(post.title)}</title>
-      <link>${site.brand.domain}/blog/${post.slug}.html</link>
-      <guid isPermaLink="true">${site.brand.domain}/blog/${post.slug}.html</guid>
+      <link>${site.brand.domain}/blog/${post.slug}</link>
+      <guid isPermaLink="true">${site.brand.domain}/blog/${post.slug}</guid>
       <category>${escapeXml(post.clusterLabel)}</category>
       <description>${escapeXml(post.geoSummary)}</description>
       <pubDate>${new Date(post.datePublished + 'T10:00:00+03:00').toUTCString()}</pubDate>
@@ -291,7 +294,7 @@ const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Инженерный журнал CORTEC — Архитектурное остекление в ЧР и СКФО</title>
-    <link>${site.brand.domain}/blog.html</link>
+    <link>${site.brand.domain}/blog</link>
     <description>Инженерные публикации CORTEC о панорамном и фасадном остеклении ALUTECH, KBE, KÖMMERLING и AGC в Грозном, Чеченской Республике и на Северном Кавказе.</description>
     <language>ru-ru</language>
     <atom:link href="${site.brand.domain}/rss.xml" rel="self" type="application/rss+xml"/>
@@ -329,17 +332,17 @@ const llmsTxt = `# ${site.brand.name} (${site.brand.tagline}) — Архитек
 
 ## Основные разделы сайта
 - [Главная экспозиция CORTEC](${site.brand.domain}/): Обзор технологий и инженерной философии
-- [Системы ALUTECH](${site.brand.domain}/alutech.html): Стоечно-ригельные фасады ALT F50, структурное остекление SG, теплые окна ALT W72 и подъемно-сдвижные порталы ALT SL160
-- [Немецкие окна KBE](${site.brand.domain}/kbe.html): Энергоэффективные окна KBE 76 greenline в темной графитовой ламинации со статической вклейкой стеклопакета
-- [Системы KÖMMERLING](${site.brand.domain}/kommerling.html): 7-камерные системы KÖMMERLING 88, компланарные алюминиевые оклады AluClip Zero, покрытие proCoverTec и порталы PremiDoor 88 Lux
-- [Архитектурное стекло AGC](${site.brand.domain}/agc.html): Мультифункциональное стекло Stopray (Double Silver), просветленное стекло Planibel Clearvision (Low-Iron) и акустический триплекс Stratophone
-- [Стеклопакеты и фурнитура](${site.brand.domain}/elements.html): Теплые дистанционные рамки Chromatech Ultra, скрытая фурнитура до 180 кг и безрозеточные ручки
-- [Инженерный журнал](${site.brand.domain}/blog.html): Публикации и технические разборы по остеклению в Чеченской Республике и СКФО
-- [Компания CORTEC](${site.brand.domain}/about.html): Проектирование КМ/КМД, лазерная геодезия и шеф-монтаж по ГОСТ 30971
-- [Контакты в Грозном](${site.brand.domain}/contact.html): Связь с главным инженером проекта (${site.contact.streetAddress})
+- [Системы ALUTECH](${site.brand.domain}/alutech): Стоечно-ригельные фасады ALT F50, структурное остекление SG, теплые окна ALT W72 и подъемно-сдвижные порталы ALT SL160
+- [Немецкие окна KBE](${site.brand.domain}/kbe): Энергоэффективные окна KBE 76 greenline в темной графитовой ламинации со статической вклейкой стеклопакета
+- [Системы KÖMMERLING](${site.brand.domain}/kommerling): 7-камерные системы KÖMMERLING 88, компланарные алюминиевые оклады AluClip Zero, покрытие proCoverTec и порталы PremiDoor 88 Lux
+- [Архитектурное стекло AGC](${site.brand.domain}/agc): Мультифункциональное стекло Stopray (Double Silver), просветленное стекло Planibel Clearvision (Low-Iron) и акустический триплекс Stratophone
+- [Стеклопакеты и фурнитура](${site.brand.domain}/elements): Теплые дистанционные рамки Chromatech Ultra, скрытая фурнитура до 180 кг и безрозеточные ручки
+- [Инженерный журнал](${site.brand.domain}/blog): Публикации и технические разборы по остеклению в Чеченской Республике и СКФО
+- [Компания CORTEC](${site.brand.domain}/about): Проектирование КМ/КМД, лазерная геодезия и шеф-монтаж по ГОСТ 30971
+- [Контакты в Грозном](${site.brand.domain}/contact): Связь с главным инженером проекта (${site.contact.streetAddress})
 
 ## Публикации инженерного журнала CORTEC
-${BLOG_POSTS.map((p) => `- [${p.title}](${site.brand.domain}/blog/${p.slug}.html): ${p.description}`).join('\n')}
+${BLOG_POSTS.map((p) => `- [${p.title}](${site.brand.domain}/blog/${p.slug}): ${p.description}`).join('\n')}
 `;
 fs.writeFileSync(path.join(DIST, 'llms.txt'), llmsTxt);
 

@@ -256,7 +256,9 @@ for (const page of indexablePages) {
       if (href && !href.startsWith('http') && !href.startsWith('mailto:') && !href.startsWith('tel:') && !href.startsWith('javascript:')) {
         const baseDir = path.dirname(page.full);
         const resolved = path.resolve(baseDir, href);
-        const targetRel = path.relative(DIST, resolved).replace(/\\/g, '/');
+        let targetRel = path.relative(DIST, resolved).replace(/\\/g, '/');
+        if (!targetRel || targetRel === '.') targetRel = 'index.html';
+        else if (!targetRel.endsWith('.html')) targetRel = `${targetRel}.html`;
         if (inboundLinks.has(targetRel) && targetRel !== rel) {
           inboundLinks.get(targetRel).add(rel);
         }
