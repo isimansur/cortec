@@ -5,6 +5,7 @@
 AddDefaultCharset UTF-8
 Options -Indexes +FollowSymLinks -MultiViews
 DirectoryIndex index.html
+DirectorySlash Off
 ErrorDocument 404 /404.html
 
 <IfModule mod_mime.c>
@@ -35,15 +36,19 @@ ErrorDocument 404 /404.html
   RewriteCond %{REQUEST_URI} !^/(google[a-f0-9]+|yandex_[a-f0-9]+)\.html$ [NC]
   RewriteRule ^(.+?)\.html$ https://cortectech.pro/$1 [R=301,L]
 
-  # 4. Clean directory index resolution
+  # 4. Canonical redirect: strip trailing slash on inner pages (/alutech/ -> /alutech)
+  RewriteCond %{REQUEST_URI} !^/$
+  RewriteCond %{THE_REQUEST} \s/+(.+?)/+[\s?] [NC]
+  RewriteRule ^(.+?)/+$ https://cortectech.pro/$1 [R=301,L]
+
+  # 5. Clean extensionless file resolution (/alutech -> alutech.html, /blog/post -> blog/post.html)
+  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+  RewriteRule ^(.+?)/?$ $1.html [L]
+
+  # 6. Root directory index resolution
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteCond %{REQUEST_FILENAME}/index.html -f
   RewriteRule ^(.+?)/?$ $1/index.html [L]
-
-  # 5. Clean extensionless file resolution (/alutech -> alutech.html)
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_FILENAME}\.html -f
-  RewriteRule ^(.+?)/?$ $1.html [L]
 </IfModule>
 
 <IfModule mod_deflate.c>
