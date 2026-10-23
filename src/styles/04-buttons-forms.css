@@ -185,3 +185,58 @@
   min-height: 1.6em;
 }
 
+/* Tactile One-Tap Object Type Pills in Contact Form */
+.form-label-text {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: max(0.72rem, 11.5px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-sand);
+  opacity: 0.85;
+  margin-bottom: 2px;
+}
+
+.tactile-pills-group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+}
+
+.tactile-pill {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-family: var(--font-sans);
+  font-size: max(0.84rem, 13px);
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--text-white);
+  background-color: rgba(255, 255, 255, 0.035);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 24px rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  cursor: pointer;
+  transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+.tactile-pill:hover {
+  color: var(--text-white);
+  border-color: rgba(200, 169, 142, 0.45);
+  background-color: rgba(200, 169, 142, 0.08);
+}
+
+.tactile-pill.is-selected {
+  color: #0D0E10;
+  background-color: var(--accent-sand);
+  border-color: rgba(200, 169, 142, 1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 10px 26px rgba(200, 169, 142, 0.22);
+  font-weight: 500;
+}
+

@@ -436,6 +436,18 @@ if (!/MultiViews/i.test(htaccess)) {
   recordWarning('Server Config (.htaccess)', 'Options -MultiViews (h5bp/server-configs-apache)', '.htaccess missing Options -MultiViews to prevent Apache content-negotiation conflicts with clean URLs');
 }
 
+// 20. [Core Web Vitals / Zero-CLS Guardrail] Verify Inline Mobile Critical CSS, Font Metric Overrides & H1 DOM Stability
+const indexInlineStyle = (indexHtmlContent.match(/<style>([\s\S]*?)<\/style>/) || [])[1] || '';
+if (!/Unbounded Fallback/.test(indexInlineStyle) || !/size-adjust\s*:\s*121%/.test(indexInlineStyle)) {
+  recordIssue('CWV / CLS Guardrail', 'missing-font-metric-fallback', 'Inline critical CSS is missing metric-matched Unbounded Fallback (@font-face size-adjust)');
+}
+if (!/@media\s*\(max-width:\s*768px\)/.test(indexInlineStyle) || !/@media\s*\(max-width:\s*1024px\)/.test(indexInlineStyle)) {
+  recordIssue('CWV / CLS Guardrail', 'missing-inline-mobile-critical-css', 'Inline critical CSS is missing 1024px/768px responsive layout rules (causes async style.css layout shift on mobile)');
+}
+if (/querySelectorAll\(['"][^'"]*\bh1\b[^'"]*['"]\)\.forEach\(splitHeadingIntoWords\)/.test(jsContent)) {
+  recordIssue('CWV / CLS Guardrail', 'h1-dom-mutation-after-fcp', 'main.js mutates above-the-fold <h1> via splitHeadingIntoWords after FCP');
+}
+
 console.log('================================================================');
 console.log(`CORTEC AUDIT RESULTS (${htmlFiles.length} HTML files tested)`);
 console.log('================================================================');
@@ -455,4 +467,7 @@ for (const [key, list] of uniqueWarnings.entries()) {
   console.log(`      e.g. ${list[0]}`);
 }
 console.log('================================================================');
+if (issues.length > 0 || warnings.length > 0) {
+  process.exit(1);
+}
 

@@ -1,39 +1,53 @@
-# ⚡ CORTEC (`cortectech.pro`) — Senior Architecture Map & SSOT Contract (v2.0)
+# ⚡ CORTEC (`cortectech.pro`) — Principal Architecture Map & SSOT Contract (v2.1)
 
-> **ВАЖНО ДЛЯ ИНЖЕНЕРОВ И ИИ-АГЕНТОВ:** НЕ ЧИТАЙТЕ и НЕ ПРАВЬТЕ скомпилированные HTML-файлы в `dist/` или `cortec-hosting-final/` и НЕ ПРАВЬТЕ склеенный `dist/assets/css/style.css`. Все правки вносятся строго в модульные исходники `src/`, после чего запускается `npm test` (`node build.js && node test-seo-engines.js && node test-audit.js`, сборка + 250+ проверок за ~200 мс).
+> **ВАЖНО ДЛЯ ИНЖЕНЕРОВ И ИИ-АГЕНТОВ:**
+> 1. **НЕ ЧИТАЙТЕ и НЕ ПРАВЬТЕ** скомпилированные файлы в `dist/` или склеенный `dist/assets/css/style.css`.
+> 2. Все правки вносятся строго в модульные исходники `src/` в рабочей директории `/Users/mansur/Documents/newadam/cortec-architecture`.
+> 3. Полная сборка + 250+ проверок SEO/CWV/CLS + выгрузка на продакшен-сервер выполняются одной командой: `npm run deploy` (или `npm test` для локальной проверки за ~160 мс).
 
-## 1. Архитектурные принципы (Senior / Principal Architecture v2.0)
+---
 
-1. **Single Source of Truth (SSOT — `src/data/site.js`):**
-   - Домен (`https://cortectech.pro`), хост (`cortectech.pro`), телефоны (`+7 (928) 000-76-66` и доп. линии), WhatsApp (`https://wa.me/79280007666`), email (`project@cortectech.pro`), физический адрес (`364037, ЧР, г. Грозный, ул. Субры Кишиевой, 55`), геокоординаты (`43.320780, 45.714519`) и ссылки на карточки **Google Business Profile** (`https://share.google/5Y5mWzVmDDefmiI7j`) и **Яндекс Бизнес** (`https://yandex.ru/profile/30993680039`) хранятся **только** в `src/data/site.js`.
-   - Запрещено хардкодить домен, телефоны или сырые JSON-LD строки в шаблонах страниц `src/pages/*.js`.
-2. **Centralized Schema.org Graph Factory (`src/core/schema-builder.js`):**
-   - Вся микроразметка JSON-LD (`@graph`: `HomeAndConstructionBusiness`, `WebSite`, `SiteNavigationElement`, `Service`, `WebPage`, `ItemList`, `AboutPage`, `ContactPage`, `Blog`, `BlogPosting`, `FAQPage`, `BreadcrumbList`) генерируется программно через чистые фабричные функции `src/core/schema-builder.js`.
-3. **Zero-Dependency Deterministic SSG (`build.js`):**
-   - Генерирует 12 основных страниц (flat `.html` + clean-URL `/slug/index.html`), 30 инженерных статей блога (`/blog/*.html` + `/blog/*/index.html`), `sitemap.xml` (39 канонических URL), `rss.xml`, `llms.txt` и `robots.txt` из единого `site.js`.
-   - Проверяет целостность всех локальных медиа-ресурсов (`.avif`, `.jpg`, `.svg`) на этапе сборки.
-4. **Automated Quality Gate (`npm test`):**
-   - `test-seo-engines.js`: валидирует соответствие требованиям Google Search Essentials, Яндекс Вебмастера (`Clean-param`, микроданные `itemscope`, привязку к карточкам Яндекс и Google), а также проверяет соблюдение архитектурного контракта SSOT.
-   - `test-audit.js`: проверяет техническое SEO, мета-теги, производительность, безопасность и доступность по 5 мировым эталонным репозиториям.
+## 1. Архитектура CSS и Core Web Vitals (`CLS = 0.000`)
 
-## 2. Где что лежит (Карта точечных правок)
+Модульная система стилей (`src/styles/01..10`) разделена в `build.js` на **Critical Inline CSS** (встраивается в `<head><style>` для мгновенного First Paint без сдвига макета на десктопе и мобильных) и **Deferred External CSS** (`assets/css/style.css`, загружается асинхронно без дублирования):
 
-| Задача | Какой файл править (1 файл!) | Пример расхода токенов |
+### A. Critical Inline CSS (`<head><style>`, ~43 КБ, 0% дублирования во внешнем CSS):
+- **`01-tokens.css`** — Цветовая палитра, переменные отступов, `@font-face` (`Unbounded`, `Onest`, `JetBrains Mono`) и калиброванные метрические фоллбэки (`Unbounded Fallback` `size-adjust: 121%`, `Onest Fallback` `size-adjust: 101.5%`) для нулевого CLS при подгрузке шрифтов.
+- **`02-base-typography.css`** — Сброс, базовая типографика `h1..h3`, `.lead-paragraph`, `.body-paragraph`, `.eyebrow`, `.word-mask`.
+- **`03-header-nav.css`** — Шапка `.site-header`, навигация `.main-nav`, выпадающее меню `.nav-dropdown`, мобильный тоггл `.mobile-menu-toggle`, а также хлебные крошки `.blog-breadcrumbs` и `.blog-meta-pills` первого экрана.
+- **`04-buttons-forms.css`** — Кнопки `.btn-sand`, `.btn-oval`, `.btn-group`, минималистичная форма `#cortec-contact-form` и сетка кнопок выбора типа объекта `.tactile-pills-group` (`2 × 2`).
+- **`05-layout-sections.css`** — Контейнеры `.container`, первый экран `.hero-viewport` / `.hero-media-wrap`, непрерывная серия макро-сцен `.macro-scroll-sequence` / `.macro-stage` (Cosine Cross-Dissolve + вертикальная шкала `.macro-datum-spine`), асимметричные секции `.editorial-stagger` и 5-кадровая галерея `.apex-five-strip`.
+- **`07-motion.css`** — Оптическое проявление `.reveal` (первый экран `.hero-content .reveal` всегда открыт на кадре 0).
+- **`08-responsive.css`** — Единый однопроходный адаптивный слой (`<= 1120px`, `<= 1024px`, `<= 768px` Apple HIG) без дублирующихся медиа-блоков. Открытая мобильная витрина изображений (`clamp(290px, 46svh, 410px)`), полноэкранное меню `100dvh`, тач-зоны `>= 44px`.
+
+### B. Deferred External CSS (`assets/css/style.css`, ~23 КБ, загружается отложенно):
+- **`06-components-brands.css`** — Секции ниже первого экрана: карточки 4 брендов `.brand-logos-showcase`, таблицы спецификаций `.spec-table`, подвал `.site-footer`.
+- **`09-design-system.css`** — Стили внутренней страницы `/design-system.html`.
+- **`10-blog-seo.css`** — Каталог и статьи инженерного журнала (`/blog.html`, `/blog/*.html`), GEO-капсулы `.blog-geo-capsule`, E-E-A-T блок, интерактивная карта СКФО `.skfo-map-canvas` и региональная перелинковка.
+
+---
+
+## 2. Таблица мгновенной навигации (1 задача = 1 файл)
+
+| Задача | Точный файл для правки | Строки / Секция |
 | :--- | :--- | :--- |
-| Изменить домен, телефоны, WhatsApp, адрес, почту, карточки Яндекс/Google, меню или OG | `src/data/site.js` | ~300 токенов |
-| Изменить структуру JSON-LD графов (`Schema.org`) для любой страницы или статьи | `src/core/schema-builder.js` | ~300 токенов |
-| Изменить карточки 4 брендов (`ALUTECH`, `KBE`, `KÖMMERLING`, `AGC`) | `src/data/brands.js` | ~300 токенов |
-| Изменить или добавить статью в блог (разбито на 6 кластеров) | `src/data/blog/cluster-*.js` | ~400 токенов |
-| Изменить цвета, шрифты, размеры заголовков или отступы | `src/styles/01-tokens.css` | ~350 токенов |
-| Изменить шапку или полноэкранное мобильное меню (`100dvh`) | `src/styles/03-header-nav.css` | ~400 токенов |
-| Изменить мобильную верстку Apple HIG (`<=1024px`, `<=768px`) | `src/styles/08-responsive.css` | ~450 токенов |
-| Изменить верстку блога, таблиц, GEO-капсул и региональной матрицы | `src/styles/10-blog-seo.css` | ~350 токенов |
-| Изменить общую разметку `<head>`, `<header>` или `<footer>` | `src/components/Layout.js` | ~400 токенов |
-| Изменить шаблон статьи блога | `src/components/BlogArticle.js` | ~300 токенов |
-| Изменить контент конкретной страницы | `src/pages/<slug>.js` | ~500 токенов |
-| Изменить серверные заголовки и редиректы (Apache / Edge CDN) | `src/static/.htaccess` / `src/static/_headers` | ~200 токенов |
+| Контакты, телефоны, WhatsApp, адрес, ссылки Яндекс/Google, меню | `src/data/site.js` | весь файл (140 строк) |
+| Микроразметка Schema.org (`JSON-LD` граф для всех страниц) | `src/core/schema-builder.js` | весь файл |
+| Карточки 4 систем (`ALUTECH`, `KBE`, `KÖMMERLING`, `AGC`) | `src/data/brands.js` | весь файл |
+| Статьи блога (30 статей по 6 тематическим кластерам) | `src/data/blog/cluster-1..6-*.js` | по кластерам |
+| Цвета, шрифты, `@font-face` и размеры типографики | `src/styles/01-tokens.css` | строки 1–145 |
+| Шапка, меню и хлебные крошки первого экрана | `src/styles/03-header-nav.css` | строки 1–370 |
+| Кнопки `.btn-*`, форма заявки и пиллы `.tactile-pill` | `src/styles/04-buttons-forms.css` | строки 1–245 |
+| Десктопный Hero, макро-сцены `.macro-stage`, галерея 5 кадров | `src/styles/05-layout-sections.css` | строки 1–730 |
+| Вся адаптивная и мобильная верстка (`<=1024px`, `<=768px`) | `src/styles/08-responsive.css` | Разделы 1–5 (575 строк) |
+| Стили блога, GEO-капсул и интерактивной карты СКФО | `src/styles/10-blog-seo.css` | строки 1–940 |
+| Интерактивная физика (параллакс, фокус, форма WhatsApp, карта СКФО) | `src/assets/js/main.js` | Разделы 1–10 |
+| Общий каркас `<head>`, `<header>`, `<footer>` | `src/components/Layout.js` | весь файл |
+| Контент конкретной страницы | `src/pages/<slug>.js` | 1 файл на страницу |
 
-## 3. Команды разработки и аудита
+---
 
-- `npm run build` (`node build.js`) — полная сборка проекта в `dist/` и синхронизация архива `cortec-hosting-final.zip`.
-- `npm test` — полный цикл сборки и прогон обоих тестовых движков (`test-seo-engines.js` + `test-audit.js`).
+## 3. Однокомандный пайплайн сборки, проверки и деплоя
+
+- `npm test` — Собирает сайт (`node build.js`), проверяет Google/Yandex SEO & SSOT (`node test-seo-engines.js`) и прогоняет 20 архитектурных и CWV/CLS проверок (`node test-audit.js`). Падает с кодом `1` при любой ошибке или предупреждении.
+- `npm run deploy` — Выполняет `npm test` и при `0 ошибок / 0 предупреждений` мгновенно синхронизирует `dist/` на боевой сервер `cortectech.pro` через `rsync`.

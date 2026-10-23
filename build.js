@@ -405,50 +405,15 @@ if (missingImages.length > 0) {
 
 const elapsed = Date.now() - t0;
 console.log(`✅ CORTEC Build Complete in ${elapsed}ms`);
-console.log(`   • CSS Modules Combined: ${styleFiles.length} files -> assets/css/style.css (?v=${cssHash})`);
+console.log(`   • CSS Architecture: Critical Inline (${criticalStyleFiles.length} modules, ${(Buffer.byteLength(criticalCss) / 1024).toFixed(1)} KB) + Deferred style.css (${deferredStyleFiles.length} modules, ${(Buffer.byteLength(combinedCss) / 1024).toFixed(1)} KB, ?v=${cssHash})`);
 console.log(`   • Core Pages Built: ${PAGE_SLUGS.length} root pages + ${PAGE_SLUGS.length - 1} clean-URL subpages`);
 console.log(`   • SEO Blog Articles Built: ${BLOG_POSTS.length} flat articles (/blog/*.html) + ${BLOG_POSTS.length} clean-URL articles (/blog/*/index.html)`);
 console.log(`   • SEO & GEO Feeds Generated: sitemap.xml (${coreSitemapUrls.length + blogSitemapUrls.length} URLs), rss.xml (${BLOG_POSTS.length} items), llms.txt, robots.txt`);
 console.log(`   • Asset References Verified: ${verifiedImages} (0 missing, 0 broken paths)`);
 
-// 6. Auto-sync to local preview server (cortec-site), hosting folder (cortec-hosting-final), and ZIP archive
-const BRAIN_DIR = '/Users/mansur/.gemini/antigravity/brain/67fbb67a-90fa-411a-8e8c-bab80dbba0b1';
 const USER_DOCS = '/Users/mansur/Documents/newadam';
-
 try {
-  copyDirSync(DIST, path.join(BRAIN_DIR, 'cortec-hosting-final'));
-  copyDirSync(DIST, path.join(BRAIN_DIR, 'cortec-site'));
-
-  const zipBrain = path.join(BRAIN_DIR, 'cortec-hosting-final.zip');
-  execSync(`rm -f "${zipBrain}" && cd "${DIST}" && zip -r -q "${zipBrain}" .`);
-
-  if (fs.existsSync(USER_DOCS)) {
-    const userHosting = path.join(USER_DOCS, 'cortec-hosting-final');
-    const userArch = path.join(USER_DOCS, 'cortec-architecture');
-    const userZip = path.join(USER_DOCS, 'cortec-hosting-final.zip');
-    fs.rmSync(userHosting, { recursive: true, force: true });
-    copyDirSync(DIST, userHosting);
-    fs.rmSync(userZip, { force: true });
-    fs.copyFileSync(zipBrain, userZip);
-
-    // Copy modular architecture source if running from a different directory
-    if (path.resolve(ROOT) !== path.resolve(userArch)) {
-      fs.rmSync(userArch, { recursive: true, force: true });
-      fs.mkdirSync(userArch, { recursive: true });
-      for (const item of ['AI_CONTEXT.md', 'package.json', 'build.js', 'test-audit.js', 'test-seo-engines.js', 'src', '.design-rules', '.seo-rules']) {
-        const s = path.join(ROOT, item);
-        if (!fs.existsSync(s)) continue;
-        const d = path.join(userArch, item);
-        if (fs.statSync(s).isDirectory()) copyDirSync(s, d);
-        else fs.copyFileSync(s, d);
-      }
-    }
-    if (fs.existsSync(path.join(ROOT, 'AI_CONTEXT.md'))) {
-      fs.rmSync(path.join(USER_DOCS, 'AI_CONTEXT.md'), { force: true });
-      fs.copyFileSync(path.join(ROOT, 'AI_CONTEXT.md'), path.join(USER_DOCS, 'AI_CONTEXT.md'));
-    }
-    console.log('   • Synced to /Users/mansur/Documents/newadam/cortec-architecture & cortec-hosting-final.zip');
+  if (fs.existsSync(USER_DOCS) && fs.existsSync(path.join(ROOT, 'AI_CONTEXT.md'))) {
+    fs.copyFileSync(path.join(ROOT, 'AI_CONTEXT.md'), path.join(USER_DOCS, 'AI_CONTEXT.md'));
   }
-} catch (err) {
-  console.warn('   • Warning during sync:', err.message);
-}
+} catch (_) {}
